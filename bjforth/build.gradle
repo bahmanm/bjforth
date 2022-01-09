@@ -37,7 +37,7 @@ spotless {
     java {
         importOrder()
         removeUnusedImports()
-        googleJavaFormat('1.13.0').reflowLongStrings()
+        eclipse().configFile('../eclipse-formatter-config.xml')
     }
 }
 
