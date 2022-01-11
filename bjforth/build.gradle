@@ -13,7 +13,7 @@ dependencies {
 }
 
 application {
-    mainClass = 'bjforth.App'
+    mainClass = 'bjforth.BJForth'
 }
 
 tasks.named('test') {
