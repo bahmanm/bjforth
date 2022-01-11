@@ -24,22 +24,22 @@ import java.util.Map;
 import java.util.Optional;
 
 public class Dictionary {
-
-  private final Map<String, List<Integer>> items;
-
-  public Dictionary() {
-    items = new HashMap<>();
+  public static record DictionaryItem(String name, Integer address, Boolean isImmediate,
+      Boolean isHidden)
+  {
   }
 
-  public void put(String name, Integer address) {
-    items.merge(name, List.of(address), (currentValue, newValue) -> {
+  private final Map<String, List<DictionaryItem>> items = new HashMap<>();
+
+  public void put(String name, DictionaryItem item) {
+    items.merge(name, List.of(item), (currentValue, newValue) -> {
       currentValue.addAll(newValue);
       return currentValue;
     });
   }
 
-  public Optional<Integer> get(String name) {
+  public Optional<DictionaryItem> get(String name) {
     return Optional.ofNullable(items.get(name))
-        .map(addresses -> addresses.get(addresses.size() - 1));
+        .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
   }
 }
