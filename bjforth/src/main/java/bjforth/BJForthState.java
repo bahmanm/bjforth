@@ -23,6 +23,8 @@ public class BJForthState {
   private Integer instructionPointer = 0;
   private final Memory memory = new Memory();
   private final Dictionary dictionary = new Dictionary();
+  private final Stack<Integer> returnStack = new Stack<>();
+  private final Stack<? extends Object> parameterStack = new Stack<>();
 
   public Dictionary dictionary() {
     return dictionary;
@@ -38,5 +40,13 @@ public class BJForthState {
 
   public void instructionPointer(Integer address) {
     instructionPointer = address;
+  }
+
+  public Stack<Integer> returnStack() {
+    return returnStack;
+  }
+
+  public Stack<? extends Object> parameterStack() {
+    return parameterStack;
   }
 }
