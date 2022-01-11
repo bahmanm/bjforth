@@ -41,7 +41,7 @@ spotless {
         removeUnusedImports()
         eclipse().configFile('../eclipse-formatter-config.xml')
         licenseHeader '''/*
- * Copyright $YEAR Bahman Movaqar.
+ * Copyright $YEAR Bahman Movaqar
  *
  * This file is part of BJForth.
  *
@@ -56,7 +56,7 @@ spotless {
  * for more details.
  *
  * You should have received a copy of the GNU General Public License
- * along with Foobar. If not, see <https://www.gnu.org/licenses/>.
+ * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
 '''
     }
