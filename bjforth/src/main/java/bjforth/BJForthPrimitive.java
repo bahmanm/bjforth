@@ -25,6 +25,11 @@ package bjforth;
 public interface BJForthPrimitive {
 
   /**
+   * Name of the word.
+   */
+  String name();
+
+  /**
    * What the word is supposed to do?
    *
    * @param state current state which is most definitely going to be

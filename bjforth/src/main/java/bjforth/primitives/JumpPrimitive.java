@@ -33,4 +33,9 @@ public class JumpPrimitive implements BJForthPrimitive {
   public void doExecute(BJForthState state) {
     execute(state);
   }
+
+  @Override
+  public String name() {
+    return "JMP";
+  }
 }
