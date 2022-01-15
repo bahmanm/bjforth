@@ -1,0 +1,89 @@
+/*
+ * Copyright 2022 Bahman Movaqar
+ *
+ * This file is part of BJForth.
+ *
+ * BJForth is free software: you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * BJForth is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
+ */
+package bjforth.machine;
+
+import java.util.Optional;
+
+public class Machine {
+
+  private MachineState state;
+
+  public Machine(MachineState state) {
+    this.state = state;
+  }
+
+  public Object getMemoryAt(Integer address) {
+    return state.getMemory().get(address);
+  }
+
+  public void setMemoryAt(Integer address, Object value) {
+    state.getMemory().set(address, value);
+  }
+
+  public void pushToParameterStack(Object item) {
+    state.getParameterStack().push(item);
+  }
+
+  public Object popFromParameterStack() {
+    return state.getParameterStack().pop();
+  }
+
+  public void pushToReturnStack(Integer address) {
+    state.getReturnStack().push(address);
+  }
+
+  public Integer popFromReturnStack() {
+    return state.getReturnStack().pop();
+  }
+
+  public Optional<DictionaryItem> getDictionaryItem(String name) {
+    return state.getDictionary().get(name);
+  }
+
+  public void createDictionaryItem(String name, DictionaryItem item) {
+    state.getDictionary().put(name, item);
+  }
+
+  public Integer getForthInstructionPointer() {
+    return state.getForthInstructionPointer();
+  }
+
+  public void setForthInstructionPointer(Integer address) {
+    state.setForthInstructionPointer(address);
+  }
+
+  public void jumpTo(Integer address) {
+    state.setInstructionPointer(address);
+  }
+
+  /**
+   * Machine's "main loop". DO NOT CALL.
+   */
+  public void loop() {
+    while (true) {
+      var ip = state.getInstructionPointer();
+      var content = getMemoryAt(ip);
+      if (content instanceof MachinePrimitive primitive) {
+        primitive.execute(this);
+      } else {
+        throw new MachineException("don't know how to execute *({})".formatted(ip));
+      }
+    }
+  }
+}

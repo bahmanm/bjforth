@@ -16,37 +16,34 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth;
+package bjforth.machine;
 
-public class BJForthState {
+public class DictionaryItem {
+  private final String name;
+  private final Integer address;
+  private final Boolean isImmediate;
+  private final Boolean isHidden;
 
-  private Integer instructionPointer = 0;
-  private final Memory memory = new Memory();
-  private final Dictionary dictionary = new Dictionary();
-  private final Stack<Integer> returnStack = new Stack<>();
-  private final Stack<? extends Object> parameterStack = new Stack<>();
-
-  public Dictionary dictionary() {
-    return dictionary;
+  public DictionaryItem(String name, Integer address, Boolean isImmediate, Boolean isHidden) {
+    this.name = name;
+    this.address = address;
+    this.isImmediate = isImmediate;
+    this.isHidden = isHidden;
   }
 
-  public Memory memory() {
-    return memory;
+  public String getName() {
+    return name;
   }
 
-  public Integer instructionPointer() {
-    return instructionPointer;
+  public Integer getAddress() {
+    return address;
   }
 
-  public void instructionPointer(Integer address) {
-    instructionPointer = address;
+  public Boolean getIsImmediate() {
+    return isImmediate;
   }
 
-  public Stack<Integer> returnStack() {
-    return returnStack;
-  }
-
-  public Stack<? extends Object> parameterStack() {
-    return parameterStack;
+  public Boolean getIsHidden() {
+    return isHidden;
   }
 }

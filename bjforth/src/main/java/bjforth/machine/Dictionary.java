@@ -16,10 +16,26 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth;
+package bjforth.machine;
 
-public class BJForthException extends RuntimeException {
-  public BJForthException(String message) {
-    super(message);
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+class Dictionary {
+
+  final Map<String, List<DictionaryItem>> items = new HashMap<>();
+
+  public void put(String name, DictionaryItem item) {
+    items.merge(name, List.of(item), (currentValue, newValue) -> {
+      currentValue.addAll(newValue);
+      return currentValue;
+    });
+  }
+
+  public Optional<DictionaryItem> get(String name) {
+    return Optional.ofNullable(items.get(name))
+        .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
   }
 }

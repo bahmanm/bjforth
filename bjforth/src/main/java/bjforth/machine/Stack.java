@@ -16,12 +16,12 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth;
+package bjforth.machine;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class Stack<T> {
+class Stack<T> {
   private final Deque<T> data = new ArrayDeque<>();
 
   public T pop() {

@@ -16,26 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.primitives;
+package bjforth.machine;
 
-import bjforth.BJForthPrimitive;
-import bjforth.BJForthState;
+import java.util.HashMap;
+import java.util.Map;
 
-public class JumpPrimitive implements BJForthPrimitive {
+public class Memory {
+  private final Map<Integer, Object> cells;
 
-  @Override
-  public void execute(BJForthState state) {
-    var next = state.returnStack().pop();
-    state.instructionPointer(next);
+  public Memory() {
+    cells = new HashMap<>();
   }
 
-  @Override
-  public void doExecute(BJForthState state) {
-    execute(state);
+  public void set(Integer address, Object value) {
+    cells.put(address, value);
   }
 
-  @Override
-  public String name() {
-    return "JMP";
+  public Object get(Integer address) {
+    return cells.get(address);
   }
 }
