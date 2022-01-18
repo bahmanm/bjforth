@@ -16,32 +16,15 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.machine;
+package bjforth.primitives;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import bjforth.machine.Machine;
 
-class Dictionary {
+public class DOCOL implements MachinePrimitiveWithNext {
 
-  final Map<String, List<DictionaryItem>> items = new HashMap<>();
-
-  Dictionary() {}
-
-  Dictionary(Dictionary other) {
-    other.items.forEach(items::put);
-  }
-
-  public void put(String name, DictionaryItem item) {
-    items.merge(name, List.of(item), (currentValue, newValue) -> {
-      currentValue.addAll(newValue);
-      return currentValue;
-    });
-  }
-
-  public Optional<DictionaryItem> get(String name) {
-    return Optional.ofNullable(items.get(name))
-        .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
+  @Override
+  public void executeWithNext(Machine machine) {
+    machine.pushToReturnStack(machine.getForthInstructionPointer());
+    machine.setForthInstructionPointer(machine.getInstrcutionPointer() + 1);
   }
 }

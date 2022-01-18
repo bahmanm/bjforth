@@ -18,30 +18,29 @@
  */
 package bjforth.machine;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
-class Dictionary {
+public class MemoryBuilder {
+  private Memory memory = new Memory();
 
-  final Map<String, List<DictionaryItem>> items = new HashMap<>();
-
-  Dictionary() {}
-
-  Dictionary(Dictionary other) {
-    other.items.forEach(items::put);
+  private MemoryBuilder() {
   }
 
-  public void put(String name, DictionaryItem item) {
-    items.merge(name, List.of(item), (currentValue, newValue) -> {
-      currentValue.addAll(newValue);
-      return currentValue;
-    });
+  public static MemoryBuilder aMemory() {
+    return new MemoryBuilder();
   }
 
-  public Optional<DictionaryItem> get(String name) {
-    return Optional.ofNullable(items.get(name))
-        .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
+  public MemoryBuilder with(Integer address, Object object) {
+    memory.set(address, object);
+    return this;
+  }
+
+  public MemoryBuilder with(Map<Integer, Object> cells) {
+    cells.forEach((address, object) -> memory.set(address, object));
+    return this;
+  }
+
+  public Memory build() {
+    return memory;
   }
 }

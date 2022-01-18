@@ -31,6 +31,13 @@ public class DictionaryItem {
     this.isHidden = isHidden;
   }
 
+  public DictionaryItem(DictionaryItem other) {
+    this.name = other.name;
+    this.address = other.address;
+    this.isImmediate = other.isImmediate;
+    this.isHidden = other.isHidden;
+  }
+
   public String getName() {
     return name;
   }
@@ -45,5 +52,49 @@ public class DictionaryItem {
 
   public Boolean getIsHidden() {
     return isHidden;
+  }
+
+  @Override
+  public int hashCode() {
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + ((address == null) ? 0 : address.hashCode());
+    result = prime * result + ((isHidden == null) ? 0 : isHidden.hashCode());
+    result = prime * result + ((isImmediate == null) ? 0 : isImmediate.hashCode());
+    result = prime * result + ((name == null) ? 0 : name.hashCode());
+    return result;
+  }
+
+  // GENERATED
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    DictionaryItem other = (DictionaryItem) obj;
+    if (address == null) {
+      if (other.address != null)
+        return false;
+    } else if (!address.equals(other.address))
+      return false;
+    if (isHidden == null) {
+      if (other.isHidden != null)
+        return false;
+    } else if (!isHidden.equals(other.isHidden))
+      return false;
+    if (isImmediate == null) {
+      if (other.isImmediate != null)
+        return false;
+    } else if (!isImmediate.equals(other.isImmediate))
+      return false;
+    if (name == null) {
+      if (other.name != null)
+        return false;
+    } else if (!name.equals(other.name))
+      return false;
+    return true;
   }
 }

@@ -19,12 +19,12 @@
 package bjforth.machine;
 
 class MachineState {
-  private Integer instructionPointer = 0;
-  private Integer forthInstructionPointer = 0;
-  private Memory memory = new Memory();
-  private Dictionary dictionary = new Dictionary();
-  private Stack<Integer> returnStack = new Stack<>();
-  private Stack<Object> parameterStack = new Stack<>();
+  private Integer instructionPointer;
+  private Integer forthInstructionPointer;
+  private Memory memory;
+  private Dictionary dictionary;
+  private Stack<Integer> returnStack;
+  private Stack<Object> parameterStack;
 
   MachineState(Integer instructionPointer, Integer forthInstructionPointer, Memory memory,
       Dictionary dictionary, Stack<Integer> returnStack, Stack<Object> parameterStack)
@@ -35,6 +35,15 @@ class MachineState {
     this.dictionary = dictionary;
     this.returnStack = returnStack;
     this.parameterStack = parameterStack;
+  }
+
+  MachineState(MachineState other) {
+    instructionPointer = other.instructionPointer;
+    forthInstructionPointer = other.forthInstructionPointer;
+    memory = new Memory(other.memory);
+    dictionary = new Dictionary(other.dictionary);
+    returnStack = new Stack<>(other.returnStack);
+    parameterStack = new Stack<>(other.parameterStack);
   }
 
   void setInstructionPointer(Integer instructionPointer) {

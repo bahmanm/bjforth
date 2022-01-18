@@ -16,16 +16,23 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth;
+package bjforth.machine;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class MachineBuilder {
+  private MachineState state;
 
-import org.junit.jupiter.api.Test;
+  private MachineBuilder() {}
 
-class AppTest {
-  @Test
-  void appHasAGreeting() {
-    App classUnderTest = new App();
-    assertNotNull(classUnderTest.getGreeting(), "app should have a greeting");
+  public static MachineBuilder aMachine() {
+    return new MachineBuilder();
+  }
+
+  public MachineBuilder withState(MachineState state) {
+    this.state = state;
+    return this;
+  }
+
+  public Machine build() {
+    return new Machine(state);
   }
 }

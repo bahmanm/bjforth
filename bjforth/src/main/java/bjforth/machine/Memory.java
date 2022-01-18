@@ -21,18 +21,20 @@ package bjforth.machine;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Memory {
-  private final Map<Integer, Object> cells;
+class Memory {
+  private final Map<Integer, Object> cells = new HashMap<>();
 
-  public Memory() {
-    cells = new HashMap<>();
+  Memory() {}
+
+  Memory(Memory other) {
+    other.cells.forEach(cells::put);
   }
 
-  public void set(Integer address, Object value) {
+  void set(Integer address, Object value) {
     cells.put(address, value);
   }
 
-  public Object get(Integer address) {
+  Object get(Integer address) {
     return cells.get(address);
   }
 }

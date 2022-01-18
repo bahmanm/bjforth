@@ -7,13 +7,34 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
-    implementation 'com.google.guava:guava:30.1.1-jre'
-}
-
 application {
     mainClass = 'bjforth.BJForth'
+}
+
+sourceSets {
+    testLib {
+        java.srcDir file('src/test-lib/java')
+        resources.srcDir file('src/test-lib/resources')
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += output + compileClasspath
+    }
+}
+
+configurations {
+    testLibImplementation.extendsFrom implementation
+    testLibApi.extendsFrom api
+    testLib.extendsFrom implementation
+}
+
+dependencies {
+    testLib sourceSets.testLib.output
+    testLibImplementation 'org.apache.commons:commons-lang3:3.12.0'
+    testLibImplementation 'com.google.code.gson:gson:2.8.9'
+
+    testImplementation sourceSets.testLib.runtimeClasspath
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
+    testImplementation 'org.assertj:assertj-core:3.22.0'
 }
 
 tasks.named('test') {

@@ -18,30 +18,26 @@
  */
 package bjforth.machine;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.Stack;
 
-class Dictionary {
+public class ParameterStackBuilder {
+  private Stack<Object> parameterStack;
 
-  final Map<String, List<DictionaryItem>> items = new HashMap<>();
-
-  Dictionary() {}
-
-  Dictionary(Dictionary other) {
-    other.items.forEach(items::put);
+  private ParameterStackBuilder() {
   }
 
-  public void put(String name, DictionaryItem item) {
-    items.merge(name, List.of(item), (currentValue, newValue) -> {
-      currentValue.addAll(newValue);
-      return currentValue;
-    });
+  public static ParameterStackBuilder aParameterStack() {
+    return new ParameterStackBuilder();
   }
 
-  public Optional<DictionaryItem> get(String name) {
-    return Optional.ofNullable(items.get(name))
-        .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
+  public ParameterStackBuilder with(Object... objects) {
+    for (var object : objects) {
+      parameterStack.push(object);
+    }
+    return this;
+  }
+
+  public Stack<Object> build() {
+    return parameterStack;
   }
 }

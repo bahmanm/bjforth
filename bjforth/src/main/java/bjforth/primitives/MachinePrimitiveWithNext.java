@@ -16,32 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.machine;
+package bjforth.primitives;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import bjforth.machine.Machine;
+import bjforth.machine.MachinePrimitive;
 
-class Dictionary {
+public interface MachinePrimitiveWithNext extends MachinePrimitive {
 
-  final Map<String, List<DictionaryItem>> items = new HashMap<>();
-
-  Dictionary() {}
-
-  Dictionary(Dictionary other) {
-    other.items.forEach(items::put);
+  @Override
+  default void execute(Machine machine) {
+    executeWithNext(machine);
+    var nextWord = machine.getForthInstructionPointer();
+    machine.setForthInstructionPointer(nextWord + 1);
+    machine.jumpTo(nextWord);
   }
 
-  public void put(String name, DictionaryItem item) {
-    items.merge(name, List.of(item), (currentValue, newValue) -> {
-      currentValue.addAll(newValue);
-      return currentValue;
-    });
-  }
-
-  public Optional<DictionaryItem> get(String name) {
-    return Optional.ofNullable(items.get(name))
-        .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
-  }
+  void executeWithNext(Machine machine);
 }

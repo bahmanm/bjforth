@@ -60,6 +60,10 @@ public class Machine {
     state.getDictionary().put(name, item);
   }
 
+  public Integer getInstrcutionPointer() {
+    return state.getInstructionPointer();
+  }
+
   public Integer getForthInstructionPointer() {
     return state.getForthInstructionPointer();
   }
@@ -73,17 +77,39 @@ public class Machine {
   }
 
   /**
-   * Machine's "main loop". DO NOT CALL.
+   * Executes exactly ONE memory cell and stops.
+   *
+   * To be used for debugging/testing purposes.
+   */
+  public void step() {
+    var ip = state.getInstructionPointer();
+    var content = getMemoryAt(ip);
+    if (content instanceof MachinePrimitive primitive) {
+      primitive.execute(this);
+    } else {
+      throw new MachineException("don't know how to execute *(%d)".formatted(ip));
+    }
+  }
+
+  /**
+   * Executes exactly N memory cells and stops.
+   *
+   * To be used for debugging/testing purposes.
+   *
+   * @param n N memory cells
+   */
+  public void step(int n) {
+    for (var i=0; i<n; i++) {
+      step();
+    }
+  }
+
+  /**
+   * Machine's "main loop".
    */
   public void loop() {
     while (true) {
-      var ip = state.getInstructionPointer();
-      var content = getMemoryAt(ip);
-      if (content instanceof MachinePrimitive primitive) {
-        primitive.execute(this);
-      } else {
-        throw new MachineException("don't know how to execute *({})".formatted(ip));
-      }
+      step();
     }
   }
 }
