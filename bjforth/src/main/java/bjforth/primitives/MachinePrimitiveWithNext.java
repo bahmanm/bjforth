@@ -26,8 +26,8 @@ public interface MachinePrimitiveWithNext extends MachinePrimitive {
   @Override
   default void execute(Machine machine) {
     executeWithNext(machine);
-    var nextWord = machine.getForthInstructionPointer();
-    machine.setForthInstructionPointer(nextWord + 1);
+    var nextWord = machine.getNextInstructionPointer();
+    machine.setNextInstructionPointer(nextWord + 1);
     machine.jumpTo(nextWord);
   }
 

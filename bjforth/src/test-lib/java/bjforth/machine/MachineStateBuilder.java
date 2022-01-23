@@ -20,7 +20,7 @@ package bjforth.machine;
 
 public class MachineStateBuilder {
   private Integer instructionPointer = 0;
-  private Integer forthInstructionPointer = 0;
+  private Integer nextInstructionPointer = 0;
   private Memory memory = new Memory();
   private Dictionary dictionary = new Dictionary();
   private Stack<Integer> returnStack = new Stack<Integer>();
@@ -42,8 +42,8 @@ public class MachineStateBuilder {
     return this;
   }
 
-  public MachineStateBuilder withForthInstructionPointer(Integer forthInstructionPointer) {
-    this.forthInstructionPointer = forthInstructionPointer;
+  public MachineStateBuilder withNextInstructionPointer(Integer nextInstructionPointer) {
+    this.nextInstructionPointer = nextInstructionPointer;
     return this;
   }
 
@@ -68,7 +68,7 @@ public class MachineStateBuilder {
   }
 
   public MachineState build() {
-    return new MachineState(instructionPointer, forthInstructionPointer, memory, dictionary,
+    return new MachineState(instructionPointer, nextInstructionPointer, memory, dictionary,
         returnStack, parameterStack);
   }
 }

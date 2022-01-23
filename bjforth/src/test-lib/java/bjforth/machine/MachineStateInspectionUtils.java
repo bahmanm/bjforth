@@ -88,7 +88,7 @@ public class MachineStateInspectionUtils {
     return ms.getInstructionPointer();
   }
 
-  public static Integer forthInstructionPointer(MachineState ms) {
-    return ms.getForthInstructionPointer();
+  public static Integer nextInstructionPointer(MachineState ms) {
+    return ms.getNextInstructionPointer();
   }
 }

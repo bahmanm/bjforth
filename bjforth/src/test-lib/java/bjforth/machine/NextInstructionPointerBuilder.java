@@ -18,37 +18,37 @@
  */
 package bjforth.machine;
 
-public class ForthInstructionPointerBuilder {
-  private Integer forthInstructionPointer;
+public class NextInstructionPointerBuilder {
+  private Integer nextInstructionPointer;
 
-  private ForthInstructionPointerBuilder() {
+  private NextInstructionPointerBuilder() {
   }
 
-  public static ForthInstructionPointerBuilder aForthInstructionPointer() {
-    return new ForthInstructionPointerBuilder();
+  public static NextInstructionPointerBuilder aNextInstructionPointer() {
+    return new NextInstructionPointerBuilder();
   }
 
-  public ForthInstructionPointerBuilder with(MachineState ms) {
-    forthInstructionPointer = ms.getForthInstructionPointer();
+  public NextInstructionPointerBuilder with(MachineState ms) {
+    nextInstructionPointer = ms.getNextInstructionPointer();
     return this;
   }
 
-  public ForthInstructionPointerBuilder withInstructionPointer(MachineState ms) {
-    forthInstructionPointer = ms.getInstructionPointer();
+  public NextInstructionPointerBuilder withInstructionPointer(MachineState ms) {
+    nextInstructionPointer = ms.getInstructionPointer();
     return this;
   }
 
-  public ForthInstructionPointerBuilder with(Integer forthInstructionPointer) {
-    this.forthInstructionPointer = forthInstructionPointer;
+  public NextInstructionPointerBuilder with(Integer nextInstructionPointer) {
+    this.nextInstructionPointer = nextInstructionPointer;
     return this;
   }
 
-  public ForthInstructionPointerBuilder plus(Integer offset) {
-    forthInstructionPointer += offset;
+  public NextInstructionPointerBuilder plus(Integer offset) {
+    nextInstructionPointer += offset;
     return this;
   }
 
   public Integer build() {
-    return forthInstructionPointer;
+    return nextInstructionPointer;
   }
 }

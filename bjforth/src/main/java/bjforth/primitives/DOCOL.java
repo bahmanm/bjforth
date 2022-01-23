@@ -24,7 +24,7 @@ public class DOCOL implements MachinePrimitiveWithNext {
 
   @Override
   public void executeWithNext(Machine machine) {
-    machine.pushToReturnStack(machine.getForthInstructionPointer());
-    machine.setForthInstructionPointer(machine.getInstrcutionPointer() + 1);
+    machine.pushToReturnStack(machine.getNextInstructionPointer());
+    machine.setNextInstructionPointer(machine.getInstrcutionPointer() + 1);
   }
 }

@@ -18,12 +18,12 @@
  */
 package bjforth.primitives;
 
-import static bjforth.machine.ForthInstructionPointerBuilder.aForthInstructionPointer;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MachineStateInspectionUtils.*;
 import static bjforth.machine.MemoryBuilder.aMemory;
+import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -51,9 +51,9 @@ class DOCOLTest {
     assertThat(state2).hasDictionaryEqualTo(state1).hasMemoryEqualTo(state1)
         .hasParameterStackEqualTo(state1)
         .hasReturnStackEqualTo(
-            aReturnStack().with(state1).with(forthInstructionPointer(state1)).build())
+            aReturnStack().with(state1).with(nextInstructionPointer(state1)).build())
         .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasForthInstructionPointerEqualTo(
-            aForthInstructionPointer().withInstructionPointer(state1).plus(2).build());
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().withInstructionPointer(state1).plus(2).build());
   }
 }

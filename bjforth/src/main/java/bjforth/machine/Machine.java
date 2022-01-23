@@ -64,12 +64,12 @@ public class Machine {
     return state.getInstructionPointer();
   }
 
-  public Integer getForthInstructionPointer() {
-    return state.getForthInstructionPointer();
+  public Integer getNextInstructionPointer() {
+    return state.getNextInstructionPointer();
   }
 
-  public void setForthInstructionPointer(Integer address) {
-    state.setForthInstructionPointer(address);
+  public void setNextInstructionPointer(Integer address) {
+    state.setNextInstructionPointer(address);
   }
 
   public void jumpTo(Integer address) {

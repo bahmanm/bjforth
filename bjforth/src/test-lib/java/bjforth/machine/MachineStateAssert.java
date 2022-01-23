@@ -139,18 +139,18 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     return hasInstructionPointerEqualTo(otherMs);
   }
 
-  public MachineStateAssert hasForthInstructionPointerEqualTo(MachineState other) {
-    var actualFip = actual.getForthInstructionPointer();
-    var otherFip = other.getForthInstructionPointer();
-    if (!actualFip.equals(otherFip)) {
-      failWithMessage("Expected forthInstructionPointer to be <%s> but was <%s>", otherFip,
-          actualFip);
+  public MachineStateAssert hasNextInstructionPointerEqualTo(MachineState other) {
+    var actualNip = actual.getNextInstructionPointer();
+    var otherNip = other.getNextInstructionPointer();
+    if (!actualNip.equals(otherNip)) {
+      failWithMessage("Expected nextInstructionPointer to be <%s> but was <%s>", otherNip,
+          actualNip);
     }
     return this;
   }
 
-  public MachineStateAssert hasForthInstructionPointerEqualTo(Integer otherFip) {
-    var otherMs = aMachineState().withForthInstructionPointer(otherFip).build();
-    return hasForthInstructionPointerEqualTo(otherMs);
+  public MachineStateAssert hasNextInstructionPointerEqualTo(Integer otherNip) {
+    var otherMs = aMachineState().withNextInstructionPointer(otherNip).build();
+    return hasNextInstructionPointerEqualTo(otherMs);
   }
 }

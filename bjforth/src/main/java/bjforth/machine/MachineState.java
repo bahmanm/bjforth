@@ -20,17 +20,17 @@ package bjforth.machine;
 
 class MachineState {
   private Integer instructionPointer;
-  private Integer forthInstructionPointer;
+  private Integer nextInstructionPointer;
   private Memory memory;
   private Dictionary dictionary;
   private Stack<Integer> returnStack;
   private Stack<Object> parameterStack;
 
-  MachineState(Integer instructionPointer, Integer forthInstructionPointer, Memory memory,
+  MachineState(Integer instructionPointer, Integer nextInstructionPointer, Memory memory,
       Dictionary dictionary, Stack<Integer> returnStack, Stack<Object> parameterStack)
   {
     this.instructionPointer = instructionPointer;
-    this.forthInstructionPointer = forthInstructionPointer;
+    this.nextInstructionPointer = nextInstructionPointer;
     this.memory = memory;
     this.dictionary = dictionary;
     this.returnStack = returnStack;
@@ -39,7 +39,7 @@ class MachineState {
 
   MachineState(MachineState other) {
     instructionPointer = other.instructionPointer;
-    forthInstructionPointer = other.forthInstructionPointer;
+    nextInstructionPointer = other.nextInstructionPointer;
     memory = new Memory(other.memory);
     dictionary = new Dictionary(other.dictionary);
     returnStack = new Stack<>(other.returnStack);
@@ -50,16 +50,16 @@ class MachineState {
     this.instructionPointer = instructionPointer;
   }
 
-  void setForthInstructionPointer(Integer forthInstructionPointer) {
-    this.forthInstructionPointer = forthInstructionPointer;
+  void setNextInstructionPointer(Integer nextInstructionPointer) {
+    this.nextInstructionPointer = nextInstructionPointer;
   }
 
   Integer getInstructionPointer() {
     return instructionPointer;
   }
 
-  Integer getForthInstructionPointer() {
-    return forthInstructionPointer;
+  Integer getNextInstructionPointer() {
+    return nextInstructionPointer;
   }
 
   Memory getMemory() {
