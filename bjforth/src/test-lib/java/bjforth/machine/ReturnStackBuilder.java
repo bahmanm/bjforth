@@ -18,10 +18,10 @@
  */
 package bjforth.machine;
 
-import java.util.Stack;
+import static bjforth.machine.MachineStateInspectionUtils.returnStackDescendingIterator;
 
 public class ReturnStackBuilder {
-  private Stack<Integer> returnStack;
+  private Stack<Integer> returnStack = new Stack<Integer>();
 
   private ReturnStackBuilder() {
   }
@@ -34,6 +34,13 @@ public class ReturnStackBuilder {
     for (var address : addresses) {
       returnStack.push(address);
     }
+    return this;
+  }
+
+  public ReturnStackBuilder with(MachineState ms) {
+    var iterator = returnStackDescendingIterator(ms);
+    while (iterator.hasNext())
+      returnStack.push(iterator.next());
     return this;
   }
 

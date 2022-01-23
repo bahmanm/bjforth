@@ -18,23 +18,19 @@
  */
 package bjforth.primitives;
 
-import static bjforth.machine.MachineStatComparisonUtils.isEqualDictionaries;
-import static bjforth.machine.MachineStatComparisonUtils.isEqualMemories;
-import static bjforth.machine.MachineStatComparisonUtils.isEqualParameterStacks;
-import static bjforth.machine.MachineStatComparisonUtils.isEqualReturnStack;
+import static bjforth.machine.ForthInstructionPointerBuilder.aForthInstructionPointer;
+import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
+import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MachineStateInspectionUtils.*;
 import static bjforth.machine.MemoryBuilder.aMemory;
+import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.List;
-
+import bjforth.machine.Machine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
-import bjforth.machine.Machine;
-
 
 class DOCOLTest {
 
@@ -44,23 +40,20 @@ class DOCOLTest {
     // GIVEN
     var docol = new DOCOL();
     var docolAddress = nextInt();
-    var state1 = aMachineState()
-      .withMemory(aMemory()
-                  .with(docolAddress, docol)
-                  .build())
-      .withInstrcutionPointer(docolAddress)
-      .build();
+    var state1 = aMachineState().withMemory(aMemory().with(docolAddress, docol).build())
+        .withInstrcutionPointer(docolAddress).build();
     var state2 = aMachineState(state1);
 
     // WHEN
     new Machine(state2).step();
 
     // THEN
-    assertThat(isEqualDictionaries(state1, state2)).isTrue();
-    assertThat(isEqualMemories(state1, state2)).isTrue();
-    assertThat(isEqualParameterStacks(state1, state2)).isTrue();
-    assertThat(instructionPointer(state2)).isEqualTo(instructionPointer(state1) + 1);
-    assertThat(forthInstructionPointer(state2)).isEqualTo(instructionPointer(state1) + 2);
-    assertThat(isEqualReturnStack(state2, List.of(forthInstructionPointer(state1)))).isTrue();
+    assertThat(state2).hasDictionaryEqualTo(state1).hasMemoryEqualTo(state1)
+        .hasParameterStackEqualTo(state1)
+        .hasReturnStackEqualTo(
+            aReturnStack().with(state1).with(forthInstructionPointer(state1)).build())
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
+        .hasForthInstructionPointerEqualTo(
+            aForthInstructionPointer().withInstructionPointer(state1).plus(2).build());
   }
 }

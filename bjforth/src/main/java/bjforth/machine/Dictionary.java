@@ -27,7 +27,8 @@ class Dictionary {
 
   final Map<String, List<DictionaryItem>> items = new HashMap<>();
 
-  Dictionary() {}
+  Dictionary() {
+  }
 
   Dictionary(Dictionary other) {
     other.items.forEach(items::put);

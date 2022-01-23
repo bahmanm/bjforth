@@ -18,22 +18,8 @@
  */
 package bjforth.machine;
 
-public class MachineBuilder {
-  private MachineState state;
-
-  private MachineBuilder() {
-  }
-
-  public static MachineBuilder aMachine() {
-    return new MachineBuilder();
-  }
-
-  public MachineBuilder withState(MachineState state) {
-    this.state = state;
-    return this;
-  }
-
-  public Machine build() {
-    return new Machine(state);
+public class MachineAssertions {
+  public static MachineStateAssert assertThat(MachineState actual) {
+    return new MachineStateAssert(actual);
   }
 }

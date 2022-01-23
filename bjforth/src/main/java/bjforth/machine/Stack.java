@@ -24,7 +24,8 @@ import java.util.Deque;
 class Stack<T> {
   private final Deque<T> data = new ArrayDeque<>();
 
-  Stack() {}
+  Stack() {
+  }
 
   Stack(Stack<T> other) {
     other.data.descendingIterator().forEachRemaining(data::addFirst);

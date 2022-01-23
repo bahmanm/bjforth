@@ -18,22 +18,32 @@
  */
 package bjforth.machine;
 
-public class MachineBuilder {
-  private MachineState state;
+public class InstructionPointerBuilder {
+  private Integer instructionPointer;
 
-  private MachineBuilder() {
+  private InstructionPointerBuilder() {
   }
 
-  public static MachineBuilder aMachine() {
-    return new MachineBuilder();
+  public static InstructionPointerBuilder anInstructionPointer() {
+    return new InstructionPointerBuilder();
   }
 
-  public MachineBuilder withState(MachineState state) {
-    this.state = state;
+  public InstructionPointerBuilder with(MachineState ms) {
+    instructionPointer = ms.getInstructionPointer();
     return this;
   }
 
-  public Machine build() {
-    return new Machine(state);
+  public InstructionPointerBuilder with(Integer instructionPointer) {
+    this.instructionPointer = instructionPointer;
+    return this;
+  }
+
+  public InstructionPointerBuilder plus(Integer offset) {
+    instructionPointer += offset;
+    return this;
+  }
+
+  public Integer build() {
+    return instructionPointer;
   }
 }

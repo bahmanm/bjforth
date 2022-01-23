@@ -29,7 +29,7 @@ configurations {
 dependencies {
     testLib sourceSets.testLib.output
     testLibImplementation 'org.apache.commons:commons-lang3:3.12.0'
-    testLibImplementation 'com.google.code.gson:gson:2.8.9'
+    testLibImplementation 'org.assertj:assertj-core:3.22.0'
 
     testImplementation sourceSets.testLib.runtimeClasspath
 

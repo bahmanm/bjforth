@@ -24,7 +24,8 @@ import java.util.Map;
 class Memory {
   private final Map<Integer, Object> cells = new HashMap<>();
 
-  Memory() {}
+  Memory() {
+  }
 
   Memory(Memory other) {
     other.cells.forEach(cells::put);
