@@ -48,7 +48,7 @@ class SWAPTest {
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
         .withMemory(aMemory().with(swapAddr, swap).build())
         .withParameterStack(aParameterStack().with(parameter1, parameter2).build()).build();
-    var state2 = aMachineState(state1);
+    var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // WHEN
@@ -74,12 +74,12 @@ class SWAPTest {
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
         .withMemory(aMemory().with(swapAddr, swap).build())
         .withParameterStack(aParameterStack().build()).build();
-    var state2 = aMachineState(state1);
+    var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState(state1));
+    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
   }
 
   @Test
@@ -93,7 +93,7 @@ class SWAPTest {
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
         .withMemory(aMemory().with(swapAddr, swap).build())
         .withParameterStack(aParameterStack().with(nextInt()).build()).build();
-    var state2 = aMachineState(state1);
+    var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // EXPECT
@@ -111,12 +111,12 @@ class SWAPTest {
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
         .withMemory(aMemory().with(swapAddr, swap).build())
         .withParameterStack(aParameterStack().with(nextInt()).build()).build();
-    var state2 = aMachineState(state1);
+    var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
     assertThat(state2).isEqualTo(
-        aMachineState().copyOf(state1).withParameterStack(aParameterStack().build()).build());
+        aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
   }
 }

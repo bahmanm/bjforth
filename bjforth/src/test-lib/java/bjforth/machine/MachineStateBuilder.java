@@ -67,7 +67,7 @@ public class MachineStateBuilder {
     return this;
   }
 
-  public MachineStateBuilder copyOf(MachineState other) {
+  public MachineStateBuilder copyFrom(MachineState other) {
     var copy = new MachineState(other);
     dictionary = copy.getDictionary();
     instructionPointer = copy.getInstructionPointer();

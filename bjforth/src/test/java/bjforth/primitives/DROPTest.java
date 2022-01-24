@@ -46,7 +46,7 @@ class DROPTest {
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
         .withMemory(aMemory().with(dropAddr, drop).build())
         .withParameterStack(aParameterStack().with(new Object()).build()).build();
-    var state2 = aMachineState(state1);
+    var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // WHEN
@@ -71,7 +71,7 @@ class DROPTest {
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
         .withMemory(aMemory().with(dropAddr, drop).build())
         .withParameterStack(aParameterStack().build()).build();
-    var state2 = aMachineState(state1);
+    var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // EXPECT

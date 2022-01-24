@@ -42,7 +42,7 @@ class DOCOLTest {
     var docolAddress = nextInt();
     var state1 = aMachineState().withMemory(aMemory().with(docolAddress, docol).build())
         .withInstrcutionPointer(docolAddress).build();
-    var state2 = aMachineState(state1);
+    var state2 = aMachineState().copyFrom(state1).build();
 
     // WHEN
     new Machine(state2).step();
