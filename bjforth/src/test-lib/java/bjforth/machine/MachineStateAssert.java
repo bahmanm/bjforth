@@ -97,6 +97,12 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     return this;
   }
 
+  public MachineStateAssert hasParameterStackEqualTo(Stack<Object> other) {
+    isNotNull();
+    var ms = aMachineState().withParameterStack(other).build();
+    return hasParameterStackEqualTo(ms);
+  }
+
   public MachineStateAssert hasReturnStackEqualTo(MachineState other) {
     isNotNull();
     var actualIterator = returnStackDescendingIterator(actual);
@@ -152,5 +158,11 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
   public MachineStateAssert hasNextInstructionPointerEqualTo(Integer otherNip) {
     var otherMs = aMachineState().withNextInstructionPointer(otherNip).build();
     return hasNextInstructionPointerEqualTo(otherMs);
+  }
+
+  public MachineStateAssert isEqualTo(MachineState other) {
+    return hasInstructionPointerEqualTo(other).hasNextInstructionPointerEqualTo(other)
+        .hasDictionaryEqualTo(other).hasMemoryEqualTo(other).hasReturnStackEqualTo(other)
+        .hasParameterStackEqualTo(other);
   }
 }
