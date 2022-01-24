@@ -21,6 +21,7 @@ package bjforth.primitives;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
+import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -29,7 +30,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
-import bjforth.machine.MemoryBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -44,7 +44,7 @@ class DROPTest {
     var ip = anInstructionPointer().with(dropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(MemoryBuilder.aMemory().with(dropAddr, drop).build())
+        .withMemory(aMemory().with(dropAddr, drop).build())
         .withParameterStack(aParameterStack().with(new Object()).build()).build();
     var state2 = aMachineState(state1);
     var machine = new Machine(state2);
@@ -69,7 +69,7 @@ class DROPTest {
     var ip = anInstructionPointer().with(dropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(MemoryBuilder.aMemory().with(dropAddr, drop).build())
+        .withMemory(aMemory().with(dropAddr, drop).build())
         .withParameterStack(aParameterStack().build()).build();
     var state2 = aMachineState(state1);
     var machine = new Machine(state2);
@@ -78,5 +78,4 @@ class DROPTest {
     assertThrows(MachineException.class, machine::step);
     assertThat(state2).isEqualTo(state1);
   }
-
 }
