@@ -67,6 +67,17 @@ public class MachineStateBuilder {
     return this;
   }
 
+  public MachineStateBuilder copyOf(MachineState other) {
+    var copy = new MachineState(other);
+    dictionary = copy.getDictionary();
+    instructionPointer = copy.getInstructionPointer();
+    nextInstructionPointer = copy.getNextInstructionPointer();
+    memory = copy.getMemory();
+    parameterStack = copy.getParameterStack();
+    returnStack = copy.getReturnStack();
+    return this;
+  }
+
   public MachineState build() {
     return new MachineState(instructionPointer, nextInstructionPointer, memory, dictionary,
         returnStack, parameterStack);
