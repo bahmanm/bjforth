@@ -21,8 +21,7 @@ package bjforth.machine;
 public class ParameterStackBuilder {
   private Stack<Object> parameterStack = new Stack<Object>();
 
-  private ParameterStackBuilder() {
-  }
+  private ParameterStackBuilder() {}
 
   public static ParameterStackBuilder aParameterStack() {
     return new ParameterStackBuilder();

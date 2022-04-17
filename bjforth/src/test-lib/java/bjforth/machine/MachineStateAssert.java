@@ -38,16 +38,16 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     var actualKeys = dictionaryKeys(actual);
     var otherKeys = dictionaryKeys(other);
     if (actualKeys.size() != otherKeys.size()
-        || !actualKeys.stream().allMatch(otherKeys::contains))
-    {
+        || !actualKeys.stream().allMatch(otherKeys::contains)) {
       failWithMessage("Expected Dictionary to have keys <%s> but was <%s>", otherKeys, actualKeys);
     }
     for (var k : actualKeys) {
       var actualValue = actual.getDictionary().get(k);
       var otherValue = other.getDictionary().get(k);
       if (!actualValue.equals(otherValue)) {
-        failWithMessage("Expected Dictionary to have mapping <%s -> %s> but was <%s -> %s>", k,
-            otherValue, k, actualValue);
+        failWithMessage(
+            "Expected Dictionary to have mapping <%s -> %s> but was <%s -> %s>",
+            k, otherValue, k, actualValue);
       }
     }
     return this;
@@ -58,17 +58,16 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     var actualAddrs = memoryAddresses(actual);
     var otherAddrs = memoryAddresses(other);
     if (actualAddrs.size() != otherAddrs.size()
-        || !actualAddrs.stream().allMatch(otherAddrs::contains))
-    {
-      failWithMessage("Expected Memory to have addresses <%s> but was <%s>", otherAddrs,
-          actualAddrs);
+        || !actualAddrs.stream().allMatch(otherAddrs::contains)) {
+      failWithMessage(
+          "Expected Memory to have addresses <%s> but was <%s>", otherAddrs, actualAddrs);
     }
     for (var addr : actualAddrs) {
       var actualValue = actual.getMemory().get(addr);
       var otherValue = other.getMemory().get(addr);
       if (!actualValue.equals(otherValue)) {
-        failWithMessage("Expected Memory address <%s> to be <%s> but was <%s>", addr, otherValue,
-            actualValue);
+        failWithMessage(
+            "Expected Memory address <%s> to be <%s> but was <%s>", addr, otherValue, actualValue);
       }
     }
     return this;
@@ -80,19 +79,20 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     var otherIterator = parameterStackDescendingIterator(other);
     while (otherIterator.hasNext()) {
       if (!actualIterator.hasNext()) {
-        failWithMessage("Expected ParameterStack to contain <%s> but there were no more elements.",
+        failWithMessage(
+            "Expected ParameterStack to contain <%s> but there were no more elements.",
             otherIterator.next());
       }
       var actualValue = actualIterator.next();
       var otherValue = otherIterator.next();
       if (!actualValue.equals(otherValue)) {
-        failWithMessage("Expected ParameterStack to contain <%s> but was <%s>.", otherValue,
-            actualValue);
+        failWithMessage(
+            "Expected ParameterStack to contain <%s> but was <%s>.", otherValue, actualValue);
       }
     }
     if (actualIterator.hasNext()) {
-      failWithMessage("Expected ParameterStack to have no more contents but was <%s>",
-          actualIterator.next());
+      failWithMessage(
+          "Expected ParameterStack to have no more contents but was <%s>", actualIterator.next());
     }
     return this;
   }
@@ -109,19 +109,20 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     var otherIterator = returnStackDescendingIterator(other);
     while (otherIterator.hasNext()) {
       if (!actualIterator.hasNext()) {
-        failWithMessage("Expected ReturnStack to contain <%s> but there were no more elements.",
+        failWithMessage(
+            "Expected ReturnStack to contain <%s> but there were no more elements.",
             otherIterator.next());
       }
       var actualValue = actualIterator.next();
       var otherValue = otherIterator.next();
       if (!actualValue.equals(otherValue)) {
-        failWithMessage("Expected ReturnStack to contain <%s> but was <%s>.", otherValue,
-            actualValue);
+        failWithMessage(
+            "Expected ReturnStack to contain <%s> but was <%s>.", otherValue, actualValue);
       }
     }
     if (actualIterator.hasNext()) {
-      failWithMessage("Expected ReturnStack to have no more elements but was <%s>",
-          actualIterator.next());
+      failWithMessage(
+          "Expected ReturnStack to have no more elements but was <%s>", actualIterator.next());
     }
     return this;
   }
@@ -149,8 +150,8 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     var actualNip = actual.getNextInstructionPointer();
     var otherNip = other.getNextInstructionPointer();
     if (!actualNip.equals(otherNip)) {
-      failWithMessage("Expected nextInstructionPointer to be <%s> but was <%s>", otherNip,
-          actualNip);
+      failWithMessage(
+          "Expected nextInstructionPointer to be <%s> but was <%s>", otherNip, actualNip);
     }
     return this;
   }
@@ -161,8 +162,11 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
   }
 
   public MachineStateAssert isEqualTo(MachineState other) {
-    return hasInstructionPointerEqualTo(other).hasNextInstructionPointerEqualTo(other)
-        .hasDictionaryEqualTo(other).hasMemoryEqualTo(other).hasReturnStackEqualTo(other)
+    return hasInstructionPointerEqualTo(other)
+        .hasNextInstructionPointerEqualTo(other)
+        .hasDictionaryEqualTo(other)
+        .hasMemoryEqualTo(other)
+        .hasReturnStackEqualTo(other)
         .hasParameterStackEqualTo(other);
   }
 }

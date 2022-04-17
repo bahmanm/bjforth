@@ -27,18 +27,20 @@ class Dictionary {
 
   final Map<String, List<DictionaryItem>> items = new HashMap<>();
 
-  Dictionary() {
-  }
+  Dictionary() {}
 
   Dictionary(Dictionary other) {
     other.items.forEach(items::put);
   }
 
   public void put(String name, DictionaryItem item) {
-    items.merge(name, List.of(item), (currentValue, newValue) -> {
-      currentValue.addAll(newValue);
-      return currentValue;
-    });
+    items.merge(
+        name,
+        List.of(item),
+        (currentValue, newValue) -> {
+          currentValue.addAll(newValue);
+          return currentValue;
+        });
   }
 
   public Optional<DictionaryItem> get(String name) {

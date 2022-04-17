@@ -43,9 +43,13 @@ class DROPTest {
     var dropAddr = nextInt();
     var ip = anInstructionPointer().with(dropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(dropAddr, drop).build())
-        .withParameterStack(aParameterStack().with(new Object()).build()).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(dropAddr, drop).build())
+            .withParameterStack(aParameterStack().with(new Object()).build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
@@ -56,8 +60,10 @@ class DROPTest {
     assertThat(state2)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
         .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1).hasMemoryEqualTo(state1)
-        .hasParameterStackEqualTo(aParameterStack().build()).hasReturnStackEqualTo(state1);
+        .hasDictionaryEqualTo(state1)
+        .hasMemoryEqualTo(state1)
+        .hasParameterStackEqualTo(aParameterStack().build())
+        .hasReturnStackEqualTo(state1);
   }
 
   @Test
@@ -68,9 +74,13 @@ class DROPTest {
     var dropAddr = nextInt();
     var ip = anInstructionPointer().with(dropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(dropAddr, drop).build())
-        .withParameterStack(aParameterStack().build()).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(dropAddr, drop).build())
+            .withParameterStack(aParameterStack().build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 

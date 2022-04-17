@@ -26,8 +26,7 @@ public class MachineStateBuilder {
   private Stack<Integer> returnStack = new Stack<Integer>();
   private Stack<Object> parameterStack = new Stack<Object>();
 
-  private MachineStateBuilder() {
-  }
+  private MachineStateBuilder() {}
 
   public static MachineStateBuilder aMachineState() {
     return new MachineStateBuilder();
@@ -79,7 +78,12 @@ public class MachineStateBuilder {
   }
 
   public MachineState build() {
-    return new MachineState(instructionPointer, nextInstructionPointer, memory, dictionary,
-        returnStack, parameterStack);
+    return new MachineState(
+        instructionPointer,
+        nextInstructionPointer,
+        memory,
+        dictionary,
+        returnStack,
+        parameterStack);
   }
 }

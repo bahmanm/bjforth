@@ -46,10 +46,13 @@ class NROTTest {
     var parameter1 = nextInt();
     var parameter2 = nextInt();
     var parameter3 = nextInt();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(nrotAddr, nrot).build())
-        .withParameterStack(aParameterStack().with(parameter3, parameter2, parameter1).build())
-        .build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(nrotAddr, nrot).build())
+            .withParameterStack(aParameterStack().with(parameter3, parameter2, parameter1).build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
@@ -60,7 +63,8 @@ class NROTTest {
     assertThat(state2)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
         .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1).hasMemoryEqualTo(state1)
+        .hasDictionaryEqualTo(state1)
+        .hasMemoryEqualTo(state1)
         .hasParameterStackEqualTo(
             aParameterStack().with(parameter1, parameter3, parameter2).build())
         .hasReturnStackEqualTo(state1);
@@ -74,9 +78,13 @@ class NROTTest {
     var nrotAddr = nextInt();
     var ip = anInstructionPointer().with(nrotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(nrotAddr, nrot).build())
-        .withParameterStack(aParameterStack().build()).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(nrotAddr, nrot).build())
+            .withParameterStack(aParameterStack().build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
@@ -94,16 +102,21 @@ class NROTTest {
     var ip = anInstructionPointer().with(nrotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var parameter = nextInt();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(nrotAddr, nrot).build())
-        .withParameterStack(aParameterStack().with(parameter).build()).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(nrotAddr, nrot).build())
+            .withParameterStack(aParameterStack().with(parameter).build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(
-        aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+    assertThat(state2)
+        .isEqualTo(
+            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
   }
 
   @Test
@@ -116,15 +129,20 @@ class NROTTest {
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var parameter1 = nextInt();
     var parameter2 = nextInt();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(nrotAddr, nrot).build())
-        .withParameterStack(aParameterStack().with(parameter2, parameter1).build()).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(nrotAddr, nrot).build())
+            .withParameterStack(aParameterStack().with(parameter2, parameter1).build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(
-        aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+    assertThat(state2)
+        .isEqualTo(
+            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
   }
 }

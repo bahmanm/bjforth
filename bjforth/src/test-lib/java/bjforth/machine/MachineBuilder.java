@@ -21,8 +21,7 @@ package bjforth.machine;
 public class MachineBuilder {
   private MachineState state;
 
-  private MachineBuilder() {
-  }
+  private MachineBuilder() {}
 
   public static MachineBuilder aMachine() {
     return new MachineBuilder();

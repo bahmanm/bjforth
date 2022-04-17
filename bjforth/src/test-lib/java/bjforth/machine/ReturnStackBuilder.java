@@ -23,8 +23,7 @@ import static bjforth.machine.MachineStateInspectionUtils.returnStackDescendingI
 public class ReturnStackBuilder {
   private Stack<Integer> returnStack = new Stack<Integer>();
 
-  private ReturnStackBuilder() {
-  }
+  private ReturnStackBuilder() {}
 
   public static ReturnStackBuilder aReturnStack() {
     return new ReturnStackBuilder();
@@ -39,8 +38,7 @@ public class ReturnStackBuilder {
 
   public ReturnStackBuilder with(MachineState ms) {
     var iterator = returnStackDescendingIterator(ms);
-    while (iterator.hasNext())
-      returnStack.push(iterator.next());
+    while (iterator.hasNext()) returnStack.push(iterator.next());
     return this;
   }
 

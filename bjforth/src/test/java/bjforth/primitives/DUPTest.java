@@ -44,9 +44,13 @@ class DUPTest {
     var ip = anInstructionPointer().with(dupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var parameter = nextInt();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(dupAddr, dup).build())
-        .withParameterStack(aParameterStack().with(parameter).build()).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(dupAddr, dup).build())
+            .withParameterStack(aParameterStack().with(parameter).build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
@@ -57,7 +61,8 @@ class DUPTest {
     assertThat(state2)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
         .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1).hasMemoryEqualTo(state1)
+        .hasDictionaryEqualTo(state1)
+        .hasMemoryEqualTo(state1)
         .hasParameterStackEqualTo(aParameterStack().with(parameter, parameter).build())
         .hasReturnStackEqualTo(state1);
   }
@@ -70,9 +75,13 @@ class DUPTest {
     var dupAddr = nextInt();
     var ip = anInstructionPointer().with(dupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 = aMachineState().withInstrcutionPointer(ip).withNextInstructionPointer(nip)
-        .withMemory(aMemory().with(dupAddr, dup).build())
-        .withParameterStack(aParameterStack().build()).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(dupAddr, dup).build())
+            .withParameterStack(aParameterStack().build())
+            .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
