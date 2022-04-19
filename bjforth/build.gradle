@@ -1,4 +1,8 @@
 // -*- mode: groovy; groovy-indent-offset: 2; -*-
+import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.testing.Test
+
 plugins {
   id 'application'
   id 'com.diffplug.spotless' version '6.4.2'
@@ -35,11 +39,8 @@ dependencies {
   testImplementation sourceSets.testLib.runtimeClasspath
 
   testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
   testImplementation 'org.assertj:assertj-core:3.22.0'
-}
-
-tasks.named('test') {
-  useJUnitPlatform()
 }
 
 java {
@@ -84,12 +85,17 @@ spotless {
   }
 }
 
-tasks.named('compileJava') {
+tasks.withType(Test) {
+  useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
   options.encoding = 'UTF-8'
   options.incremental = true
+  options.release.set(17)
   dependsOn 'spotlessApply'
 }
 
-tasks.named('compileTestJava') {
-  options.encoding = 'UTF-8'
+tasks.withType(JavaExec) {
+  jvmArgs += '--enable-preview'
 }
