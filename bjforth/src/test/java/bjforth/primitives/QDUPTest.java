@@ -45,9 +45,8 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 
 class QDUPTest {
 
-  @ParameterizedTest(
-      name =
-          "duplicates top of stack if non-zero number, ie a -> aa.  parameter(type={1}, value={0})")
+  @DisplayName("duplicates top of stack if non-zero number, ie a -> aa.")
+  @ParameterizedTest(name = "{displayName} parameter(type={1}, value={0})")
   @ArgumentsSource(NonZeroNumberArgumentProvider.class)
   void worksOkWithNonZero(Object parameter, String parameterClassName) {
     // GIVEN
@@ -78,9 +77,8 @@ class QDUPTest {
         .hasReturnStackEqualTo(state1);
   }
 
-  @ParameterizedTest(
-      name =
-          "does not modify stack if top element is a zero number, ie a -> a.  parameter(type={1}, value={0})")
+  @DisplayName("does not modify stack if top element is a zero number, ie a -> a.")
+  @ParameterizedTest(name = "{displayName} parameter(type={1}, value={0})")
   @ArgumentsSource(ZeroNumberArgumentProvider.class)
   void worksOkWithZero(Object parameter, String parameterClassName) {
     // GIVEN
@@ -111,8 +109,8 @@ class QDUPTest {
         .hasReturnStackEqualTo(state1);
   }
 
-  @ParameterizedTest(
-      name = "should throw if top of parameter stack is not a number. parameter(type={1})")
+  @DisplayName("should throw if top of parameter stack is not a number.")
+  @ParameterizedTest(name = "{displayName} parameter(type={1})")
   @ArgumentsSource(NonNumberArgumentProvider.class)
   <E extends Object> void throwsIfNonNumber(E parameter, String parameterClassName) {
     // GIVEN
@@ -137,8 +135,8 @@ class QDUPTest {
             aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
   }
 
-  @Test
   @DisplayName("should trhow if ParameterStack is already empty.")
+  @Test
   void throwIfEmpty() {
     // GIVEN
     var qdup = new QDUP();
@@ -160,6 +158,7 @@ class QDUPTest {
     assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
   }
 
+  //////////////////////////////////////////////////////////////////////////////
   static class NonNumberArgumentProvider implements ArgumentsProvider {
 
     @Override
@@ -171,6 +170,7 @@ class QDUPTest {
     }
   }
 
+  //////////////////////////////////////////////////////////////////////////////
   static class ZeroNumberArgumentProvider implements ArgumentsProvider {
 
     @Override
@@ -187,6 +187,7 @@ class QDUPTest {
     }
   }
 
+  //////////////////////////////////////////////////////////////////////////////
   static class NonZeroNumberArgumentProvider implements ArgumentsProvider {
 
     @Override

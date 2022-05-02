@@ -22,7 +22,7 @@ import bjforth.machine.MachineException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-abstract class AbstractUnaryNumberFunction<R> {
+public abstract class AbstractUnaryNumberFunction<R> {
 
   public R apply(Object value) {
     if (value == null) {

@@ -20,21 +20,68 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
-import bjforth.primitives.lib.NumberFunctions;
+import bjforth.primitives.lib.AbstractUnaryNumberFunction;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
 public class QDUP implements MachinePrimitiveWithNext {
+
+  private static final IsZero isZero = new IsZero();
 
   @Override
   public void executeWithNext(Machine machine) {
     try {
       var element = machine.popFromParameterStack();
-      if (!NumberFunctions.isZero.apply(element)) {
+      if (!isZero.apply(element)) {
         machine.pushToParameterStack(element);
       }
       machine.pushToParameterStack(element);
     } catch (NoSuchElementException ex) {
       throw new MachineException("ParameterStack error.");
+    }
+  }
+
+  private static class IsZero extends AbstractUnaryNumberFunction<Boolean> {
+
+    @Override
+    protected Boolean apply(BigDecimal value) {
+      return BigDecimal.ZERO.equals(value);
+    }
+
+    @Override
+    protected Boolean apply(BigInteger value) {
+      return BigInteger.ZERO.equals(value);
+    }
+
+    @Override
+    protected Boolean apply(Double value) {
+      return value == 0d;
+    }
+
+    @Override
+    protected Boolean apply(Float value) {
+      return value == 0f;
+    }
+
+    @Override
+    protected Boolean apply(Integer value) {
+      return value == 0;
+    }
+
+    @Override
+    protected Boolean apply(Long value) {
+      return value == 0l;
+    }
+
+    @Override
+    protected Boolean apply(Short value) {
+      return value == 0;
+    }
+
+    @Override
+    protected Boolean apply(Byte value) {
+      return value == 0;
     }
   }
 }
