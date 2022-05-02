@@ -26,8 +26,7 @@ public class MachineStateBuilder {
   private Stack<Integer> returnStack = new Stack<Integer>();
   private Stack<Object> parameterStack = new Stack<Object>();
 
-  private MachineStateBuilder() {
-  }
+  private MachineStateBuilder() {}
 
   public static MachineStateBuilder aMachineState() {
     return new MachineStateBuilder();
@@ -67,8 +66,24 @@ public class MachineStateBuilder {
     return this;
   }
 
+  public MachineStateBuilder copyFrom(MachineState other) {
+    var copy = new MachineState(other);
+    dictionary = copy.getDictionary();
+    instructionPointer = copy.getInstructionPointer();
+    nextInstructionPointer = copy.getNextInstructionPointer();
+    memory = copy.getMemory();
+    parameterStack = copy.getParameterStack();
+    returnStack = copy.getReturnStack();
+    return this;
+  }
+
   public MachineState build() {
-    return new MachineState(instructionPointer, nextInstructionPointer, memory, dictionary,
-        returnStack, parameterStack);
+    return new MachineState(
+        instructionPointer,
+        nextInstructionPointer,
+        memory,
+        dictionary,
+        returnStack,
+        parameterStack);
   }
 }

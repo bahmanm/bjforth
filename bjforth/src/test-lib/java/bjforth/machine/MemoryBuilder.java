@@ -23,8 +23,7 @@ import java.util.Map;
 public class MemoryBuilder {
   private Memory memory = new Memory();
 
-  private MemoryBuilder() {
-  }
+  private MemoryBuilder() {}
 
   public static MemoryBuilder aMemory() {
     return new MemoryBuilder();

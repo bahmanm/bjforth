@@ -21,8 +21,7 @@ package bjforth.machine;
 public class NextInstructionPointerBuilder {
   private Integer nextInstructionPointer;
 
-  private NextInstructionPointerBuilder() {
-  }
+  private NextInstructionPointerBuilder() {}
 
   public static NextInstructionPointerBuilder aNextInstructionPointer() {
     return new NextInstructionPointerBuilder();

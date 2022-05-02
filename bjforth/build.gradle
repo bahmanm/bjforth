@@ -1,67 +1,69 @@
+// -*- mode: groovy; groovy-indent-offset: 2; -*-
+import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.compile.JavaCompile
+import org.gradle.api.tasks.testing.Test
+
 plugins {
-    id 'application'
-    id 'com.diffplug.spotless' version '6.1.2'
+  id 'application'
+  id 'com.diffplug.spotless' version '6.4.2'
 }
 
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 application {
-    mainClass = 'bjforth.BJForth'
+  mainClass = 'bjforth.BJForth'
 }
 
 sourceSets {
-    testLib {
-        java.srcDir file('src/test-lib/java')
-        resources.srcDir file('src/test-lib/resources')
-        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
-        runtimeClasspath += output + compileClasspath
-    }
+  testLib {
+    java.srcDir file('src/test-lib/java')
+    resources.srcDir file('src/test-lib/resources')
+    compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+    runtimeClasspath += output + compileClasspath
+  }
 }
 
 configurations {
-    testLibImplementation.extendsFrom implementation
-    testLibApi.extendsFrom api
-    testLib.extendsFrom implementation
+  testLibImplementation.extendsFrom implementation
+  testLibApi.extendsFrom api
+  testLib.extendsFrom implementation
 }
 
 dependencies {
-    testLib sourceSets.testLib.output
-    testLibImplementation 'org.apache.commons:commons-lang3:3.12.0'
-    testLibImplementation 'org.assertj:assertj-core:3.22.0'
+  testLib sourceSets.testLib.output
+  testLibImplementation 'org.apache.commons:commons-lang3:3.12.0'
+  testLibImplementation 'org.assertj:assertj-core:3.22.0'
 
-    testImplementation sourceSets.testLib.runtimeClasspath
+  testImplementation sourceSets.testLib.runtimeClasspath
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.7.2'
-    testImplementation 'org.assertj:assertj-core:3.22.0'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.8.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.8.2'
+  testImplementation 'org.assertj:assertj-core:3.22.0'
 }
 
 java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
 }
 
 spotless {
-    encoding 'UTF-8'
-    lineEndings 'UNIX'
-    format 'misc', {
-        target '*.gradle', '.gitignore'
-        trimTrailingWhitespace()
-        indentWithSpaces()
-        endWithNewline()
-    }
-    java {
-        endWithNewline()
-        importOrder()
-        removeUnusedImports()
-        eclipse().configFile('../eclipse-formatter-config.xml')
-        licenseHeader '''/*
+  encoding 'UTF-8'
+  lineEndings 'UNIX'
+  format 'misc', {
+    target '*.gradle', '.gitignore'
+    trimTrailingWhitespace()
+    indentWithSpaces()
+    endWithNewline()
+  }
+  java {
+    endWithNewline()
+    importOrder()
+    removeUnusedImports()
+    googleJavaFormat()
+    licenseHeader '''/*
  * Copyright $YEAR Bahman Movaqar
  *
  * This file is part of BJForth.
@@ -80,15 +82,20 @@ spotless {
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
 '''
-    }
+  }
 }
 
-tasks.named('compileJava') {
-    options.encoding = 'UTF-8'
-    options.incremental = true
-    dependsOn 'spotlessApply'
+tasks.withType(Test).configureEach {
+  useJUnitPlatform()
 }
 
-tasks.named('compileTestJava') {
-    options.encoding = 'UTF-8'
+tasks.withType(JavaCompile).configureEach {
+  options.encoding = 'UTF-8'
+  options.incremental = true
+  options.release.set(17)
+  options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked' << '-parameters'
+  dependsOn 'spotlessApply'
+}
+
+tasks.withType(JavaExec).configureEach {
 }

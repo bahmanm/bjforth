@@ -26,9 +26,13 @@ class MachineState {
   private Stack<Integer> returnStack;
   private Stack<Object> parameterStack;
 
-  MachineState(Integer instructionPointer, Integer nextInstructionPointer, Memory memory,
-      Dictionary dictionary, Stack<Integer> returnStack, Stack<Object> parameterStack)
-  {
+  MachineState(
+      Integer instructionPointer,
+      Integer nextInstructionPointer,
+      Memory memory,
+      Dictionary dictionary,
+      Stack<Integer> returnStack,
+      Stack<Object> parameterStack) {
     this.instructionPointer = instructionPointer;
     this.nextInstructionPointer = nextInstructionPointer;
     this.memory = memory;
@@ -77,5 +81,4 @@ class MachineState {
   Stack<Object> getParameterStack() {
     return parameterStack;
   }
-
 }

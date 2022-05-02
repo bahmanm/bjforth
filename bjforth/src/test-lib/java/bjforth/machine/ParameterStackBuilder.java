@@ -18,13 +18,10 @@
  */
 package bjforth.machine;
 
-import java.util.Stack;
-
 public class ParameterStackBuilder {
-  private Stack<Object> parameterStack;
+  private Stack<Object> parameterStack = new Stack<Object>();
 
-  private ParameterStackBuilder() {
-  }
+  private ParameterStackBuilder() {}
 
   public static ParameterStackBuilder aParameterStack() {
     return new ParameterStackBuilder();

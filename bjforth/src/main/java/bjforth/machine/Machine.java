@@ -79,7 +79,7 @@ public class Machine {
   /**
    * Executes exactly ONE memory cell and stops.
    *
-   * To be used for debugging/testing purposes.
+   * <p>To be used for debugging/testing purposes.
    */
   public void step() {
     var ip = state.getInstructionPointer();
@@ -94,7 +94,7 @@ public class Machine {
   /**
    * Executes exactly N memory cells and stops.
    *
-   * To be used for debugging/testing purposes.
+   * <p>To be used for debugging/testing purposes.
    *
    * @param n N memory cells
    */
@@ -104,9 +104,7 @@ public class Machine {
     }
   }
 
-  /**
-   * Machine's "main loop".
-   */
+  /** Machine's "main loop". */
   public void loop() {
     while (true) {
       step();

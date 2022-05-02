@@ -40,15 +40,20 @@ class DOCOLTest {
     // GIVEN
     var docol = new DOCOL();
     var docolAddress = nextInt();
-    var state1 = aMachineState().withMemory(aMemory().with(docolAddress, docol).build())
-        .withInstrcutionPointer(docolAddress).build();
-    var state2 = aMachineState(state1);
+    var state1 =
+        aMachineState()
+            .withMemory(aMemory().with(docolAddress, docol).build())
+            .withInstrcutionPointer(docolAddress)
+            .build();
+    var state2 = aMachineState().copyFrom(state1).build();
 
     // WHEN
     new Machine(state2).step();
 
     // THEN
-    assertThat(state2).hasDictionaryEqualTo(state1).hasMemoryEqualTo(state1)
+    assertThat(state2)
+        .hasDictionaryEqualTo(state1)
+        .hasMemoryEqualTo(state1)
         .hasParameterStackEqualTo(state1)
         .hasReturnStackEqualTo(
             aReturnStack().with(state1).with(nextInstructionPointer(state1)).build())

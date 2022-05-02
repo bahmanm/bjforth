@@ -16,23 +16,22 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.machine;
+package bjforth.primitives;
 
-public class MachineBuilder {
-  private MachineState state;
+import bjforth.machine.Machine;
+import bjforth.machine.MachineException;
+import java.util.NoSuchElementException;
 
-  private MachineBuilder() {}
+public class DUP implements MachinePrimitiveWithNext {
 
-  public static MachineBuilder aMachine() {
-    return new MachineBuilder();
-  }
-
-  public MachineBuilder withState(MachineState state) {
-    this.state = state;
-    return this;
-  }
-
-  public Machine build() {
-    return new Machine(state);
+  @Override
+  public void executeWithNext(Machine machine) {
+    try {
+      var p = machine.popFromParameterStack();
+      machine.pushToParameterStack(p);
+      machine.pushToParameterStack(p);
+    } catch (NoSuchElementException ex) {
+      throw new MachineException("ParameterStack error.");
+    }
   }
 }
