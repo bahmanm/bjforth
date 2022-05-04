@@ -2,4 +2,4 @@ language: java
 jdk: openjdk17
 
 script:
-  - ./gradlew --no-daemon --plain -xspotlessApply check
+  - ./gradlew --no-daemon --console plain -xspotlessApply check
