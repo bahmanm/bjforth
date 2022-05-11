@@ -88,7 +88,8 @@ class DIVTest {
         .hasReturnStackEqualTo(state1);
   }
 
-  @DisplayName("should throw if divisor is 0 and dividend is a long/int/short/byte")
+  @DisplayName(
+      "should throw if divisor is 0 and dividend is a BigDecimal/BigInteger/long/int/short/byte")
   @ParameterizedTest(
       name = "{displayName} parameter1(type={2}, value={0}) parameter2(type={2}, value={1})")
   @MethodSource("zeroDivisorNoDoubleOrFloat")
