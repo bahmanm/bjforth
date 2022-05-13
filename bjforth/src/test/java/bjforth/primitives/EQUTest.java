@@ -140,32 +140,6 @@ class EQUTest {
   }
 
   //////////////////////////////////////////////////////////////////////////////
-  static class NonNumberArgumentProvider implements ArgumentsProvider {
-
-    @Override
-    public Stream<? extends Arguments> provideArguments(ExtensionContext context) throws Exception {
-      return Stream.of(
-          Arguments.of(
-              new Object(),
-              new Object(),
-              Object.class.getCanonicalName(),
-              Object.class.getCanonicalName()),
-          Arguments.of(
-              RandomStringUtils.random(10),
-              List.of(),
-              String.class.getCanonicalName(),
-              List.class.getCanonicalName()),
-          Arguments.of(
-              BigDecimal.ZERO,
-              new Object(),
-              BigDecimal.class.getCanonicalName(),
-              Object.class.getCanonicalName()),
-          Arguments.of(
-              new Object(), 15, Object.class.getCanonicalName(), Integer.class.getCanonicalName()));
-    }
-  }
-
-  //////////////////////////////////////////////////////////////////////////////
   static class ObjectArgumentProvider implements ArgumentsProvider {
 
     private static final List<Supplier<? extends Number>> numberGenerators =
