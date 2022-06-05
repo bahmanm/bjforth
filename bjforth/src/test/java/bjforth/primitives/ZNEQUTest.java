@@ -44,7 +44,7 @@ import org.junit.jupiter.params.provider.ArgumentsSource;
 class ZNEQUTest {
 
   @DisplayName(
-      "pushes 1 if second top is not 0, 0 otherwise, ie a -> c where c=1 if a!=0 and c=0 if a==b.")
+      "pushes 1 if second top is not 0, 0 otherwise, ie a -> c where c=1 if a!=0 and c=0 if a==0.")
   @ParameterizedTest(name = "{displayName} parameter(type={2}, value={0})")
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumbers(Object parameter, Object expectedResult, String parameterClassName) {
