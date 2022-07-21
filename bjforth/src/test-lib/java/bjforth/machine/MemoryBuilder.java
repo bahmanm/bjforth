@@ -18,6 +18,8 @@
  */
 package bjforth.machine;
 
+import static bjforth.machine.MachineStateInspectionUtils.memoryAddresses;
+
 import java.util.Map;
 
 public class MemoryBuilder {
@@ -27,6 +29,11 @@ public class MemoryBuilder {
 
   public static MemoryBuilder aMemory() {
     return new MemoryBuilder();
+  }
+
+  public MemoryBuilder with(MachineState state) {
+    memoryAddresses(state).forEach(addr -> memory.set(addr, state.getMemory().get(addr)));
+    return this;
   }
 
   public MemoryBuilder with(Integer address, Object object) {
