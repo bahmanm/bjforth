@@ -73,6 +73,11 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     return this;
   }
 
+  public MachineStateAssert hasMemoryEqualTo(Memory other) {
+    isNotNull();
+    return hasMemoryEqualTo(aMachineState().withMemory(other).build());
+  }
+
   public MachineStateAssert hasParameterStackEqualTo(MachineState other) {
     isNotNull();
     var actualIterator = parameterStackDescendingIterator(actual);
