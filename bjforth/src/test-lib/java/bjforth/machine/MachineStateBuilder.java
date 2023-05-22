@@ -23,8 +23,8 @@ public class MachineStateBuilder {
   private Integer nextInstructionPointer = 0;
   private Memory memory = new Memory();
   private Dictionary dictionary = new Dictionary();
-  private Stack<Integer> returnStack = new Stack<Integer>();
-  private Stack<Object> parameterStack = new Stack<Object>();
+  private Stack returnStack = new Stack();
+  private Stack parameterStack = new Stack();
 
   private MachineStateBuilder() {}
 
@@ -56,12 +56,12 @@ public class MachineStateBuilder {
     return this;
   }
 
-  public MachineStateBuilder withReturnStack(Stack<Integer> returnStack) {
+  public MachineStateBuilder withReturnStack(Stack returnStack) {
     this.returnStack = returnStack;
     return this;
   }
 
-  public MachineStateBuilder withParameterStack(Stack<Object> parameterStack) {
+  public MachineStateBuilder withParameterStack(Stack parameterStack) {
     this.parameterStack = parameterStack;
     return this;
   }

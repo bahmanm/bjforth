@@ -48,7 +48,7 @@ public class Machine {
     state.getReturnStack().push(address);
   }
 
-  public Integer popFromReturnStack() {
+  public Object popFromReturnStack() {
     return state.getReturnStack().pop();
   }
 

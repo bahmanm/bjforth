@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.Deque;
 import org.apache.commons.lang3.reflect.FieldUtils;
 
-public class ParameterStackComparator implements Comparator<Stack<Object>> {
+public class ParameterStackComparator implements Comparator<Stack> {
 
   private ParameterStackComparator() {}
 
@@ -32,10 +32,10 @@ public class ParameterStackComparator implements Comparator<Stack<Object>> {
 
   @Override
   @SuppressWarnings("unchecked")
-  public int compare(Stack<Object> s1, Stack<Object> s2) {
+  public int compare(Stack s1, Stack s2) {
     try {
-      var data1 = (Deque<Integer>) FieldUtils.readDeclaredField(s1, "data", true);
-      var data2 = (Deque<Integer>) FieldUtils.readDeclaredField(s2, "data", true);
+      var data1 = (Deque<Object>) FieldUtils.readDeclaredField(s1, "data", true);
+      var data2 = (Deque<Object>) FieldUtils.readDeclaredField(s2, "data", true);
       if (data1.size() != data2.size()) return 1;
       var i1 = data1.descendingIterator();
       var i2 = data2.descendingIterator();

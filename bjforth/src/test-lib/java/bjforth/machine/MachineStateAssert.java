@@ -102,7 +102,7 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     return this;
   }
 
-  public MachineStateAssert hasParameterStackEqualTo(Stack<Object> other) {
+  public MachineStateAssert hasParameterStackEqualTo(Stack other) {
     isNotNull();
     var ms = aMachineState().withParameterStack(other).build();
     return hasParameterStackEqualTo(ms);
@@ -132,7 +132,7 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     return this;
   }
 
-  public MachineStateAssert hasReturnStackEqualTo(Stack<Integer> otherStack) {
+  public MachineStateAssert hasReturnStackEqualTo(Stack otherStack) {
     var otherMs = aMachineState().withReturnStack(otherStack).build();
     return hasReturnStackEqualTo(otherMs);
   }

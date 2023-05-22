@@ -21,20 +21,20 @@ package bjforth.machine;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-class Stack<T> {
-  private final Deque<T> data = new ArrayDeque<>();
+class Stack {
+  private final Deque<Object> data = new ArrayDeque<>();
 
   Stack() {}
 
-  Stack(Stack<T> other) {
+  Stack(Stack other) {
     other.data.descendingIterator().forEachRemaining(data::addFirst);
   }
 
-  public T pop() {
+  public Object pop() {
     return data.removeFirst();
   }
 
-  public void push(T item) {
+  public void push(Object item) {
     data.addFirst(item);
   }
 }

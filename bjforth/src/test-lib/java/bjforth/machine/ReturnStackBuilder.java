@@ -21,7 +21,7 @@ package bjforth.machine;
 import static bjforth.machine.MachineStateInspectionUtils.returnStackDescendingIterator;
 
 public class ReturnStackBuilder {
-  private Stack<Integer> returnStack = new Stack<Integer>();
+  private Stack returnStack = new Stack();
 
   private ReturnStackBuilder() {}
 
@@ -42,7 +42,7 @@ public class ReturnStackBuilder {
     return this;
   }
 
-  public Stack<Integer> build() {
+  public Stack build() {
     return returnStack;
   }
 }
