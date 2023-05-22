@@ -44,7 +44,7 @@ public class Machine {
     return state.getParameterStack().pop();
   }
 
-  public void pushToReturnStack(Integer address) {
+  public void pushToReturnStack(Object address) {
     state.getReturnStack().push(address);
   }
 
