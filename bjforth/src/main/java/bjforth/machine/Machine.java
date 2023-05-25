@@ -52,11 +52,11 @@ public class Machine {
     return state.getReturnStack().pop();
   }
 
-  public Object getFromReturnStack(Integer index) {
+  public Object getReturnStackAt(Integer index) {
     return state.getReturnStack().get(index);
   }
 
-  public void setInReturnStack(Integer index, Object object) {
+  public void setReturnStackAt(Integer index, Object object) {
     state.getReturnStack().set(index, object);
   }
 

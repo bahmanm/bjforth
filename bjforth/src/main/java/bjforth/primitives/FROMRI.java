@@ -29,7 +29,7 @@ public class FROMRI implements MachinePrimitiveWithNext {
     try {
       var indexObject = machine.popFromParameterStack();
       if (indexObject instanceof Integer index) {
-        var object = machine.getFromReturnStack(index);
+        var object = machine.getReturnStackAt(index);
         machine.pushToParameterStack(object);
       } else {
         throw new MachineException("Invalid stack index");
