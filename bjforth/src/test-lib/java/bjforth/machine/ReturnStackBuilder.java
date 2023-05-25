@@ -20,6 +20,9 @@ package bjforth.machine;
 
 import static bjforth.machine.MachineStateInspectionUtils.returnStackDescendingIterator;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ReturnStackBuilder {
   private Stack returnStack = new Stack();
 
@@ -29,10 +32,12 @@ public class ReturnStackBuilder {
     return new ReturnStackBuilder();
   }
 
-  public ReturnStackBuilder with(Integer... addresses) {
-    for (var address : addresses) {
-      returnStack.push(address);
-    }
+  public ReturnStackBuilder with(Object... objects) {
+    return with(Arrays.asList(objects));
+  }
+
+  public ReturnStackBuilder with(List<Object> objects) {
+    objects.forEach(returnStack::push);
     return this;
   }
 
