@@ -18,11 +18,11 @@
  */
 package bjforth.machine;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.LinkedList;
 
 class Stack {
-  private final Deque<Object> data = new ArrayDeque<>();
+
+  private final LinkedList<Object> data = new LinkedList<>();
 
   Stack() {}
 
@@ -36,5 +36,13 @@ class Stack {
 
   public void push(Object item) {
     data.addFirst(item);
+  }
+
+  public Object get(int index) {
+    return data.get(index);
+  }
+
+  public void set(int index, Object object) {
+    data.set(index, object);
   }
 }
