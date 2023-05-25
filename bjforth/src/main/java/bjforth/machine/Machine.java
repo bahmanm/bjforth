@@ -52,6 +52,14 @@ public class Machine {
     return state.getReturnStack().pop();
   }
 
+  public Object getFromReturnStack(Integer index) {
+    return state.getReturnStack().get(index);
+  }
+
+  public void setInReturnStack(Integer index, Object object) {
+    state.getReturnStack().set(index, object);
+  }
+
   public Optional<DictionaryItem> getDictionaryItem(String name) {
     return state.getDictionary().get(name);
   }
