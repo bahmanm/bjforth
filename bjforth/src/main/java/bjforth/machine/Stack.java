@@ -53,7 +53,7 @@ class Stack {
     if (pointer >= data.size() || pointer < 0) {
       throw new MachineException("Invalid stack pointer");
     }
-    for (int i = pointer + 1; i < data.size(); i++) data.remove(i);
+    for (int i = data.size() - 1; i > pointer; i--) data.remove(i);
   }
 
   public void resize(int size) {
