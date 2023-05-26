@@ -91,8 +91,8 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     } catch (MachineException mex) {
       if (!"Empty stack".equals(mex.getMessage())) throw mex;
     }
-    var actualIterator = parameterStackDescendingIterator(actual);
-    var otherIterator = parameterStackDescendingIterator(other);
+    var actualIterator = parameterStackAscendingIterator(actual);
+    var otherIterator = parameterStackAscendingIterator(other);
     while (otherIterator.hasNext()) {
       if (!actualIterator.hasNext()) {
         failWithMessage(
@@ -141,8 +141,8 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     } catch (MachineException mex) {
       if (!"Empty stack".equals(mex.getMessage())) throw mex;
     }
-    var actualIterator = returnStackDescendingIterator(actual);
-    var otherIterator = returnStackDescendingIterator(other);
+    var actualIterator = returnStackAscendingIterator(actual);
+    var otherIterator = returnStackAscendingIterator(other);
     while (otherIterator.hasNext()) {
       if (!actualIterator.hasNext()) {
         failWithMessage(

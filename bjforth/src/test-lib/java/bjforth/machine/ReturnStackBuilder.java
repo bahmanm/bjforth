@@ -18,7 +18,7 @@
  */
 package bjforth.machine;
 
-import static bjforth.machine.MachineStateInspectionUtils.returnStackDescendingIterator;
+import static bjforth.machine.MachineStateInspectionUtils.returnStackAscendingIterator;
 
 import java.util.Arrays;
 import java.util.List;
@@ -42,8 +42,7 @@ public class ReturnStackBuilder {
   }
 
   public ReturnStackBuilder with(MachineState ms) {
-    var iter = returnStackDescendingIterator(ms);
-    iter.forEachRemaining(returnStack::push);
+    returnStackAscendingIterator(ms).forEachRemaining(returnStack::push);
     return this;
   }
 

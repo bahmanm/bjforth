@@ -72,6 +72,15 @@ public class MachineStateInspectionUtils {
         });
   }
 
+  @SuppressWarnings("unchecked")
+  public static Iterator<Object> returnStackAscendingIterator(MachineState ms) {
+    return inspect(
+        () -> {
+          var data = (LinkedList<Object>) readDeclaredField(ms.getReturnStack(), "data", true);
+          return data.iterator();
+        });
+  }
+
   public static Integer parameterStackSize(MachineState ms) {
     return inspect(
         () -> {
@@ -86,6 +95,15 @@ public class MachineStateInspectionUtils {
         () -> {
           var data = (LinkedList<Object>) readDeclaredField(ms.getParameterStack(), "data", true);
           return data.descendingIterator();
+        });
+  }
+
+  @SuppressWarnings("unchecked")
+  public static Iterator<Object> parameterStackAscendingIterator(MachineState ms) {
+    return inspect(
+        () -> {
+          var data = (LinkedList<Object>) readDeclaredField(ms.getParameterStack(), "data", true);
+          return data.iterator();
         });
   }
 

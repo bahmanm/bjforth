@@ -18,6 +18,8 @@
  */
 package bjforth.machine;
 
+import static bjforth.machine.MachineStateInspectionUtils.parameterStackAscendingIterator;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,8 +42,7 @@ public class ParameterStackBuilder {
   }
 
   public ParameterStackBuilder with(MachineState otherState) {
-    MachineStateInspectionUtils.parameterStackDescendingIterator(otherState)
-        .forEachRemaining(parameterStack::push);
+    parameterStackAscendingIterator(otherState).forEachRemaining(parameterStack::push);
     return this;
   }
 
