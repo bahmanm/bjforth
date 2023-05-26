@@ -43,8 +43,13 @@ class Stack {
     data.addLast(item);
   }
 
-  public int size() {
-    return data.size();
+  public int getPointer() {
+    return data.size() - 1;
+  }
+
+  public void setPointer(int pointer) {
+    for (int i=pointer+1; i<data.size(); i++)
+      data.remove(i);
   }
 
   public void resize(int size) {

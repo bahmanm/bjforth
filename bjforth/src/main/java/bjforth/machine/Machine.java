@@ -56,6 +56,14 @@ public class Machine {
     return state.getReturnStack().get(index);
   }
 
+  public int getReturnStackPointer() {
+    return state.getReturnStack().getPointer();
+  }
+
+  public void setReturnStackPointer(int pointer) {
+    state.getReturnStack().setPointer(pointer);
+  }
+
   public void setReturnStackAt(Integer index, Object object) {
     state.getReturnStack().set(index, object);
   }
