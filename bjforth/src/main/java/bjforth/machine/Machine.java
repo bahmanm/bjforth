@@ -44,6 +44,14 @@ public class Machine {
     return state.getParameterStack().pop();
   }
 
+  public int getParameterStackPointer() {
+    return state.getParameterStack().getPointer();
+  }
+
+  public void setParameterStackPointer(int pointer) {
+    state.getParameterStack().setPointer(pointer);
+  }
+
   public void pushToReturnStack(Object address) {
     state.getReturnStack().push(address);
   }
