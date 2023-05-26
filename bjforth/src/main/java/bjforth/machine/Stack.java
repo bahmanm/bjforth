@@ -19,7 +19,6 @@
 package bjforth.machine;
 
 import java.util.LinkedList;
-import java.util.stream.IntStream;
 
 /* the public interface is quite leaky and doesn't try to encapsulate the impl
    details at all - mostly b/c of the words related to stack pointers, ie RSP!,
@@ -44,17 +43,21 @@ class Stack {
   }
 
   public int getPointer() {
+    if (data.size() <= 0) {
+      throw new MachineException("Empty stack");
+    }
     return data.size() - 1;
   }
 
   public void setPointer(int pointer) {
-    for (int i=pointer+1; i<data.size(); i++)
-      data.remove(i);
+    if (pointer >= data.size() || pointer < 0) {
+      throw new MachineException("Invalid stack pointer");
+    }
+    for (int i = pointer + 1; i < data.size(); i++) data.remove(i);
   }
 
   public void resize(int size) {
-    for (int i=size; i<data.size(); i++)
-      pop();
+    for (int i = size; i < data.size(); i++) pop();
   }
 
   public Object get(int index) {

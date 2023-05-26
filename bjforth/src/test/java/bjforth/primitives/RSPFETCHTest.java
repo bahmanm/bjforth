@@ -27,8 +27,10 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import bjforth.machine.Machine;
+import bjforth.machine.MachineException;
 import java.util.stream.IntStream;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -70,9 +72,9 @@ class RSPFETCHTest {
         .hasReturnStackEqualTo(state1);
   }
 
-  @DisplayName("should push -1 to the parameter stack if the return stack is empty.")
+  @DisplayName("should throw if return stack is empty.")
   @Test
-  void throwsIfNonNumber() {
+  void throwsIfEmpty() {
     // GIVEN
     var rspfetch = new RSPFETCH();
     var rspfetchAddr = nextInt();
@@ -87,10 +89,7 @@ class RSPFETCHTest {
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = new Machine(state2);
 
-    // WHEN
-    machine.step();
-
-    // THEN
-    assertThat(state2).hasParameterStackEqualTo(aParameterStack().with(-1).build());
+    // EXPECT
+    assertThrows(MachineException.class, machine::step);
   }
 }
