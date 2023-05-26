@@ -110,6 +110,16 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
 
   public MachineStateAssert hasReturnStackEqualTo(MachineState other) {
     isNotNull();
+    try {
+      var actualPointer = actual.getReturnStack().getPointer();
+      var otherPointer = other.getReturnStack().getPointer();
+      if (actualPointer != otherPointer) {
+        failWithMessage(
+            "Expected return stack pointer to be <%s> but was <%s>", otherPointer, actualPointer);
+      }
+    } catch (MachineException mex) {
+      if (!"Empty stack".equals(mex.getMessage())) throw mex;
+    }
     var actualIterator = returnStackDescendingIterator(actual);
     var otherIterator = returnStackDescendingIterator(other);
     while (otherIterator.hasNext()) {
@@ -135,6 +145,16 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
   public MachineStateAssert hasReturnStackEqualTo(Stack otherStack) {
     var otherMs = aMachineState().withReturnStack(otherStack).build();
     return hasReturnStackEqualTo(otherMs);
+  }
+
+  public MachineStateAssert hasReturnStackPointerEqualTo(Integer otherPointer) {
+    isNotNull();
+    var actualPointer = actual.getReturnStack().getPointer();
+    if (actualPointer != otherPointer) {
+      failWithMessage(
+          "Expected return stack pointer to be <%s> but was <%s>.", otherPointer, actualPointer);
+    }
+    return this;
   }
 
   public MachineStateAssert hasInstructionPointerEqualTo(MachineState other) {
