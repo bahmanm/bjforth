@@ -34,6 +34,12 @@ public class ParameterStackBuilder {
     return this;
   }
 
+  public ParameterStackBuilder with(MachineState otherState) {
+    MachineStateInspectionUtils.parameterStackDescendingIterator(otherState)
+        .forEachRemaining(parameterStack::push);
+    return this;
+  }
+
   public Stack build() {
     return parameterStack;
   }
