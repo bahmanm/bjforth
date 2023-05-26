@@ -20,6 +20,10 @@ package bjforth.machine;
 
 import java.util.LinkedList;
 
+/* the public interface is quite leaky and doesn't try to encapsulate the impl
+   details at all - mostly b/c of the words related to stack pointers, ie RSP!,
+   RSP@, DSP! and DSP@.
+*/
 class Stack {
 
   private final LinkedList<Object> data = new LinkedList<>();
@@ -27,15 +31,19 @@ class Stack {
   Stack() {}
 
   Stack(Stack other) {
-    other.data.descendingIterator().forEachRemaining(data::addFirst);
+    other.data.iterator().forEachRemaining(data::addLast);
   }
 
   public Object pop() {
-    return data.removeFirst();
+    return data.removeLast();
   }
 
   public void push(Object item) {
-    data.addFirst(item);
+    data.addLast(item);
+  }
+
+  public int size() {
+    return data.size();
   }
 
   public Object get(int index) {

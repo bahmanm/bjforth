@@ -55,8 +55,8 @@ class FROMRITest {
             .withParameterStack(aParameterStack().with(indexToFetch).build())
             .withReturnStack(
                 aReturnStack()
-                    .with(objectToFetch)
                     .with(IntStream.range(0, indexToFetch).mapToObj(i -> new Object()).toList())
+                    .with(objectToFetch)
                     .build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();

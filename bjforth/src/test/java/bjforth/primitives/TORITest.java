@@ -51,14 +51,7 @@ class TORITest {
     var state1ReturnStackElements =
         IntStream.range(0, indexToStore + 2).mapToObj(i -> new Object()).toList();
     var expectedReturnStackElements = new ArrayList<>(state1ReturnStackElements);
-    expectedReturnStackElements.set(1, objectToStore);
-    System.out.println(
-        "objectToStore: "
-            + objectToStore
-            + ", expectedColl: "
-            + expectedReturnStackElements.get(indexToStore)
-            + ", initialColl: "
-            + state1ReturnStackElements.get(indexToStore));
+    expectedReturnStackElements.set(indexToStore, objectToStore);
     var state1 =
         aMachineState()
             .withInstrcutionPointer(ip)
