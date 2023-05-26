@@ -42,8 +42,8 @@ public class ReturnStackBuilder {
   }
 
   public ReturnStackBuilder with(MachineState ms) {
-    var iterator = returnStackDescendingIterator(ms);
-    while (iterator.hasNext()) returnStack.push(iterator.next());
+    var iter = returnStackDescendingIterator(ms);
+    iter.forEachRemaining(returnStack::push);
     return this;
   }
 
