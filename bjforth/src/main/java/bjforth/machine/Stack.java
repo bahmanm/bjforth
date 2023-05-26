@@ -19,6 +19,7 @@
 package bjforth.machine;
 
 import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 /* the public interface is quite leaky and doesn't try to encapsulate the impl
    details at all - mostly b/c of the words related to stack pointers, ie RSP!,
@@ -44,6 +45,11 @@ class Stack {
 
   public int size() {
     return data.size();
+  }
+
+  public void resize(int size) {
+    for (int i=size; i<data.size(); i++)
+      pop();
   }
 
   public Object get(int index) {
