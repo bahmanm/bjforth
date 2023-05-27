@@ -44,12 +44,28 @@ public class Machine {
     return state.getParameterStack().pop();
   }
 
-  public void pushToReturnStack(Integer address) {
+  public int getParameterStackPointer() {
+    return state.getParameterStack().getPointer();
+  }
+
+  public void setParameterStackPointer(int pointer) {
+    state.getParameterStack().setPointer(pointer);
+  }
+
+  public void pushToReturnStack(Object address) {
     state.getReturnStack().push(address);
   }
 
-  public Integer popFromReturnStack() {
+  public Object popFromReturnStack() {
     return state.getReturnStack().pop();
+  }
+
+  public int getReturnStackPointer() {
+    return state.getReturnStack().getPointer();
+  }
+
+  public void setReturnStackPointer(int pointer) {
+    state.getReturnStack().setPointer(pointer);
   }
 
   public Optional<DictionaryItem> getDictionaryItem(String name) {

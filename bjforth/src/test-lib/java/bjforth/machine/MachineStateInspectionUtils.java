@@ -22,6 +22,7 @@ import static org.apache.commons.lang3.reflect.FieldUtils.readDeclaredField;
 
 import java.util.Deque;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 import org.apache.commons.lang3.function.FailableCallable;
@@ -63,11 +64,20 @@ public class MachineStateInspectionUtils {
   }
 
   @SuppressWarnings("unchecked")
-  public static Iterator<Integer> returnStackDescendingIterator(MachineState ms) {
+  public static Iterator<Object> returnStackDescendingIterator(MachineState ms) {
     return inspect(
         () -> {
-          var data = (Deque<Integer>) readDeclaredField(ms.getReturnStack(), "data", true);
+          var data = (LinkedList<Object>) readDeclaredField(ms.getReturnStack(), "data", true);
           return data.descendingIterator();
+        });
+  }
+
+  @SuppressWarnings("unchecked")
+  public static Iterator<Object> returnStackAscendingIterator(MachineState ms) {
+    return inspect(
+        () -> {
+          var data = (LinkedList<Object>) readDeclaredField(ms.getReturnStack(), "data", true);
+          return data.iterator();
         });
   }
 
@@ -83,8 +93,17 @@ public class MachineStateInspectionUtils {
   public static Iterator<Object> parameterStackDescendingIterator(MachineState ms) {
     return inspect(
         () -> {
-          var data = (Deque<Object>) readDeclaredField(ms.getParameterStack(), "data", true);
+          var data = (LinkedList<Object>) readDeclaredField(ms.getParameterStack(), "data", true);
           return data.descendingIterator();
+        });
+  }
+
+  @SuppressWarnings("unchecked")
+  public static Iterator<Object> parameterStackAscendingIterator(MachineState ms) {
+    return inspect(
+        () -> {
+          var data = (LinkedList<Object>) readDeclaredField(ms.getParameterStack(), "data", true);
+          return data.iterator();
         });
   }
 

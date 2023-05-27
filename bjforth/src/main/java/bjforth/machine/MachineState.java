@@ -23,16 +23,16 @@ class MachineState {
   private Integer nextInstructionPointer;
   private Memory memory;
   private Dictionary dictionary;
-  private Stack<Integer> returnStack;
-  private Stack<Object> parameterStack;
+  private Stack returnStack;
+  private Stack parameterStack;
 
   MachineState(
       Integer instructionPointer,
       Integer nextInstructionPointer,
       Memory memory,
       Dictionary dictionary,
-      Stack<Integer> returnStack,
-      Stack<Object> parameterStack) {
+      Stack returnStack,
+      Stack parameterStack) {
     this.instructionPointer = instructionPointer;
     this.nextInstructionPointer = nextInstructionPointer;
     this.memory = memory;
@@ -46,8 +46,8 @@ class MachineState {
     nextInstructionPointer = other.nextInstructionPointer;
     memory = new Memory(other.memory);
     dictionary = new Dictionary(other.dictionary);
-    returnStack = new Stack<>(other.returnStack);
-    parameterStack = new Stack<>(other.parameterStack);
+    returnStack = new Stack(other.returnStack);
+    parameterStack = new Stack(other.parameterStack);
   }
 
   void setInstructionPointer(Integer instructionPointer) {
@@ -74,11 +74,11 @@ class MachineState {
     return dictionary;
   }
 
-  Stack<Integer> getReturnStack() {
+  Stack getReturnStack() {
     return returnStack;
   }
 
-  Stack<Object> getParameterStack() {
+  Stack getParameterStack() {
     return parameterStack;
   }
 }

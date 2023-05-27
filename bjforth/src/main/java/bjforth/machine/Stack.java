@@ -18,23 +18,41 @@
  */
 package bjforth.machine;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
+import java.util.LinkedList;
 
-class Stack<T> {
-  private final Deque<T> data = new ArrayDeque<>();
+/* the public interface is quite leaky and doesn't try to encapsulate the impl
+   details at all - mostly b/c of the words related to stack pointers, ie RSP!,
+   RSP@, DSP! and DSP@.
+*/
+class Stack {
+
+  private final LinkedList<Object> data = new LinkedList<>();
 
   Stack() {}
 
-  Stack(Stack<T> other) {
-    other.data.descendingIterator().forEachRemaining(data::addFirst);
+  Stack(Stack other) {
+    other.data.iterator().forEachRemaining(data::addLast);
   }
 
-  public T pop() {
-    return data.removeFirst();
+  public Object pop() {
+    return data.removeLast();
   }
 
-  public void push(T item) {
-    data.addFirst(item);
+  public void push(Object item) {
+    data.addLast(item);
+  }
+
+  public int getPointer() {
+    if (data.size() <= 0) {
+      throw new MachineException("Empty stack");
+    }
+    return data.size() - 1;
+  }
+
+  public void setPointer(int pointer) {
+    if (pointer >= data.size() || pointer < 0) {
+      throw new MachineException("Invalid stack pointer");
+    }
+    for (int i = data.size() - 1; i > pointer; i--) data.remove(i);
   }
 }
