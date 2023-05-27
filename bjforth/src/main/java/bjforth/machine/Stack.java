@@ -55,16 +55,4 @@ class Stack {
     }
     for (int i = data.size() - 1; i > pointer; i--) data.remove(i);
   }
-
-  public void resize(int size) {
-    for (int i = size; i < data.size(); i++) pop();
-  }
-
-  public Object get(int index) {
-    return data.get(index);
-  }
-
-  public void set(int index, Object object) {
-    data.set(index, object);
-  }
 }
