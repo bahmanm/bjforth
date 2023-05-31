@@ -23,7 +23,7 @@ import bjforth.machine.MachineException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class KEY implements MachinePrimitiveWithNext {
+public class KEY implements Primitive {
 
   private InputStreamReader reader = null;
 
@@ -35,7 +35,7 @@ public class KEY implements MachinePrimitiveWithNext {
   }
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var ch = getReader().read();
       if (ch == -1) throw new MachineException("End of stream");

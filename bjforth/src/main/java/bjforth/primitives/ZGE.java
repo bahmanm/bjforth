@@ -24,13 +24,13 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class ZGE implements MachinePrimitiveWithNext {
+public class ZGE implements Primitive {
 
   private static final IsGreaterThanOrEqualToZero isGreaterThanOrEqualToZero =
       new IsGreaterThanOrEqualToZero();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element = machine.popFromParameterStack();
       var result = isGreaterThanOrEqualToZero.call(element) ? 1 : 0;

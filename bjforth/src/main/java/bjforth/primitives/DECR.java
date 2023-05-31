@@ -25,12 +25,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class DECR implements MachinePrimitiveWithNext {
+public class DECR implements Primitive {
 
   private static final DecrNumberFunction decr = new DecrNumberFunction();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element = machine.popFromParameterStack();
       var elementDecred = decr.apply(element);

@@ -24,12 +24,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class GE implements MachinePrimitiveWithNext {
+public class GE implements Primitive {
 
   private static final GreaterThan greaterThan = new GreaterThan();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element1 = machine.popFromParameterStack();
       var element2 = machine.popFromParameterStack();

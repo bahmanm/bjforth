@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class NROT implements MachinePrimitiveWithNext {
+public class NROT implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var first = machine.popFromParameterStack();
       var second = machine.popFromParameterStack();

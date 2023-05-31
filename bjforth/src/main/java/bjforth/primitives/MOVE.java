@@ -23,10 +23,10 @@ import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
-public class MOVE implements MachinePrimitiveWithNext {
+public class MOVE implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var lengthObject = machine.popFromParameterStack();
       var fromAddrObject = machine.popFromParameterStack();

@@ -25,12 +25,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class SUB implements MachinePrimitiveWithNext {
+public class SUB implements Primitive {
 
   private static final SubtractNumberFunction add = new SubtractNumberFunction();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element1 = machine.popFromParameterStack();
       var element2 = machine.popFromParameterStack();

@@ -100,8 +100,8 @@ public class Machine {
   public void step() {
     var ip = state.getInstructionPointer();
     var content = getMemoryAt(ip);
-    if (content instanceof MachinePrimitive primitive) {
-      primitive.execute(this);
+    if (content instanceof NativeSubroutine nativeSubroutine) {
+      nativeSubroutine.call(this);
     } else {
       throw new MachineException("don't know how to execute *(%d)".formatted(ip));
     }

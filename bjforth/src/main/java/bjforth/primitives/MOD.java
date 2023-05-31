@@ -25,12 +25,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class MOD implements MachinePrimitiveWithNext {
+public class MOD implements Primitive {
 
   private static final ModNumberFunction add = new ModNumberFunction();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element1 = machine.popFromParameterStack();
       var element2 = machine.popFromParameterStack();

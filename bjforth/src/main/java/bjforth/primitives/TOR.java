@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class TOR implements MachinePrimitiveWithNext {
+public class TOR implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var object = machine.popFromParameterStack();
       machine.pushToReturnStack(object);

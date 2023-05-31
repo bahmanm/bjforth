@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class ROT implements MachinePrimitiveWithNext {
+public class ROT implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var first = machine.popFromParameterStack();
       var second = machine.popFromParameterStack();

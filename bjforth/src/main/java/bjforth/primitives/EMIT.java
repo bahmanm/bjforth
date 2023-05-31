@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.NoSuchElementException;
 
-public class EMIT implements MachinePrimitiveWithNext {
+public class EMIT implements Primitive {
 
   private OutputStreamWriter writer = null;
 
@@ -36,7 +36,7 @@ public class EMIT implements MachinePrimitiveWithNext {
   }
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var chObject = machine.popFromParameterStack();
       if (chObject instanceof Integer ch) {

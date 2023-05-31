@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class FETCH implements MachinePrimitiveWithNext {
+public class FETCH implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var addrObject = machine.popFromParameterStack();
       if (addrObject instanceof Integer address) {
