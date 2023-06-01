@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class DUP implements MachinePrimitiveWithNext {
+public class DUP implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var p = machine.popFromParameterStack();
       machine.pushToParameterStack(p);

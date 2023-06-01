@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class TWODROP implements MachinePrimitiveWithNext {
+public class TWODROP implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       machine.popFromParameterStack();
       machine.popFromParameterStack();

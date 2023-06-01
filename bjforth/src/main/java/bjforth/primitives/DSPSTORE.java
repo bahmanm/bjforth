@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class DSPSTORE implements MachinePrimitiveWithNext {
+public class DSPSTORE implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var pointerObject = machine.popFromParameterStack();
       if (pointerObject instanceof Integer pointer) {

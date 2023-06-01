@@ -24,12 +24,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class ZGT implements MachinePrimitiveWithNext {
+public class ZGT implements Primitive {
 
   private static final IsGreaterThanZero isGreaterThanZero = new IsGreaterThanZero();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element = machine.popFromParameterStack();
       var result = isGreaterThanZero.call(element) ? 1 : 0;

@@ -20,10 +20,10 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-public class LIT implements MachinePrimitiveWithNext {
+public class LIT implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     var nip = machine.getNextInstructionPointer();
     var literal = machine.getMemoryAt(nip);
     machine.setNextInstructionPointer(nip + 1);

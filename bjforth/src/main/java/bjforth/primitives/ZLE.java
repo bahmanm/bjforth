@@ -24,12 +24,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class ZLE implements MachinePrimitiveWithNext {
+public class ZLE implements Primitive {
 
   private static final IsLessThanOrEqualToZero isLessThanOrEqualTo = new IsLessThanOrEqualToZero();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element = machine.popFromParameterStack();
       var result = isLessThanOrEqualTo.call(element) ? 1 : 0;

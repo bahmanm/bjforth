@@ -16,9 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.machine;
+package bjforth.primitives;
 
-public interface MachinePrimitive {
+import bjforth.machine.Machine;
+import bjforth.machine.NativeSubroutine;
 
-  public void execute(Machine machine);
+public interface Primitive extends NativeSubroutine {
+
+  @Override
+  default void call(Machine machine) {
+    execute(machine);
+    var nextWordAddr = machine.getNextInstructionPointer();
+    machine.setNextInstructionPointer(nextWordAddr + 1);
+    machine.jumpTo(nextWordAddr);
+  }
+
+  void execute(Machine machine);
 }

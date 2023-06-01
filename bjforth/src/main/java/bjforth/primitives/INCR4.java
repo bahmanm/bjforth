@@ -25,12 +25,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class INCR4 implements MachinePrimitiveWithNext {
+public class INCR4 implements Primitive {
 
   private static final Incr4NumberFunction incr = new Incr4NumberFunction();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element = machine.popFromParameterStack();
       var elementIncred = incr.apply(element);

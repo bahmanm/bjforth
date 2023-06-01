@@ -20,10 +20,10 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-public class DSPFETCH implements MachinePrimitiveWithNext {
+public class DSPFETCH implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     var pointer = machine.getParameterStackPointer();
     machine.pushToParameterStack(pointer);
   }

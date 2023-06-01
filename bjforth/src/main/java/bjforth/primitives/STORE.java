@@ -22,10 +22,10 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class STORE implements MachinePrimitiveWithNext {
+public class STORE implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var addrObject = machine.popFromParameterStack();
       var object = machine.popFromParameterStack();

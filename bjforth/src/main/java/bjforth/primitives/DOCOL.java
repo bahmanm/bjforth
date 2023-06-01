@@ -20,10 +20,10 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-public class DOCOL implements MachinePrimitiveWithNext {
+public class DOCOL implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     machine.pushToReturnStack(machine.getNextInstructionPointer());
     machine.setNextInstructionPointer(machine.getInstrcutionPointer() + 1);
   }

@@ -24,12 +24,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class ZEQU implements MachinePrimitiveWithNext {
+public class ZEQU implements Primitive {
 
   private static final IsZero isZero = new IsZero();
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var element = machine.popFromParameterStack();
       var result = isZero.call(element) ? 1 : 0;

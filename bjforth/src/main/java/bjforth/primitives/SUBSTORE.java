@@ -23,10 +23,10 @@ import bjforth.machine.MachineException;
 import bjforth.primitives.lib.NumberUtils;
 import java.util.NoSuchElementException;
 
-public class SUBSTORE implements MachinePrimitiveWithNext {
+public class SUBSTORE implements Primitive {
 
   @Override
-  public void executeWithNext(Machine machine) {
+  public void execute(Machine machine) {
     try {
       var addrObject = machine.popFromParameterStack();
       if (addrObject instanceof Integer address) {
