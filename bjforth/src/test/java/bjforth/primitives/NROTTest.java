@@ -39,7 +39,7 @@ class NROTTest {
   @DisplayName("n-rotates the top 3 elements of stack, ie abc -> cab.")
   void worksOk() {
     // GIVEN
-    var nrot = new NROT();
+    var nrot = PrimitiveFactory.NROT();
     var nrotAddr = nextInt();
     var ip = anInstructionPointer().with(nrotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -74,7 +74,7 @@ class NROTTest {
   @DisplayName("should throw if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var nrot = new NROT();
+    var nrot = PrimitiveFactory.NROT();
     var nrotAddr = nextInt();
     var ip = anInstructionPointer().with(nrotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -97,7 +97,7 @@ class NROTTest {
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var nrot = new NROT();
+    var nrot = PrimitiveFactory.NROT();
     var nrotAddr = nextInt();
     var ip = anInstructionPointer().with(nrotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -123,7 +123,7 @@ class NROTTest {
   @DisplayName("should throw if ParameterStack has only 2 elements.")
   void throwIfParameterStackTwoElements() {
     // GIVEN
-    var nrot = new NROT();
+    var nrot = PrimitiveFactory.NROT();
     var nrotAddr = nextInt();
     var ip = anInstructionPointer().with(nrotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

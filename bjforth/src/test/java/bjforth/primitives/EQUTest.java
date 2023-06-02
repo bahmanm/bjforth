@@ -63,7 +63,7 @@ class EQUTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var equ = new EQU();
+    var equ = PrimitiveFactory.EQU();
     var equAddr = nextInt();
     var ip = anInstructionPointer().with(equAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -94,7 +94,7 @@ class EQUTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var equ = new EQU();
+    var equ = PrimitiveFactory.EQU();
     var equAddr = nextInt();
     var ip = anInstructionPointer().with(equAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -117,7 +117,7 @@ class EQUTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var equ = new EQU();
+    var equ = PrimitiveFactory.EQU();
     var equAddr = nextInt();
     var ip = anInstructionPointer().with(equAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

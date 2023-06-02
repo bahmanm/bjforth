@@ -50,7 +50,7 @@ class ZGETest {
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumbers(Object parameter, Object expectedResult, String parameterClassName) {
     // GIVEN
-    var zge = new ZGE();
+    var zge = PrimitiveFactory.ZGE();
     var zgeAddr = nextInt();
     var ip = anInstructionPointer().with(zgeAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -80,7 +80,7 @@ class ZGETest {
   @DisplayName("should throw if top of ParameterStack is not a number.")
   void throwIfNonNumber() {
     // GIVEN
-    var zge = new ZGE();
+    var zge = PrimitiveFactory.ZGE();
     var zgeAddr = nextInt();
     var ip = anInstructionPointer().with(zgeAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -105,7 +105,7 @@ class ZGETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var zge = new ZGE();
+    var zge = PrimitiveFactory.ZGE();
     var zgeAddr = nextInt();
     var ip = anInstructionPointer().with(zgeAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

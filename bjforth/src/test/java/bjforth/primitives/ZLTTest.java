@@ -50,7 +50,7 @@ class ZLTTest {
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumbers(Object parameter, Object expectedResult, String parameterClassName) {
     // GIVEN
-    var zlt = new ZLT();
+    var zlt = PrimitiveFactory.ZLT();
     var zltAddr = nextInt();
     var ip = anInstructionPointer().with(zltAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -80,7 +80,7 @@ class ZLTTest {
   @DisplayName("should throw if top of ParameterStack is not a number.")
   void throwIfNonNumber() {
     // GIVEN
-    var zlt = new ZLT();
+    var zlt = PrimitiveFactory.ZLT();
     var zltAddr = nextInt();
     var ip = anInstructionPointer().with(zltAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -105,7 +105,7 @@ class ZLTTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var zlt = new ZLT();
+    var zlt = PrimitiveFactory.ZLT();
     var zltAddr = nextInt();
     var ip = anInstructionPointer().with(zltAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

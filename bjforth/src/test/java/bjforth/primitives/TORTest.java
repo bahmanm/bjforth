@@ -39,7 +39,7 @@ class TORTest {
   @Test
   void worksOk() {
     // GIVEN
-    var tor = new TOR();
+    var tor = PrimitiveFactory.TOR();
     var torAddr = nextInt();
     var ip = anInstructionPointer().with(torAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -71,7 +71,7 @@ class TORTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var tor = new TOR();
+    var tor = PrimitiveFactory.TOR();
     var torAddr = nextInt();
     var ip = anInstructionPointer().with(torAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

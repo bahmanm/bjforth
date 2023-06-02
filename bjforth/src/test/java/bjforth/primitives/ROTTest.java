@@ -39,7 +39,7 @@ class ROTTest {
   @DisplayName("rotates the top 3 elements of stack, ie abc -> bca.")
   void worksOk() {
     // GIVEN
-    var rot = new ROT();
+    var rot = PrimitiveFactory.ROT();
     var rotAddr = nextInt();
     var ip = anInstructionPointer().with(rotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -74,7 +74,7 @@ class ROTTest {
   @DisplayName("should throw if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var rot = new ROT();
+    var rot = PrimitiveFactory.ROT();
     var rotAddr = nextInt();
     var ip = anInstructionPointer().with(rotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -97,7 +97,7 @@ class ROTTest {
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var rot = new ROT();
+    var rot = PrimitiveFactory.ROT();
     var rotAddr = nextInt();
     var ip = anInstructionPointer().with(rotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -123,7 +123,7 @@ class ROTTest {
   @DisplayName("should throw if ParameterStack has only 2 elements.")
   void throwIfParameterStackTwoElements() {
     // GIVEN
-    var rot = new ROT();
+    var rot = PrimitiveFactory.ROT();
     var rotAddr = nextInt();
     var ip = anInstructionPointer().with(rotAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

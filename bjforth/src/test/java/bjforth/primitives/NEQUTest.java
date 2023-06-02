@@ -63,7 +63,7 @@ class NEQUTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var nequ = new NEQU();
+    var nequ = PrimitiveFactory.NEQU();
     var nequAddr = nextInt();
     var ip = anInstructionPointer().with(nequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -94,7 +94,7 @@ class NEQUTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var nequ = new NEQU();
+    var nequ = PrimitiveFactory.NEQU();
     var nequAddr = nextInt();
     var ip = anInstructionPointer().with(nequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -117,7 +117,7 @@ class NEQUTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var nequ = new NEQU();
+    var nequ = PrimitiveFactory.NEQU();
     var nequAddr = nextInt();
     var ip = anInstructionPointer().with(nequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

@@ -62,7 +62,7 @@ class MODTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var mod = new MOD();
+    var mod = PrimitiveFactory.MOD();
     var modAddr = nextInt();
     var ip = anInstructionPointer().with(modAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -96,7 +96,7 @@ class MODTest {
   @MethodSource("zeroDivisorNoDoubleOrFloat")
   void shouldThrowIfDivisorZero(Object parameter1, Object parameter2, String parameter1ClassName) {
     // GIVEN
-    var mod = new MOD();
+    var mod = PrimitiveFactory.MOD();
     var modAddr = nextInt();
     var ip = anInstructionPointer().with(modAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -125,7 +125,7 @@ class MODTest {
   void shouldReturnInfinityIfDivisorZero(
       Object parameter1, Object parameter2, Object expectedResult, String parameter1ClassName) {
     // GIVEN
-    var mod = new MOD();
+    var mod = PrimitiveFactory.MOD();
     var modAddr = nextInt();
     var ip = anInstructionPointer().with(modAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -161,7 +161,7 @@ class MODTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var mod = new MOD();
+    var mod = PrimitiveFactory.MOD();
     var modAddr = nextInt();
     var ip = anInstructionPointer().with(modAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -186,7 +186,7 @@ class MODTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var mod = new MOD();
+    var mod = PrimitiveFactory.MOD();
     var modAddr = nextInt();
     var ip = anInstructionPointer().with(modAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -209,7 +209,7 @@ class MODTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var mod = new MOD();
+    var mod = PrimitiveFactory.MOD();
     var modAddr = nextInt();
     var ip = anInstructionPointer().with(modAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

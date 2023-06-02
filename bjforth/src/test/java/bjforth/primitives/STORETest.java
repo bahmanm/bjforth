@@ -39,7 +39,7 @@ class STORETest {
   @Test
   void worksOk() {
     // GIVEN
-    var store = new STORE();
+    var store = PrimitiveFactory.STORE();
     var storeAddr = nextInt();
     var ip = anInstructionPointer().with(storeAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -72,7 +72,7 @@ class STORETest {
   @Test
   void throwsIfNonNumber() {
     // GIVEN
-    var store = new STORE();
+    var store = PrimitiveFactory.STORE();
     var storeAddr = nextInt();
     var ip = anInstructionPointer().with(storeAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -97,7 +97,7 @@ class STORETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var store = new STORE();
+    var store = PrimitiveFactory.STORE();
     var storeAddr = nextInt();
     var ip = anInstructionPointer().with(storeAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -120,7 +120,7 @@ class STORETest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var store = new STORE();
+    var store = PrimitiveFactory.STORE();
     var storeAddr = nextInt();
     var ip = anInstructionPointer().with(storeAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

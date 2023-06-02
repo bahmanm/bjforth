@@ -33,6 +33,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -45,6 +46,11 @@ class KEYTest {
     System.setIn(originalSystemIn);
   }
 
+  @BeforeEach
+  private void resetKEY() {
+    PrimitiveFactoryModificationUtils.resetAllPrimitives();
+  }
+
   @DisplayName(
       "reads a single character from System.in and pushes the value on to parameter stack.")
   @Test
@@ -54,7 +60,7 @@ class KEYTest {
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
 
-    var key = new KEY();
+    var key = PrimitiveFactory.KEY();
     var keyAddr = nextInt();
     var ip = anInstructionPointer().with(keyAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -87,7 +93,7 @@ class KEYTest {
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
 
-    var key = new KEY();
+    var key = PrimitiveFactory.KEY();
     var keyAddr = nextInt();
     var ip = anInstructionPointer().with(keyAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

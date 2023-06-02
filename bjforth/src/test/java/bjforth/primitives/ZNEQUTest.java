@@ -49,7 +49,7 @@ class ZNEQUTest {
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumbers(Object parameter, Object expectedResult, String parameterClassName) {
     // GIVEN
-    var znequ = new ZNEQU();
+    var znequ = PrimitiveFactory.ZNEQU();
     var znequAddr = nextInt();
     var ip = anInstructionPointer().with(znequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -79,7 +79,7 @@ class ZNEQUTest {
   @DisplayName("should throw if top of ParameterStack is not a number.")
   void throwIfNonNumber() {
     // GIVEN
-    var znequ = new ZNEQU();
+    var znequ = PrimitiveFactory.ZNEQU();
     var znequAddr = nextInt();
     var ip = anInstructionPointer().with(znequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -104,7 +104,7 @@ class ZNEQUTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var znequ = new ZNEQU();
+    var znequ = PrimitiveFactory.ZNEQU();
     var znequAddr = nextInt();
     var ip = anInstructionPointer().with(znequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

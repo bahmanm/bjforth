@@ -39,7 +39,7 @@ class TWODUPTest {
   @DisplayName("duplicates the top two elements of stack, ie ab -> abab")
   void worksOk() {
     // GIVEN
-    var twodup = new TWODUP();
+    var twodup = PrimitiveFactory.TWODUP();
     var twodupAddr = nextInt();
     var ip = anInstructionPointer().with(twodupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -76,7 +76,7 @@ class TWODUPTest {
   @DisplayName("should trhow if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var twodup = new TWODUP();
+    var twodup = PrimitiveFactory.TWODUP();
     var twodupAddr = nextInt();
     var ip = anInstructionPointer().with(twodupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -99,7 +99,7 @@ class TWODUPTest {
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var twodup = new TWODUP();
+    var twodup = PrimitiveFactory.TWODUP();
     var twodupAddr = nextInt();
     var ip = anInstructionPointer().with(twodupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

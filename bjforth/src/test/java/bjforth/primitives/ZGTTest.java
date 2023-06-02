@@ -50,7 +50,7 @@ class ZGTTest {
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumbers(Object parameter, Object expectedResult, String parameterClassName) {
     // GIVEN
-    var zgt = new ZGT();
+    var zgt = PrimitiveFactory.ZGT();
     var zgtAddr = nextInt();
     var ip = anInstructionPointer().with(zgtAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -80,7 +80,7 @@ class ZGTTest {
   @DisplayName("should throw if top of ParameterStack is not a number.")
   void throwIfNonNumber() {
     // GIVEN
-    var zgt = new ZGT();
+    var zgt = PrimitiveFactory.ZGT();
     var zgtAddr = nextInt();
     var ip = anInstructionPointer().with(zgtAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -105,7 +105,7 @@ class ZGTTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var zgt = new ZGT();
+    var zgt = PrimitiveFactory.ZGT();
     var zgtAddr = nextInt();
     var ip = anInstructionPointer().with(zgtAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

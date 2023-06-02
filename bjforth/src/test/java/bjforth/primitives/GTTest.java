@@ -61,7 +61,7 @@ class GTTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var gt = new GT();
+    var gt = PrimitiveFactory.GT();
     var gtAddr = nextInt();
     var ip = anInstructionPointer().with(gtAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -98,7 +98,7 @@ class GTTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var gt = new GT();
+    var gt = PrimitiveFactory.GT();
     var gtAddr = nextInt();
     var ip = anInstructionPointer().with(gtAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -123,7 +123,7 @@ class GTTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var gt = new GT();
+    var gt = PrimitiveFactory.GT();
     var gtAddr = nextInt();
     var ip = anInstructionPointer().with(gtAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -146,7 +146,7 @@ class GTTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var gt = new GT();
+    var gt = PrimitiveFactory.GT();
     var gtAddr = nextInt();
     var ip = anInstructionPointer().with(gtAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

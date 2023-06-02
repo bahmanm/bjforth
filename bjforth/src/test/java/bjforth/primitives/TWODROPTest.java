@@ -39,7 +39,7 @@ class TWODROPTest {
   @DisplayName("drops the top 2 elements of stack, ie abc -> a")
   void worksOk() {
     // GIVEN
-    var twodrop = new TWODROP();
+    var twodrop = PrimitiveFactory.TWODROP();
     var twodropAddr = nextInt();
     var ip = anInstructionPointer().with(twodropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -73,7 +73,7 @@ class TWODROPTest {
   @DisplayName("should trhow if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var twodrop = new TWODROP();
+    var twodrop = PrimitiveFactory.TWODROP();
     var twodropAddr = nextInt();
     var ip = anInstructionPointer().with(twodropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -96,7 +96,7 @@ class TWODROPTest {
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var twodrop = new TWODROP();
+    var twodrop = PrimitiveFactory.TWODROP();
     var twodropAddr = nextInt();
     var ip = anInstructionPointer().with(twodropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

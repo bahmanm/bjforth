@@ -39,7 +39,7 @@ class DSPFETCHTest {
   @Test
   void worksOk() {
     // GIVEN
-    var dspfetch = new DSPFETCH();
+    var dspfetch = PrimitiveFactory.DSPFETCH();
     var dspfetchAddr = nextInt();
     var ip = anInstructionPointer().with(dspfetchAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -72,7 +72,7 @@ class DSPFETCHTest {
   @Test
   void throwsIfEmpty() {
     // GIVEN
-    var dspfetch = new DSPFETCH();
+    var dspfetch = PrimitiveFactory.DSPFETCH();
     var dspfetchAddr = nextInt();
     var ip = anInstructionPointer().with(dspfetchAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

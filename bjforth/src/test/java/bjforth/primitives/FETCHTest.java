@@ -40,7 +40,7 @@ class FETCHTest {
   @Test
   void worksOk() {
     // GIVEN
-    var fetch = new FETCH();
+    var fetch = PrimitiveFactory.FETCH();
     var fetchAddr = nextInt();
     var ip = anInstructionPointer().with(fetchAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -73,7 +73,7 @@ class FETCHTest {
   @Test
   void throwsIfNonNumber() {
     // GIVEN
-    var fetch = new FETCH();
+    var fetch = PrimitiveFactory.FETCH();
     var fetchAddr = nextInt();
     var ip = anInstructionPointer().with(fetchAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -98,7 +98,7 @@ class FETCHTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var fetch = new FETCH();
+    var fetch = PrimitiveFactory.FETCH();
     var fetchAddr = nextInt();
     var ip = anInstructionPointer().with(fetchAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

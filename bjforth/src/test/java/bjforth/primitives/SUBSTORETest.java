@@ -39,7 +39,7 @@ class SUBSTORETest {
   @Test
   void worksOk() {
     // GIVEN
-    var substore = new SUBSTORE();
+    var substore = PrimitiveFactory.SUBSTORE();
     var substoreAddr = nextInt();
     var ip = anInstructionPointer().with(substoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -75,7 +75,7 @@ class SUBSTORETest {
   @Test
   void throwsIfNonNumber() {
     // GIVEN
-    var substore = new SUBSTORE();
+    var substore = PrimitiveFactory.SUBSTORE();
     var substoreAddr = nextInt();
     var ip = anInstructionPointer().with(substoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -100,7 +100,7 @@ class SUBSTORETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var substore = new SUBSTORE();
+    var substore = PrimitiveFactory.SUBSTORE();
     var substoreAddr = nextInt();
     var ip = anInstructionPointer().with(substoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

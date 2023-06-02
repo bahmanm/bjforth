@@ -73,7 +73,7 @@ class EMITTest {
     var str = RandomStringUtils.random(1);
     var ch = str.codePointAt(0);
 
-    var emit = new EMIT();
+    var emit = PrimitiveFactory.EMIT();
     var emitAddr = nextInt();
     var ip = anInstructionPointer().with(emitAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -104,7 +104,7 @@ class EMITTest {
   @Test
   void throwsIfNonNumber() {
     // GIVEN
-    var emit = new EMIT();
+    var emit = PrimitiveFactory.EMIT();
     var emitAddr = nextInt();
     var ip = anInstructionPointer().with(emitAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -129,7 +129,7 @@ class EMITTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var emit = new EMIT();
+    var emit = PrimitiveFactory.EMIT();
     var emitAddr = nextInt();
     var ip = anInstructionPointer().with(emitAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

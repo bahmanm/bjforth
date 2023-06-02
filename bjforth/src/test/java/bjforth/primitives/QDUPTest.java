@@ -50,7 +50,7 @@ class QDUPTest {
   @ArgumentsSource(NonZeroNumberArgumentProvider.class)
   void worksOkWithNonZero(Object parameter, String parameterClassName) {
     // GIVEN
-    var qdup = new QDUP();
+    var qdup = PrimitiveFactory.QDUP();
     var qdupAddr = nextInt();
     var ip = anInstructionPointer().with(qdupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -82,7 +82,7 @@ class QDUPTest {
   @ArgumentsSource(ZeroNumberArgumentProvider.class)
   void worksOkWithZero(Object parameter, String parameterClassName) {
     // GIVEN
-    var qdup = new QDUP();
+    var qdup = PrimitiveFactory.QDUP();
     var qdupAddr = nextInt();
     var ip = anInstructionPointer().with(qdupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -114,7 +114,7 @@ class QDUPTest {
   @ArgumentsSource(NonNumberArgumentProvider.class)
   <E extends Object> void throwsIfNonNumber(E parameter, String parameterClassName) {
     // GIVEN
-    var qdup = new QDUP();
+    var qdup = PrimitiveFactory.QDUP();
     var qdupAddr = nextInt();
     var ip = anInstructionPointer().with(qdupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -139,7 +139,7 @@ class QDUPTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var qdup = new QDUP();
+    var qdup = PrimitiveFactory.QDUP();
     var qdupAddr = nextInt();
     var ip = anInstructionPointer().with(qdupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

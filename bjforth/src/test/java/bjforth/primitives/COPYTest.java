@@ -40,7 +40,7 @@ class COPYTest {
   @Test
   void worksOk() {
     // GIVEN
-    var copy = new COPY();
+    var copy = PrimitiveFactory.COPY();
     var copyAddr = nextInt();
     var ip = anInstructionPointer().with(copyAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -74,7 +74,7 @@ class COPYTest {
   @Test
   void throwsIfTopNonNumber() {
     // GIVEN
-    var copy = new COPY();
+    var copy = PrimitiveFactory.COPY();
     var copyAddr = nextInt();
     var ip = anInstructionPointer().with(copyAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -99,7 +99,7 @@ class COPYTest {
   @Test
   void throwsIf2ndTopNonNumber() {
     // GIVEN
-    var copy = new COPY();
+    var copy = PrimitiveFactory.COPY();
     var copyAddr = nextInt();
     var ip = anInstructionPointer().with(copyAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -124,7 +124,7 @@ class COPYTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var copy = new COPY();
+    var copy = PrimitiveFactory.COPY();
     var copyAddr = nextInt();
     var ip = anInstructionPointer().with(copyAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -147,7 +147,7 @@ class COPYTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var copy = new COPY();
+    var copy = PrimitiveFactory.COPY();
     var copyAddr = nextInt();
     var ip = anInstructionPointer().with(copyAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

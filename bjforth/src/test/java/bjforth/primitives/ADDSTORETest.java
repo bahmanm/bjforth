@@ -39,7 +39,7 @@ class ADDSTORETest {
   @Test
   void worksOk() {
     // GIVEN
-    var addstore = new ADDSTORE();
+    var addstore = PrimitiveFactory.ADDSTORE();
     var addstoreAddr = nextInt();
     var ip = anInstructionPointer().with(addstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -75,7 +75,7 @@ class ADDSTORETest {
   @Test
   void throwsIfNonNumber() {
     // GIVEN
-    var addstore = new ADDSTORE();
+    var addstore = PrimitiveFactory.ADDSTORE();
     var addstoreAddr = nextInt();
     var ip = anInstructionPointer().with(addstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -100,7 +100,7 @@ class ADDSTORETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var addstore = new ADDSTORE();
+    var addstore = PrimitiveFactory.ADDSTORE();
     var addstoreAddr = nextInt();
     var ip = anInstructionPointer().with(addstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

@@ -42,7 +42,7 @@ class DSPSTORETest {
   @Test
   void worksOk() {
     // GIVEN
-    var dspstore = new DSPSTORE();
+    var dspstore = PrimitiveFactory.DSPSTORE();
     var dspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(dspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -80,7 +80,7 @@ class DSPSTORETest {
   @Test
   void throwsIfParameterStackEmpty() {
     // GIVEN
-    var dspstore = new DSPSTORE();
+    var dspstore = PrimitiveFactory.DSPSTORE();
     var dspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(dspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -103,7 +103,7 @@ class DSPSTORETest {
   @Test
   void throwsIfParameterStackNonNumber() {
     // GIVEN
-    var dspstore = new DSPSTORE();
+    var dspstore = PrimitiveFactory.DSPSTORE();
     var dspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(dspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -128,7 +128,7 @@ class DSPSTORETest {
   @Test
   void throwsIfPointerTooLarge() {
     // GIVEN
-    var dspstore = new DSPSTORE();
+    var dspstore = PrimitiveFactory.DSPSTORE();
     var dspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(dspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

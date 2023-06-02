@@ -39,7 +39,7 @@ class TWOSWAPTest {
   @DisplayName("swaps the top two pairs of elements of stack, ie abcd -> cdab")
   void worksOk() {
     // GIVEN
-    var twoswap = new TWOSWAP();
+    var twoswap = PrimitiveFactory.TWOSWAP();
     var twoswapAddr = nextInt();
     var ip = anInstructionPointer().with(twoswapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -76,7 +76,7 @@ class TWOSWAPTest {
   @DisplayName("should throw if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var twoswap = new TWOSWAP();
+    var twoswap = PrimitiveFactory.TWOSWAP();
     var twoswapAddr = nextInt();
     var ip = anInstructionPointer().with(twoswapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -99,7 +99,7 @@ class TWOSWAPTest {
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var twoswap = new TWOSWAP();
+    var twoswap = PrimitiveFactory.TWOSWAP();
     var twoswapAddr = nextInt();
     var ip = anInstructionPointer().with(twoswapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -125,7 +125,7 @@ class TWOSWAPTest {
   @DisplayName("should throw if ParameterStack has only 2 elements.")
   void throwIfParameterStackTwoElements() {
     // GIVEN
-    var twoswap = new TWOSWAP();
+    var twoswap = PrimitiveFactory.TWOSWAP();
     var twoswapAddr = nextInt();
     var ip = anInstructionPointer().with(twoswapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -152,7 +152,7 @@ class TWOSWAPTest {
   @DisplayName("should throw if ParameterStack has only 3 elements.")
   void throwIfParameterStackThreeElements() {
     // GIVEN
-    var twoswap = new TWOSWAP();
+    var twoswap = PrimitiveFactory.TWOSWAP();
     var twoswapAddr = nextInt();
     var ip = anInstructionPointer().with(twoswapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
