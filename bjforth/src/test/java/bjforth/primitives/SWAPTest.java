@@ -39,7 +39,7 @@ class SWAPTest {
   @DisplayName("swaps the two top elements of the ParameterStack.")
   public void worksOk() {
     // GIVEN
-    var swap = new SWAP();
+    var swap = PrimitiveFactory.SWAP();
     var swapAddr = nextInt();
     var ip = anInstructionPointer().with(swapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -72,7 +72,7 @@ class SWAPTest {
   @DisplayName("should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var swap = new SWAP();
+    var swap = PrimitiveFactory.SWAP();
     var swapAddr = nextInt();
     var ip = anInstructionPointer().with(swapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -95,7 +95,7 @@ class SWAPTest {
   @DisplayName("should throw if ParameterStack has only 1 element.")
   public void throwIfOneElement() {
     // GIVEN
-    var swap = new SWAP();
+    var swap = PrimitiveFactory.SWAP();
     var swapAddr = nextInt();
     var ip = anInstructionPointer().with(swapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -117,7 +117,7 @@ class SWAPTest {
   @DisplayName("should drop the top of ParameterStack if it has only 1 element.")
   public void dropIfOneElement() {
     // GIVEN
-    var swap = new SWAP();
+    var swap = PrimitiveFactory.SWAP();
     var swapAddr = nextInt();
     var ip = anInstructionPointer().with(swapAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

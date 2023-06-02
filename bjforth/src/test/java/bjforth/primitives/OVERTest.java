@@ -39,7 +39,7 @@ class OVERTest {
   @DisplayName("gets the 2nd element of ParameterStack and push it on top.")
   void worksOk() {
     // GIVEN
-    var over = new OVER();
+    var over = PrimitiveFactory.OVER();
     var overAddr = nextInt();
     var ip = anInstructionPointer().with(overAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -73,7 +73,7 @@ class OVERTest {
   @DisplayName("should throw if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var over = new OVER();
+    var over = PrimitiveFactory.OVER();
     var overAddr = nextInt();
     var ip = anInstructionPointer().with(overAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -96,7 +96,7 @@ class OVERTest {
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var over = new OVER();
+    var over = PrimitiveFactory.OVER();
     var overAddr = nextInt();
     var ip = anInstructionPointer().with(overAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

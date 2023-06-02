@@ -61,7 +61,7 @@ class DIVTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var div = new DIV();
+    var div = PrimitiveFactory.DIV();
     var divAddr = nextInt();
     var ip = anInstructionPointer().with(divAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -95,7 +95,7 @@ class DIVTest {
   @MethodSource("zeroDivisorNoDoubleOrFloat")
   void shouldThrowIfDivisorZero(Object parameter1, Object parameter2, String parameter1ClassName) {
     // GIVEN
-    var div = new DIV();
+    var div = PrimitiveFactory.DIV();
     var divAddr = nextInt();
     var ip = anInstructionPointer().with(divAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -124,7 +124,7 @@ class DIVTest {
   void shouldReturnInfinityIfDivisorZero(
       Object parameter1, Object parameter2, Object expectedResult, String parameter1ClassName) {
     // GIVEN
-    var div = new DIV();
+    var div = PrimitiveFactory.DIV();
     var divAddr = nextInt();
     var ip = anInstructionPointer().with(divAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -160,7 +160,7 @@ class DIVTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var div = new DIV();
+    var div = PrimitiveFactory.DIV();
     var divAddr = nextInt();
     var ip = anInstructionPointer().with(divAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -185,7 +185,7 @@ class DIVTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var div = new DIV();
+    var div = PrimitiveFactory.DIV();
     var divAddr = nextInt();
     var ip = anInstructionPointer().with(divAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -208,7 +208,7 @@ class DIVTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var div = new DIV();
+    var div = PrimitiveFactory.DIV();
     var divAddr = nextInt();
     var ip = anInstructionPointer().with(divAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

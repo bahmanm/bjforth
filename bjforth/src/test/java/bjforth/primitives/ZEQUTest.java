@@ -49,7 +49,7 @@ class ZEQUTest {
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumbers(Object parameter, Object expectedResult, String parameterClassName) {
     // GIVEN
-    var zequ = new ZEQU();
+    var zequ = PrimitiveFactory.ZEQU();
     var zequAddr = nextInt();
     var ip = anInstructionPointer().with(zequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -79,7 +79,7 @@ class ZEQUTest {
   @DisplayName("should throw if top of ParameterStack is not a number.")
   void throwIfNonNumber() {
     // GIVEN
-    var zequ = new ZEQU();
+    var zequ = PrimitiveFactory.ZEQU();
     var zequAddr = nextInt();
     var ip = anInstructionPointer().with(zequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -104,7 +104,7 @@ class ZEQUTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var zequ = new ZEQU();
+    var zequ = PrimitiveFactory.ZEQU();
     var zequAddr = nextInt();
     var ip = anInstructionPointer().with(zequAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

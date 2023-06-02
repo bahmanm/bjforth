@@ -59,7 +59,7 @@ class SUBTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var sub = new SUB();
+    var sub = PrimitiveFactory.SUB();
     var subAddr = nextInt();
     var ip = anInstructionPointer().with(subAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -95,7 +95,7 @@ class SUBTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var sub = new SUB();
+    var sub = PrimitiveFactory.SUB();
     var subAddr = nextInt();
     var ip = anInstructionPointer().with(subAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -120,7 +120,7 @@ class SUBTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var sub = new SUB();
+    var sub = PrimitiveFactory.SUB();
     var subAddr = nextInt();
     var ip = anInstructionPointer().with(subAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -143,7 +143,7 @@ class SUBTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var sub = new SUB();
+    var sub = PrimitiveFactory.SUB();
     var subAddr = nextInt();
     var ip = anInstructionPointer().with(subAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

@@ -38,7 +38,7 @@ class DOCOLTest {
   @DisplayName("it pushes FIP onto return stack and incs it by 1")
   public void worksOk() {
     // GIVEN
-    var docol = new DOCOL();
+    var docol = PrimitiveFactory.DOCOL();
     var docolAddress = nextInt();
     var state1 =
         aMachineState()

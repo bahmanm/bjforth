@@ -39,7 +39,7 @@ class FROMRTest {
   @Test
   void worksOk() {
     // GIVEN
-    var fromr = new FROMR();
+    var fromr = PrimitiveFactory.FROMR();
     var fromrAddr = nextInt();
     var ip = anInstructionPointer().with(fromrAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -71,7 +71,7 @@ class FROMRTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var fromr = new FROMR();
+    var fromr = PrimitiveFactory.FROMR();
     var fromrAddr = nextInt();
     var ip = anInstructionPointer().with(fromrAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

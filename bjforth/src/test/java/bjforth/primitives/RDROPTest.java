@@ -38,7 +38,7 @@ class RDROPTest {
   @DisplayName("drops the top of return stack.")
   public void workOk() {
     // GIVEN
-    var rdrop = new RDROP();
+    var rdrop = PrimitiveFactory.RDROP();
     var rdropAddr = nextInt();
     var ip = anInstructionPointer().with(rdropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -68,7 +68,7 @@ class RDROPTest {
   @DisplayName("should throw if return stack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var rdrop = new RDROP();
+    var rdrop = PrimitiveFactory.RDROP();
     var rdropAddr = nextInt();
     var ip = anInstructionPointer().with(rdropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

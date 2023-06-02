@@ -61,7 +61,7 @@ class LTETest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var lte = new LTE();
+    var lte = PrimitiveFactory.LTE();
     var lteAddr = nextInt();
     var ip = anInstructionPointer().with(lteAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -98,7 +98,7 @@ class LTETest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var lte = new LTE();
+    var lte = PrimitiveFactory.LTE();
     var lteAddr = nextInt();
     var ip = anInstructionPointer().with(lteAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -123,7 +123,7 @@ class LTETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var lte = new LTE();
+    var lte = PrimitiveFactory.LTE();
     var lteAddr = nextInt();
     var ip = anInstructionPointer().with(lteAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -146,7 +146,7 @@ class LTETest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var lte = new LTE();
+    var lte = PrimitiveFactory.LTE();
     var lteAddr = nextInt();
     var ip = anInstructionPointer().with(lteAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

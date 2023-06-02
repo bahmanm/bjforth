@@ -59,7 +59,7 @@ class ADDTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var add = new ADD();
+    var add = PrimitiveFactory.ADD();
     var addAddr = nextInt();
     var ip = anInstructionPointer().with(addAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -95,7 +95,7 @@ class ADDTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var add = new ADD();
+    var add = PrimitiveFactory.ADD();
     var addAddr = nextInt();
     var ip = anInstructionPointer().with(addAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -120,7 +120,7 @@ class ADDTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var add = new ADD();
+    var add = PrimitiveFactory.ADD();
     var addAddr = nextInt();
     var ip = anInstructionPointer().with(addAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -143,7 +143,7 @@ class ADDTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var add = new ADD();
+    var add = PrimitiveFactory.ADD();
     var addAddr = nextInt();
     var ip = anInstructionPointer().with(addAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

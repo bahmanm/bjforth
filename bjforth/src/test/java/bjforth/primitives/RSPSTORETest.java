@@ -42,7 +42,7 @@ class RSPSTORETest {
   @Test
   void worksOk() {
     // GIVEN
-    var rspstore = new RSPSTORE();
+    var rspstore = PrimitiveFactory.RSPSTORE();
     var rspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(rspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -79,7 +79,7 @@ class RSPSTORETest {
   @Test
   void throwsIfParameterStackEmpty() {
     // GIVEN
-    var rspstore = new RSPSTORE();
+    var rspstore = PrimitiveFactory.RSPSTORE();
     var rspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(rspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -103,7 +103,7 @@ class RSPSTORETest {
   @Test
   void throwsIfParameterStackNonNumber() {
     // GIVEN
-    var rspstore = new RSPSTORE();
+    var rspstore = PrimitiveFactory.RSPSTORE();
     var rspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(rspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -129,7 +129,7 @@ class RSPSTORETest {
   @Test
   void throwsIfReturnStackEmpty() {
     // GIVEN
-    var rspstore = new RSPSTORE();
+    var rspstore = PrimitiveFactory.RSPSTORE();
     var rspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(rspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -154,7 +154,7 @@ class RSPSTORETest {
   @Test
   void throwsIfPointerTooLarge() {
     // GIVEN
-    var rspstore = new RSPSTORE();
+    var rspstore = PrimitiveFactory.RSPSTORE();
     var rspstoreAddr = nextInt();
     var ip = anInstructionPointer().with(rspstoreAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

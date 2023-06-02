@@ -39,7 +39,7 @@ class DROPTest {
   @DisplayName("drops the top of ParameterStack.")
   public void workOk() {
     // GIVEN
-    var drop = new DROP();
+    var drop = PrimitiveFactory.DROP();
     var dropAddr = nextInt();
     var ip = anInstructionPointer().with(dropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -70,7 +70,7 @@ class DROPTest {
   @DisplayName("should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var drop = new DROP();
+    var drop = PrimitiveFactory.DROP();
     var dropAddr = nextInt();
     var ip = anInstructionPointer().with(dropAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

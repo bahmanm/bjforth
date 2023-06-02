@@ -39,7 +39,7 @@ class DUPTest {
   @DisplayName("duplicates top of ParameterStack.")
   public void worksOk() {
     // GIVEN
-    var dup = new DUP();
+    var dup = PrimitiveFactory.DUP();
     var dupAddr = nextInt();
     var ip = anInstructionPointer().with(dupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -71,7 +71,7 @@ class DUPTest {
   @DisplayName("should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var dup = new DUP();
+    var dup = PrimitiveFactory.DUP();
     var dupAddr = nextInt();
     var ip = anInstructionPointer().with(dupAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

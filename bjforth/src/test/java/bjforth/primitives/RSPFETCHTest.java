@@ -41,7 +41,7 @@ class RSPFETCHTest {
   @Test
   void worksOk() {
     // GIVEN
-    var rspfetch = new RSPFETCH();
+    var rspfetch = PrimitiveFactory.RSPFETCH();
     var rspfetchAddr = nextInt();
     var ip = anInstructionPointer().with(rspfetchAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -76,7 +76,7 @@ class RSPFETCHTest {
   @Test
   void throwsIfEmpty() {
     // GIVEN
-    var rspfetch = new RSPFETCH();
+    var rspfetch = PrimitiveFactory.RSPFETCH();
     var rspfetchAddr = nextInt();
     var ip = anInstructionPointer().with(rspfetchAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

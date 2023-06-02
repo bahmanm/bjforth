@@ -50,7 +50,7 @@ class DECR4Test {
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumber(Object parameter, Object expectedResult, String parameterClassName) {
     // GIVEN
-    var decr4 = new DECR4();
+    var decr4 = PrimitiveFactory.DECR4();
     var decr4Addr = nextInt();
     var ip = anInstructionPointer().with(decr4Addr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -82,7 +82,7 @@ class DECR4Test {
   @ArgumentsSource(NonNumberArgumentProvider.class)
   void throwsIfNonNumber(Object parameter, String parameterClassName) {
     // GIVEN
-    var decr4 = new DECR4();
+    var decr4 = PrimitiveFactory.DECR4();
     var decr4Addr = nextInt();
     var ip = anInstructionPointer().with(decr4Addr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -107,7 +107,7 @@ class DECR4Test {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var decr4 = new DECR4();
+    var decr4 = PrimitiveFactory.DECR4();
     var decr4Addr = nextInt();
     var ip = anInstructionPointer().with(decr4Addr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

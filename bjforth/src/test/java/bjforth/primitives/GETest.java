@@ -61,7 +61,7 @@ class GETest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var ge = new GE();
+    var ge = PrimitiveFactory.GE();
     var geAddr = nextInt();
     var ip = anInstructionPointer().with(geAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -98,7 +98,7 @@ class GETest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var ge = new GE();
+    var ge = PrimitiveFactory.GE();
     var geAddr = nextInt();
     var ip = anInstructionPointer().with(geAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -123,7 +123,7 @@ class GETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var ge = new GE();
+    var ge = PrimitiveFactory.GE();
     var geAddr = nextInt();
     var ip = anInstructionPointer().with(geAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -146,7 +146,7 @@ class GETest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var ge = new GE();
+    var ge = PrimitiveFactory.GE();
     var geAddr = nextInt();
     var ip = anInstructionPointer().with(geAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

@@ -59,7 +59,7 @@ class MULTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var mul = new MUL();
+    var mul = PrimitiveFactory.MUL();
     var mulAddr = nextInt();
     var ip = anInstructionPointer().with(mulAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -95,7 +95,7 @@ class MULTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var mul = new MUL();
+    var mul = PrimitiveFactory.MUL();
     var mulAddr = nextInt();
     var ip = anInstructionPointer().with(mulAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -120,7 +120,7 @@ class MULTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var mul = new MUL();
+    var mul = PrimitiveFactory.MUL();
     var mulAddr = nextInt();
     var ip = anInstructionPointer().with(mulAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -143,7 +143,7 @@ class MULTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var mul = new MUL();
+    var mul = PrimitiveFactory.MUL();
     var mulAddr = nextInt();
     var ip = anInstructionPointer().with(mulAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

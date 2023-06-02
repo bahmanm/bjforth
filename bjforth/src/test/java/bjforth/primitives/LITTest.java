@@ -47,7 +47,7 @@ class LITTest {
   @ArgumentsSource(LiteralProvider.class)
   void worksOk(Object literal, String literalClassName) {
     // GIVEN
-    var lit = new LIT();
+    var lit = PrimitiveFactory.LIT();
     var litAddr = nextInt();
     var ip = anInstructionPointer().with(litAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

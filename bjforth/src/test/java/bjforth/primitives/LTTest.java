@@ -61,7 +61,7 @@ class LTTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var lt = new LT();
+    var lt = PrimitiveFactory.LT();
     var ltAddr = nextInt();
     var ip = anInstructionPointer().with(ltAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -98,7 +98,7 @@ class LTTest {
       String parameter1ClassName,
       String parameter2ClassName) {
     // GIVEN
-    var lt = new LT();
+    var lt = PrimitiveFactory.LT();
     var ltAddr = nextInt();
     var ip = anInstructionPointer().with(ltAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -123,7 +123,7 @@ class LTTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var lt = new LT();
+    var lt = PrimitiveFactory.LT();
     var ltAddr = nextInt();
     var ip = anInstructionPointer().with(ltAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -146,7 +146,7 @@ class LTTest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var lt = new LT();
+    var lt = PrimitiveFactory.LT();
     var ltAddr = nextInt();
     var ip = anInstructionPointer().with(ltAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();

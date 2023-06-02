@@ -43,7 +43,7 @@ class MOVETest {
   @Test
   void worksOk() {
     // GIVEN
-    var move = new MOVE();
+    var move = PrimitiveFactory.MOVE();
     var moveAddr = nextInt();
     var ip = anInstructionPointer().with(moveAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -86,7 +86,7 @@ class MOVETest {
   @Test
   void throwsIfTopNonNumber() {
     // GIVEN
-    var move = new MOVE();
+    var move = PrimitiveFactory.MOVE();
     var moveAddr = nextInt();
     var ip = anInstructionPointer().with(moveAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -111,7 +111,7 @@ class MOVETest {
   @Test
   void throwsIf2ndTopNonNumber() {
     // GIVEN
-    var move = new MOVE();
+    var move = PrimitiveFactory.MOVE();
     var moveAddr = nextInt();
     var ip = anInstructionPointer().with(moveAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -136,7 +136,7 @@ class MOVETest {
   @Test
   void throwsIf3rdTopNonNumber() {
     // GIVEN
-    var move = new MOVE();
+    var move = PrimitiveFactory.MOVE();
     var moveAddr = nextInt();
     var ip = anInstructionPointer().with(moveAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -161,7 +161,7 @@ class MOVETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var move = new MOVE();
+    var move = PrimitiveFactory.MOVE();
     var moveAddr = nextInt();
     var ip = anInstructionPointer().with(moveAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -184,7 +184,7 @@ class MOVETest {
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var move = new MOVE();
+    var move = PrimitiveFactory.MOVE();
     var moveAddr = nextInt();
     var ip = anInstructionPointer().with(moveAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
@@ -209,7 +209,7 @@ class MOVETest {
   @Test
   void throwIfOnly2Elements() {
     // GIVEN
-    var move = new MOVE();
+    var move = PrimitiveFactory.MOVE();
     var moveAddr = nextInt();
     var ip = anInstructionPointer().with(moveAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
