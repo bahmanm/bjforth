@@ -20,6 +20,7 @@ package bjforth.primitives;
 
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
+import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MachineStateInspectionUtils.*;
 import static bjforth.machine.MemoryBuilder.aMemory;
@@ -28,7 +29,6 @@ import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import bjforth.machine.Machine;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +48,7 @@ class DOCOLTest {
     var state2 = aMachineState().copyFrom(state1).build();
 
     // WHEN
-    new Machine(state2).step();
+    aMachine().withState(state2).build().step();
 
     // THEN
     assertThat(state2)
