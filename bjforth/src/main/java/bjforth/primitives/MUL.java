@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class MUL implements Primitive {
+class MUL implements Primitive {
 
   private static final MultiplyNumberFunction add = new MultiplyNumberFunction();
 

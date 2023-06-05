@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class SUB implements Primitive {
+class SUB implements Primitive {
 
   private static final SubtractNumberFunction add = new SubtractNumberFunction();
 

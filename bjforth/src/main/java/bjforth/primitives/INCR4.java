@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class INCR4 implements Primitive {
+class INCR4 implements Primitive {
 
   private static final Incr4NumberFunction incr = new Incr4NumberFunction();
 

@@ -23,7 +23,7 @@ import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 import java.util.stream.IntStream;
 
-public class MOVE implements Primitive {
+class MOVE implements Primitive {
 
   @Override
   public void execute(Machine machine) {

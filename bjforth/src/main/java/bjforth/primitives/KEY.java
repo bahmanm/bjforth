@@ -23,7 +23,7 @@ import bjforth.machine.MachineException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class KEY implements Primitive {
+class KEY implements Primitive {
 
   private InputStreamReader reader = null;
 

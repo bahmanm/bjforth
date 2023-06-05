@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class QDUP implements Primitive {
+class QDUP implements Primitive {
 
   private static final IsZero isZero = new IsZero();
 

@@ -26,7 +26,7 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.util.NoSuchElementException;
 
-public class DIV implements Primitive {
+class DIV implements Primitive {
 
   private static final DivideNumberFunction add = new DivideNumberFunction();
 

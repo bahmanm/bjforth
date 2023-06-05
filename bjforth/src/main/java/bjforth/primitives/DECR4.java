@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class DECR4 implements Primitive {
+class DECR4 implements Primitive {
 
   private static final Decr4NumberFunction decr = new Decr4NumberFunction();
 

@@ -25,7 +25,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class MOD implements Primitive {
+class MOD implements Primitive {
 
   private static final ModNumberFunction add = new ModNumberFunction();
 

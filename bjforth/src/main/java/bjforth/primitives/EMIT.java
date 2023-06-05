@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.NoSuchElementException;
 
-public class EMIT implements Primitive {
+class EMIT implements Primitive {
 
   private OutputStreamWriter writer = null;
 

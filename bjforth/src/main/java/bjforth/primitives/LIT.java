@@ -20,7 +20,7 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-public class LIT implements Primitive {
+class LIT implements Primitive {
 
   @Override
   public void execute(Machine machine) {

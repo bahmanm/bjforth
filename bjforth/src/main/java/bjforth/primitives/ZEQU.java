@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class ZEQU implements Primitive {
+class ZEQU implements Primitive {
 
   private static final IsZero isZero = new IsZero();
 

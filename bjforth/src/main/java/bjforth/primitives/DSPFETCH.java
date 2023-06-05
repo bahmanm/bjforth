@@ -20,7 +20,7 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-public class DSPFETCH implements Primitive {
+class DSPFETCH implements Primitive {
 
   @Override
   public void execute(Machine machine) {

@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class ZGE implements Primitive {
+class ZGE implements Primitive {
 
   private static final IsGreaterThanOrEqualToZero isGreaterThanOrEqualToZero =
       new IsGreaterThanOrEqualToZero();
