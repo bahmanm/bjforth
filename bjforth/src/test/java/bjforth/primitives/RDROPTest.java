@@ -20,6 +20,7 @@ package bjforth.primitives;
 
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
+import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
@@ -27,7 +28,6 @@ import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,7 +50,7 @@ class RDROPTest {
             .withReturnStack(aReturnStack().with(nextInt()).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // WHEN
     machine.step();
@@ -80,7 +80,7 @@ class RDROPTest {
             .withReturnStack(aReturnStack().build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);

@@ -20,6 +20,7 @@ package bjforth.primitives;
 
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
+import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
@@ -28,7 +29,6 @@ import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -85,7 +85,7 @@ class EMITTest {
             .withParameterStack(aParameterStack().with(ch).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // WHEN
     machine.step();
@@ -116,7 +116,7 @@ class EMITTest {
             .withParameterStack(aParameterStack().with(new Object()).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
@@ -141,7 +141,7 @@ class EMITTest {
             .withParameterStack(aParameterStack().build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);

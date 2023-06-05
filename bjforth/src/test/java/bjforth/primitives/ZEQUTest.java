@@ -20,6 +20,7 @@ package bjforth.primitives;
 
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
+import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
@@ -27,7 +28,6 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 
-import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import bjforth.utils.RandomUtils;
 import java.math.BigDecimal;
@@ -61,7 +61,7 @@ class ZEQUTest {
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // WHEN
     machine.step();
@@ -91,7 +91,7 @@ class ZEQUTest {
             .withParameterStack(aParameterStack().with(new Object()).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
@@ -116,7 +116,7 @@ class ZEQUTest {
             .withParameterStack(aParameterStack().build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
-    var machine = new Machine(state2);
+    var machine = aMachine().withState(state2).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
