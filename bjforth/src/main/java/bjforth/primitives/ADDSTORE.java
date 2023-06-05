@@ -23,7 +23,7 @@ import bjforth.machine.MachineException;
 import bjforth.primitives.lib.NumberUtils;
 import java.util.NoSuchElementException;
 
-public class ADDSTORE implements Primitive {
+class ADDSTORE implements Primitive {
 
   @Override
   public void execute(Machine machine) {

@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class GT implements Primitive {
+class GT implements Primitive {
 
   private static final GreaterThan greaterThan = new GreaterThan();
 

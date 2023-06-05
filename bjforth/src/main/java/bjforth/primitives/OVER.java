@@ -22,7 +22,7 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class OVER implements Primitive {
+class OVER implements Primitive {
 
   @Override
   public void execute(Machine machine) {

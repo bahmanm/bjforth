@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class LT implements Primitive {
+class LT implements Primitive {
 
   private static final LessThan lessThan = new LessThan();
 

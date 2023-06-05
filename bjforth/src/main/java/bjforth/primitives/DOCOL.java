@@ -20,7 +20,7 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-public class DOCOL implements Primitive {
+class DOCOL implements Primitive {
 
   @Override
   public void execute(Machine machine) {

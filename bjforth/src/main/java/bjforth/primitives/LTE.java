@@ -24,7 +24,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
 
-public class LTE implements Primitive {
+class LTE implements Primitive {
 
   private static final LessThanOrEqual lessThatOrEqual = new LessThanOrEqual();
 

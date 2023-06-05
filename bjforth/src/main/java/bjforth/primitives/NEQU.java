@@ -22,7 +22,7 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.util.NoSuchElementException;
 
-public class NEQU implements Primitive {
+class NEQU implements Primitive {
 
   @Override
   public void execute(Machine machine) {
