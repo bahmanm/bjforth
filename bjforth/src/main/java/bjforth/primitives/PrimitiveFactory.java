@@ -274,6 +274,12 @@ public class PrimitiveFactory {
     return containerTWOSWAP.get();
   }
 
+  private static PrimitiveContainer containerWORD = new PrimitiveContainer(WORD::new);
+
+  static Primitive WORD() {
+    return containerWORD.get();
+  }
+
   private static PrimitiveContainer containerZEQU = new PrimitiveContainer(ZEQU::new);
 
   static Primitive ZEQU() {
