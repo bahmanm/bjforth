@@ -21,7 +21,6 @@ package bjforth.primitives;
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
-
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
@@ -68,13 +67,16 @@ class NUMBER implements Primitive {
     private static Number toInteger(String s, int base) {
       try {
         return Integer.valueOf(s, base);
-      } catch (NumberFormatException ignore1) {}
+      } catch (NumberFormatException ignore1) {
+      }
       try {
         return Long.valueOf(s, base);
-      } catch (NumberFormatException ignore2) {}
+      } catch (NumberFormatException ignore2) {
+      }
       try {
         return new BigInteger(s, base);
-      } catch (NumberFormatException ignore3) {}
+      } catch (NumberFormatException ignore3) {
+      }
       return null;
     }
   }
