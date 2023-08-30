@@ -1,3 +1,7 @@
+---
+
+os: linux
+dist: jammy
 language: java
 jdk: openjdk17
 
