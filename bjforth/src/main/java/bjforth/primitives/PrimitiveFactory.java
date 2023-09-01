@@ -316,6 +316,12 @@ public class PrimitiveFactory {
     return containerZNEQU.get();
   }
 
+  private static PrimitiveContainer containerNUMBER = new PrimitiveContainer(NUMBER::new);
+
+  static Primitive NUMBER() {
+    return containerNUMBER.get();
+  }
+
   private static class PrimitiveContainer {
 
     private Primitive instance;
