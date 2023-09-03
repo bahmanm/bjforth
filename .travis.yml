@@ -18,6 +18,7 @@ jobs:
       name: Compile
       os: linux
       dist: focal
+      language: java
       jdk: openjdk17
       install: >-
         pushd /tmp
