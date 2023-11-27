@@ -18,6 +18,13 @@
  */
 package bjforth.bootstrap;
 
+import static bjforth.machine.MachineAssertions.*;
+import static bjforth.machine.MachineBuilder.aMachine;
+import static bjforth.machine.MachineStateBuilder.aMachineState;
+import static bjforth.machine.MemoryBuilder.aMemory;
+import static org.assertj.core.api.Assertions.*;
+
+import bjforth.variables.Variables;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -25,7 +32,27 @@ class BootstrapTest {
 
   @Test
   @DisplayName("should place bjforth variable values in designated memory addresses")
-  void placeVariables() {}
+  void placeVariables() {
+    // GIVEN
+    var state1 = aMachineState().build();
+    var state2 = aMachineState().copyFrom(state1).build();
+    var machine = aMachine().withState(state2).build();
+    var bootstrap = new Bootstrap();
+
+    // WHEN
+    bootstrap.apply(machine);
+
+    // THEN
+    assertThat(state2)
+        .hasMemoryEqualTo(
+            aMemory()
+                .with(state1)
+                .with(Variables.HERE().getAddress(), 4)
+                .with(Variables.STATE().getAddress(), 0)
+                .with(Variables.BASE().getAddress(), 10)
+                .with(Variables.LATEST().getAddress(), 0)
+                .build());
+  }
 
   @Test
   @DisplayName("should update HERE during & after bootstrap is done.")
