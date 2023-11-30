@@ -5,7 +5,7 @@ import org.gradle.api.tasks.testing.Test
 
 plugins {
   id 'application'
-  id 'com.diffplug.spotless' version '6.23.0'
+  id 'com.diffplug.spotless' version '6.23.2'
 }
 
 repositories {
