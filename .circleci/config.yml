@@ -23,7 +23,7 @@ jobs:
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "bjforth/bjforth/build.gradle" }}
+            - v1-dependencies-{{ checksum "bjforth/build.gradle" }}
             - v1-dependencies-
 
       - run:
@@ -34,7 +34,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "bjforth/bjforth/build.gradle" }}
+          key: v1-dependencies-{{ checksum "bjforth/build.gradle" }}
 
       - run:
           name: Run the tests
