@@ -5,7 +5,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: eclipse-temurin:17.0.10_7-jdk-focal
+      - image: opensuse/tumbleweed:latest
     working_directory: ~/repo
     environment:
       JVM_OPTS: -Xmx1024m
@@ -13,15 +13,12 @@ jobs:
 
     steps:
       - run:
-          name: Install GNU Make 4.4
+          name: Install runtime
           command: >-
-            pushd /tmp
-            && wget 'https://ftp.gnu.org/gnu/make/make-4.4.1.tar.gz'
-            && tar xzf make-4.4.1.tar.gz
-            && cd make-4.4.1
-            && ./configure --prefix=/usr/local
-            && sudo make install
-            && popd
+            zypper refresh
+            && zypper install \
+                 java-17-openjdk-headless \
+                 make
 
       - checkout
 
