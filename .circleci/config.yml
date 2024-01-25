@@ -39,3 +39,7 @@ jobs:
           name: Run the tests
           command: >-
             make test
+
+      - store_artifacts:
+          path: bjforth/build/reports
+          destination: test-reports
