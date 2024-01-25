@@ -1,16 +1,28 @@
+---
+
 version: 2
 
 jobs:
   build:
-    
     docker:
       - image: eclipse-temurin:17.0.10_7-jdk-focal
     working_directory: ~/repo
     environment:
-      JVM_OPTS: -Xmx1024
+      JVM_OPTS: -Xmx1024m
       TERM: dumb
 
     steps:
+      - run:
+          name: Install GNU Make 4.4
+          command: >-
+            pushd /tmp
+            && wget 'https://ftp.gnu.org/gnu/make/make-4.4.1.tar.gz'
+            && tar xzf make-4.4.1.tar.gz
+            && cd make-4.4.1
+            && ./configure --prefix=/usr/local
+            && sudo make install
+            && popd
+
       - checkout
 
       - restore_cache:
@@ -19,14 +31,16 @@ jobs:
             - v1-dependencies-
 
       - run:
+          name: Fetch the dependencies and compile
           command: >-
-            ./gradlew dependencies
+            make compile
 
       - save_cache:
           paths:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-      - run: 
+      - run:
+          name: Run the tests
           command: >-
-            ./gradlew check
+            make test
