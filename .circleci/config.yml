@@ -6,9 +6,11 @@ jobs:
   build:
     docker:
       - image: opensuse/tumbleweed:latest
-    working_directory: ~/repo
-    environment:
-      JVM_OPTS: -Xmx1024m
+        environment:
+          LANG: en_US.UTF-8
+          JVM_OPTS: -Xmx1024m
+
+    working_directory: ~/bjforth
 
     steps:
       - run:
@@ -43,3 +45,6 @@ jobs:
       - store_artifacts:
           path: bjforth/build/reports
           destination: test-reports
+
+      - store_test_results:
+          path: bjforth/build/test-results
