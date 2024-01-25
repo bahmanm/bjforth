@@ -13,12 +13,13 @@ jobs:
 
     steps:
       - run:
-          name: Install runtime
+          name: Install the runtime
           command: >-
             zypper --non-interactive refresh
-            && zypper --non-interactive install \
-                 java-17-openjdk-headless \
+            && zypper --non-interactive install
+                 java-21-openjdk-headless
                  make
+            && source /etc/profile
 
       - checkout
 
