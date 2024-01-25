@@ -1,0 +1,32 @@
+version: 2
+
+jobs:
+  build:
+    
+    docker:
+      - image: eclipse-temurin:17.0.10_7-jdk-focal
+    working_directory: ~/repo
+    environment:
+      JVM_OPTS: -Xmx1024
+      TERM: dumb
+
+    steps:
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "build.gradle" }}
+            - v1-dependencies-
+
+      - run:
+          command: >-
+            ./gradlew dependencies
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "build.gradle" }}
+
+      - run: 
+          command: >-
+            ./gradlew check
