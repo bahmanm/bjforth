@@ -60,3 +60,11 @@ format : gradle( spotlessApply )
 .PHONY : compile
 
 compile : gradle( classes )
+
+####################################################################################################
+
+.PHONY : clean
+
+clean : gradle( clean )
+clean:
+	-@rm -rf build bjforth/build
