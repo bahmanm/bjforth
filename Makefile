@@ -16,12 +16,17 @@
 # along with BJForth. If not, see <https://www.gnu.org/licenses/>.
 ####################################################################################################
 
-SHELL := /usr/bin/env bash -e -o pipefail
+SHELL := /usr/bin/env bash
 .DEFAULT_GOAL := test
 
 ####################################################################################################
 
 export ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+
+####################################################################################################
+
+.PHONY : bmakelib/bmakelib.mk
+include  bmakelib/bmakelib.mk
 
 ####################################################################################################
 
@@ -60,3 +65,11 @@ format : gradle( spotlessApply )
 .PHONY : compile
 
 compile : gradle( classes )
+
+####################################################################################################
+
+.PHONY : clean
+
+clean : gradle( clean )
+clean:
+	-@rm -rf build bjforth/build

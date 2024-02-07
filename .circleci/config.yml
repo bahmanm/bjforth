@@ -1,0 +1,52 @@
+---
+
+version: 2
+
+jobs:
+  build:
+    docker:
+      - image: opensuse/tumbleweed:latest
+        environment:
+          LANG: en_US.UTF-8
+          JVM_OPTS: -Xmx1024m
+
+    working_directory: ~/bjforth
+
+    steps:
+      - run:
+          name: Install the runtime
+          command: >-
+            zypper --non-interactive refresh
+            && zypper --non-interactive install java-17-openjdk-devel make perl
+            && rpm --install --nosignature \
+                 https://github.com/bahmanm/bmakelib/releases/download/v0.7.0/bmakelib-0.7.0-1.1.noarch.rpm \
+            && { source /etc/profile || true; }
+
+      - checkout
+
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "bjforth/build.gradle" }}
+            - v1-dependencies-
+
+      - run:
+          name: Fetch the dependencies and compile
+          command: >-
+            make compile
+
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: v1-dependencies-{{ checksum "bjforth/build.gradle" }}
+
+      - run:
+          name: Run the tests
+          command: >-
+            make test
+
+      - store_artifacts:
+          path: bjforth/build/reports
+          destination: test-reports
+
+      - store_test_results:
+          path: bjforth/build/test-results
