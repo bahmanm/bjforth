@@ -18,6 +18,8 @@ jobs:
           command: >-
             zypper --non-interactive refresh
             && zypper --non-interactive install java-17-openjdk-devel make
+            && rpm --install --nosignature \
+                 https://github.com/bahmanm/bmakelib/releases/download/v0.7.0/bmakelib-0.7.0-1.1.noarch.rpm \
             && { source /etc/profile || true; }
 
       - checkout
