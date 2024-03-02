@@ -5,7 +5,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: opensuse/tumbleweed:latest
+      - image: bdockerimg/bmakelib:0.7.0--opensuse-tumbleweed
         environment:
           LANG: en_US.UTF-8
           JVM_OPTS: -Xmx1024m
@@ -17,17 +17,15 @@ jobs:
           name: Install the runtime
           command: >-
             zypper --non-interactive refresh
-            && zypper --non-interactive install java-17-openjdk-devel make perl
-            && rpm --install --nosignature \
-                 https://github.com/bahmanm/bmakelib/releases/download/v0.7.0/bmakelib-0.7.0-1.1.noarch.rpm \
+            && zypper --non-interactive install java-17-openjdk-devel
             && { source /etc/profile || true; }
 
       - checkout
 
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "bjforth/build.gradle" }}
-            - v1-dependencies-
+            - dependencies-{{ checksum "bjforth/build.gradle" }}
+            - dependencies-
 
       - run:
           name: Fetch the dependencies and compile
@@ -37,7 +35,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: v1-dependencies-{{ checksum "bjforth/build.gradle" }}
+          key: dependencies-{{ checksum "bjforth/build.gradle" }}
 
       - run:
           name: Run the tests
