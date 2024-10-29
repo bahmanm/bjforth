@@ -33,13 +33,13 @@ configurations {
 
 dependencies {
   testLib sourceSets.testLib.output
-  testLibImplementation 'org.apache.commons:commons-lang3:3.16.0'
+  testLibImplementation 'org.apache.commons:commons-lang3:3.17.0'
   testLibImplementation 'org.assertj:assertj-core:3.26.3'
 
   testImplementation sourceSets.testLib.runtimeClasspath
 
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.0'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.3'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.3'
   testImplementation 'org.assertj:assertj-core:3.26.3'
 }
 
