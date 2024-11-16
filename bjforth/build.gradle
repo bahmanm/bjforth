@@ -45,7 +45,7 @@ dependencies {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
@@ -92,7 +92,7 @@ tasks.withType(Test).configureEach {
 tasks.withType(JavaCompile).configureEach {
   options.encoding = 'UTF-8'
   options.incremental = true
-  options.release.set(17)
+  options.release.set(21)
   options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked' << '-parameters' << '--enable-preview'
   dependsOn 'spotlessApply'
 }
