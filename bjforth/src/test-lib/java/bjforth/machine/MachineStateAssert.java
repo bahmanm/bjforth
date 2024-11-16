@@ -101,7 +101,7 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
       }
       var actualValue = actualIterator.next();
       var otherValue = otherIterator.next();
-      if (!actualValue.equals(otherValue)) {
+      if (otherValue != null && !actualValue.equals(otherValue)) {
         failWithMessage(
             "Expected ParameterStack to contain <%s> but was <%s>.", otherValue, actualValue);
       }

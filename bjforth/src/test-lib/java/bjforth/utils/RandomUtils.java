@@ -26,7 +26,7 @@ import java.util.List;
 public class RandomUtils {
 
   public static Integer nextInt() {
-    return org.apache.commons.lang3.RandomUtils.nextInt();
+    return org.apache.commons.lang3.RandomUtils.secure().randomInt();
   }
 
   public static Integer nextIntExcluding(Integer... exclusions) {
@@ -37,7 +37,7 @@ public class RandomUtils {
   }
 
   public static Long nextLong() {
-    return org.apache.commons.lang3.RandomUtils.nextLong();
+    return org.apache.commons.lang3.RandomUtils.secure().randomLong();
   }
 
   public static Long nextLongExcluding(Long... exclusions) {
@@ -48,7 +48,7 @@ public class RandomUtils {
   }
 
   public static Float nextFloat() {
-    return org.apache.commons.lang3.RandomUtils.nextFloat();
+    return org.apache.commons.lang3.RandomUtils.secure().randomFloat();
   }
 
   public static Float nextFloatExcluding(Float... exclusions) {
@@ -59,7 +59,7 @@ public class RandomUtils {
   }
 
   public static Double nextDouble() {
-    return org.apache.commons.lang3.RandomUtils.nextDouble();
+    return org.apache.commons.lang3.RandomUtils.secure().randomDouble();
   }
 
   public static Double nextDoubleExcluding(Double... exclusions) {
@@ -70,8 +70,8 @@ public class RandomUtils {
   }
 
   public static Short nextShort() {
-    var n = org.apache.commons.lang3.RandomUtils.nextInt(0, Short.MAX_VALUE - 1);
-    return (short) (org.apache.commons.lang3.RandomUtils.nextBoolean() ? n : -n);
+    var n = org.apache.commons.lang3.RandomUtils.secure().randomInt(0, Short.MAX_VALUE - 1);
+    return (short) (org.apache.commons.lang3.RandomUtils.secure().randomBoolean() ? n : -n);
   }
 
   public static Short nextShortExcluding(Short... exclusions) {
@@ -101,7 +101,7 @@ public class RandomUtils {
   }
 
   public static Byte nextByte() {
-    return org.apache.commons.lang3.RandomUtils.nextBytes(1)[0];
+    return org.apache.commons.lang3.RandomUtils.secure().randomBytes(1)[0];
   }
 
   public static Byte nextByteExcluding(Byte... exclusions) {
