@@ -29,6 +29,7 @@ import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import bjforth.bootstrap.Bootstrap;
 import bjforth.machine.MachineException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,8 +52,13 @@ class NUMBERTest {
             .withMemory(aMemory().with(numberAddr, number).build())
             .withParameterStack(aParameterStack().with(Integer.toString(parameter)).build())
             .build();
+    var bootstrap = new Bootstrap();
+    // TODO Find a cleaner way to bootstrap `state1`
+    var _machine = aMachine().withState(state1).build();
+    bootstrap.apply(_machine);
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
+    bootstrap.apply(machine);
 
     // WHEN
     machine.step();
@@ -63,7 +69,7 @@ class NUMBERTest {
         .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
         .hasDictionaryEqualTo(state1)
         .hasMemoryEqualTo(state1)
-        .hasParameterStackEqualTo(aParameterStack().with(parameter).build())
+        .hasParameterStackEqualTo(aParameterStack().with(parameter).with(0).build())
         .hasReturnStackEqualTo(state1);
   }
 
