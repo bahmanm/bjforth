@@ -74,6 +74,43 @@ class FINDTest {
   }
 
   @Test
+  @DisplayName("Should ignore hidden dictionary entries.")
+  public void ignoreHidden() {
+    // GIVEN
+    var find = PrimitiveFactory.FIND();
+    var findAddr = nextInt();
+    var ip = anInstructionPointer().with(findAddr).build();
+    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var wordToFind = "ADD";
+    var isHidden = true;
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(findAddr, find).with(100, PrimitiveFactory.ADD()).build())
+            .withParameterStack(aParameterStack().with(wordToFind).build())
+            .withDictionary(
+                aDictionary()
+                    .with(wordToFind, new DictionaryItem(wordToFind, 100, false, isHidden))
+                    .build())
+            .build();
+    var state2 = aMachineState().copyFrom(state1).build();
+    var machine = aMachine().withState(state2).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(state2)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
+        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
+        .hasDictionaryEqualTo(state1)
+        .hasMemoryEqualTo(state1)
+        .hasParameterStackEqualTo(aParameterStack().build())
+        .hasReturnStackEqualTo(state1);
+  }
+
+  @Test
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
