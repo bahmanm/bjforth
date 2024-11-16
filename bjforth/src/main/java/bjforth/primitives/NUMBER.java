@@ -33,7 +33,12 @@ class NUMBER implements Primitive {
       var strObject = machine.popFromParameterStack();
       if (strObject instanceof String s) {
         var base = (Integer) machine.getMemoryAt(Variables.BASE().getAddress());
-        var number = StringToNumber.valueOf(s, base);
+        Number number;
+        try {
+          number = StringToNumber.valueOf(s, base);
+        } catch (NumberFormatException ex) {
+          number = null;
+        }
         var status = number == null ? -1 : 0;
         machine.pushToParameterStack(number);
         machine.pushToParameterStack(status);
