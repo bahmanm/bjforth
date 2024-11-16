@@ -106,6 +106,12 @@ public class PrimitiveFactory {
     return containerFETCH.get();
   }
 
+  private static PrimitiveContainer containerFIND = new PrimitiveContainer(FIND::new);
+
+  static Primitive FIND() {
+    return containerFIND.get();
+  }
+
   private static PrimitiveContainer containerFROMR = new PrimitiveContainer(FROMR::new);
 
   static Primitive FROMR() {
