@@ -17,7 +17,7 @@ jobs:
           name: Install the runtime
           command: >-
             zypper --non-interactive refresh
-            && zypper --non-interactive install java-17-openjdk-devel
+            && zypper --non-interactive install java-21-openjdk-devel
             && { source /etc/profile || true; }
 
       - checkout
