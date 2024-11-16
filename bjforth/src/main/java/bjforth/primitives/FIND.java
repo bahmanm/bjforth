@@ -32,8 +32,10 @@ class FIND implements Primitive {
         var maybeDictionaryItem = machine.getDictionaryItem(wordName);
         maybeDictionaryItem.ifPresentOrElse(
             (dictionaryItem) -> {
-              var dictionaryItemAddress = dictionaryItem.getAddress();
-              machine.pushToParameterStack(dictionaryItemAddress);
+              if (!dictionaryItem.getIsHidden()) {
+                var dictionaryItemAddress = dictionaryItem.getAddress();
+                machine.pushToParameterStack(dictionaryItemAddress);
+              }
             },
             () -> {
               throw new MachineException("No such DictionaryItem");
