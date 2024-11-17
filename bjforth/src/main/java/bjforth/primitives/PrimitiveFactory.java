@@ -58,6 +58,12 @@ public class PrimitiveFactory {
     return containerDECR4.get();
   }
 
+  private static PrimitiveContainer containerDFA = new PrimitiveContainer(DFA::new);
+
+  static Primitive DFA() {
+    return containerDFA.get();
+  }
+
   private static PrimitiveContainer containerDIV = new PrimitiveContainer(DIV::new);
 
   static Primitive DIV() {

@@ -32,22 +32,22 @@ import bjforth.machine.MachineException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CFATest {
+class DFATest {
 
   @Test
-  @DisplayName("Safely ignore a valid memory address.")
+  @DisplayName("Should increment the address parameter by 1.")
   public void worksOk() {
     // GIVEN
-    var cfa = PrimitiveFactory.CFA();
-    var cfaAddr = nextInt();
-    var ip = anInstructionPointer().with(cfaAddr).build();
+    var dfa = PrimitiveFactory.DFA();
+    var dfaAddr = nextInt();
+    var ip = anInstructionPointer().with(dfaAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var parameter = nextInt();
     var state1 =
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(cfaAddr, cfa).build())
+            .withMemory(aMemory().with(dfaAddr, dfa).build())
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
@@ -61,7 +61,7 @@ class CFATest {
         .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
         .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
         .hasMemoryEqualTo(state1)
-        .hasParameterStackEqualTo(aParameterStack().build())
+        .hasParameterStackEqualTo(aParameterStack().with(parameter + 1).build())
         .hasReturnStackEqualTo(state1);
   }
 
@@ -69,15 +69,15 @@ class CFATest {
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var cfa = PrimitiveFactory.CFA();
-    var cfaAddr = nextInt();
-    var ip = anInstructionPointer().with(cfaAddr).build();
+    var dfa = PrimitiveFactory.DFA();
+    var dfaAddr = nextInt();
+    var ip = anInstructionPointer().with(dfaAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var state1 =
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(cfaAddr, cfa).build())
+            .withMemory(aMemory().with(dfaAddr, dfa).build())
             .withParameterStack(aParameterStack().build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
