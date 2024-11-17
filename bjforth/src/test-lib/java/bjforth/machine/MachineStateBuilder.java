@@ -18,6 +18,8 @@
  */
 package bjforth.machine;
 
+import bjforth.variables.Variable;
+
 public class MachineStateBuilder {
   private Integer instructionPointer = 0;
   private Integer nextInstructionPointer = 0;
@@ -63,6 +65,11 @@ public class MachineStateBuilder {
 
   public MachineStateBuilder withParameterStack(Stack parameterStack) {
     this.parameterStack = parameterStack;
+    return this;
+  }
+
+  public MachineStateBuilder withVariable(Variable variable, Object value) {
+    this.memory.set(variable.getAddress(), value);
     return this;
   }
 

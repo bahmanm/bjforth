@@ -142,6 +142,12 @@ public class PrimitiveFactory {
     return containerGT.get();
   }
 
+  private static PrimitiveContainer containerHERE = new PrimitiveContainer(HERE::new);
+
+  static Primitive HERE() {
+    return containerHERE.get();
+  }
+
   private static PrimitiveContainer containerINCR = new PrimitiveContainer(INCR::new);
 
   static Primitive INCR() {
