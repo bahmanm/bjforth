@@ -166,6 +166,12 @@ public class PrimitiveFactory {
     return containerKEY.get();
   }
 
+  private static PrimitiveContainer containerLATEST = new PrimitiveContainer(LATEST::new);
+
+  static Primitive LATEST() {
+    return containerLATEST.get();
+  }
+
   private static PrimitiveContainer containerLIT = new PrimitiveContainer(LIT::new);
 
   static Primitive LIT() {
