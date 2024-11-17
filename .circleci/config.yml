@@ -5,7 +5,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: bdockerimg/bmakelib:0.7.0--opensuse-tumbleweed
+      - image: bdockerimg/bmakelib:0.8.0--opensuse-tumbleweed
         environment:
           LANG: en_US.UTF-8
           JVM_OPTS: -Xmx1024m
