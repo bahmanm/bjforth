@@ -34,6 +34,12 @@ public class PrimitiveFactory {
     return containerADDSTORE.get();
   }
 
+  private static PrimitiveContainer containerBASE = new PrimitiveContainer(BASE::new);
+
+  static Primitive BASE() {
+    return containerBASE.get();
+  }
+
   private static PrimitiveContainer containerCFA = new PrimitiveContainer(CFA::new);
 
   static Primitive CFA() {
