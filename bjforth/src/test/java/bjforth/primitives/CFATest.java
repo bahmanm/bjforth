@@ -47,7 +47,7 @@ class CFATest {
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(cfaAddr, cfa).with(100, PrimitiveFactory.ADD()).build())
+            .withMemory(aMemory().with(cfaAddr, cfa).build())
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
@@ -69,7 +69,7 @@ class CFATest {
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var cfa = PrimitiveFactory.FIND();
+    var cfa = PrimitiveFactory.CFA();
     var cfaAddr = nextInt();
     var ip = anInstructionPointer().with(cfaAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
