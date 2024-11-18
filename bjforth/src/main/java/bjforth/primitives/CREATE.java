@@ -18,8 +18,10 @@
  */
 package bjforth.primitives;
 
+import bjforth.machine.DictionaryItem;
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
+import bjforth.variables.Variables;
 import java.util.NoSuchElementException;
 
 public class CREATE implements Primitive {
@@ -29,8 +31,17 @@ public class CREATE implements Primitive {
     try {
       var lengthObject = machine.popFromParameterStack();
       var addressObject = machine.popFromParameterStack();
-      if (lengthObject instanceof Integer _length && addressObject instanceof Integer address) {
-        var name = machine.getMemoryAt(address);
+      var HEREAddr = Variables.HERE().getAddress();
+      var HEREValue = (Integer) machine.getMemoryAt(HEREAddr);
+      var LATESTAddr = Variables.LATEST().getAddress();
+      if (lengthObject instanceof Integer _length && addressObject instanceof Integer nameAddr) {
+        var name = (String) machine.getMemoryAt(nameAddr);
+        machine.setMemoryAt(HEREValue, name);
+        var newHEREValue = HEREValue + 1;
+        machine.setMemoryAt(HEREAddr, newHEREValue);
+        machine.setMemoryAt(LATESTAddr, HEREValue);
+        var dictItem = new DictionaryItem(name, HEREValue, false, true);
+        machine.createDictionaryItem(name, dictItem);
       } else {
         throw new MachineException("Invalid argument");
       }
