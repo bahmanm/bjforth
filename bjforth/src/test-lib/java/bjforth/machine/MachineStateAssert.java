@@ -21,6 +21,7 @@ package bjforth.machine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MachineStateInspectionUtils.*;
 
+import bjforth.variables.Variable;
 import org.assertj.core.api.AbstractAssert;
 
 public class MachineStateAssert extends AbstractAssert<MachineStateAssert, MachineState> {
@@ -51,6 +52,11 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
       }
     }
     return this;
+  }
+
+  public MachineStateAssert hasDictionaryEqualTo(Dictionary other) {
+    isNotNull();
+    return hasDictionaryEqualTo(aMachineState().withDictionary(other).build());
   }
 
   public MachineStateAssert hasMemoryEqualTo(MachineState other) {
@@ -214,5 +220,14 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
         .hasMemoryEqualTo(other)
         .hasReturnStackEqualTo(other)
         .hasParameterStackEqualTo(other);
+  }
+
+  public MachineStateAssert hasVariableEqualTo(Variable variable, Integer otherValue) {
+    isNotNull();
+    var actualValue = (Integer) actual.getMemory().get(variable.getAddress());
+    if (!actualValue.equals(otherValue)) {
+      failWithMessage("Expected variable to be <%s> but was <%s>", otherValue, actualValue);
+    }
+    return this;
   }
 }
