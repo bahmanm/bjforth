@@ -52,6 +52,12 @@ public class PrimitiveFactory {
     return containerCOPY.get();
   }
 
+  private static PrimitiveContainer containerCREATE = new PrimitiveContainer(CREATE::new);
+
+  static Primitive CREATE() {
+    return containerCREATE.get();
+  }
+
   private static PrimitiveContainer containerDECR = new PrimitiveContainer(DECR::new);
 
   static Primitive DECR() {
