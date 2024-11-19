@@ -58,6 +58,12 @@ public class PrimitiveFactory {
     return containerCREATE.get();
   }
 
+  private static PrimitiveContainer containerCOMMA = new PrimitiveContainer(COMMA::new);
+
+  static Primitive COMMA() {
+    return containerCOMMA.get();
+  }
+
   private static PrimitiveContainer containerDECR = new PrimitiveContainer(DECR::new);
 
   static Primitive DECR() {
