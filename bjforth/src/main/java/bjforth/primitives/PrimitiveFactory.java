@@ -190,6 +190,12 @@ public class PrimitiveFactory {
     return containerLATEST.get();
   }
 
+  private static PrimitiveContainer containerLBRAC = new PrimitiveContainer(LBRAC::new);
+
+  static Primitive LBRAC() {
+    return containerLBRAC.get();
+  }
+
   private static PrimitiveContainer containerLIT = new PrimitiveContainer(LIT::new);
 
   static Primitive LIT() {
