@@ -256,6 +256,12 @@ public class PrimitiveFactory {
     return containerQDUP.get();
   }
 
+  private static PrimitiveContainer containerRBRAC = new PrimitiveContainer(RBRAC::new);
+
+  static Primitive RBRAC() {
+    return containerRBRAC.get();
+  }
+
   private static PrimitiveContainer containerRDROP = new PrimitiveContainer(RDROP::new);
 
   static Primitive RDROP() {
