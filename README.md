@@ -6,3 +6,13 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 Bahman's Forth on the JVM
+
+#### Implementation Notes
+A bunch of notes which are most probably useless to anyone else but me.
+
+##### Non-primitive words
+The list of words which are defined in the assembler file (`jonesforth.S`) but are in fact
+Forth words.
+
+- COLON @ jonesforth.S:1869
+- SEMICOLON @ jonesforth.S:1881
