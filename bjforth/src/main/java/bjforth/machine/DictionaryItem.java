@@ -19,10 +19,10 @@
 package bjforth.machine;
 
 public class DictionaryItem {
-  private final String name;
-  private final Integer address;
-  private final Boolean isImmediate;
-  private final Boolean isHidden;
+  private String name;
+  private Integer address;
+  private Boolean isImmediate;
+  private Boolean isHidden;
 
   public DictionaryItem(String name, Integer address, Boolean isImmediate, Boolean isHidden) {
     this.name = name;
@@ -42,16 +42,32 @@ public class DictionaryItem {
     return name;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public Integer getAddress() {
     return address;
+  }
+
+  public void setAddress(Integer address) {
+    this.address = address;
   }
 
   public Boolean getIsImmediate() {
     return isImmediate;
   }
 
+  public void setIsImmediate(Boolean isImmediate) {
+    this.isImmediate = isImmediate;
+  }
+
   public Boolean getIsHidden() {
     return isHidden;
+  }
+
+  public void setIsHidden(Boolean isHidden) {
+    this.isHidden = isHidden;
   }
 
   @Override
