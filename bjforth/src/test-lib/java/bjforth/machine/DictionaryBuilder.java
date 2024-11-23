@@ -33,6 +33,17 @@ public class DictionaryBuilder {
     return this;
   }
 
+  public DictionaryBuilder with(MachineState state) {
+    state
+        .getDictionary()
+        .items
+        .forEach(
+            (name, items) -> {
+              items.forEach(item -> dictionary.put(name, item));
+            });
+    return this;
+  }
+
   public Dictionary build() {
     return dictionary;
   }
