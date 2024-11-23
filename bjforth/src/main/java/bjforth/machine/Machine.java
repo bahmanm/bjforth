@@ -72,6 +72,10 @@ public class Machine {
     return state.getDictionary().get(name);
   }
 
+  public Optional<DictionaryItem> getDictionaryItem(Integer address) {
+    return state.getDictionary().get(address);
+  }
+
   public void createDictionaryItem(String name, DictionaryItem item) {
     state.getDictionary().put(name, item);
   }

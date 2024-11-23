@@ -18,33 +18,41 @@
  */
 package bjforth.machine;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 class Dictionary {
 
   final Map<String, List<DictionaryItem>> items = new HashMap<>();
+  final Map<Integer, String> reverseLookup = new HashMap<>();
 
   Dictionary() {}
 
   Dictionary(Dictionary other) {
-    other.items.forEach(items::put);
+    items.putAll(other.items);
+    other.items.forEach(
+        (name, items) -> {
+          reverseLookup.putIfAbsent(items.get(0).getAddress(), name);
+        });
   }
 
   public void put(String name, DictionaryItem item) {
-    items.merge(
-        name,
-        List.of(item),
-        (currentValue, newValue) -> {
-          currentValue.addAll(newValue);
-          return currentValue;
-        });
+    List<DictionaryItem> currentValue;
+    if (items.containsKey(name)) {
+      currentValue = items.get(name);
+    } else {
+      currentValue = new ArrayList<>();
+    }
+    currentValue.add(item);
+    items.put(name, currentValue);
+    reverseLookup.putIfAbsent(item.getAddress(), item.getName());
   }
 
   public Optional<DictionaryItem> get(String name) {
     return Optional.ofNullable(items.get(name))
         .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
+  }
+
+  public Optional<DictionaryItem> get(Integer address) {
+    return Optional.ofNullable(reverseLookup.get(address)).flatMap(this::get);
   }
 }

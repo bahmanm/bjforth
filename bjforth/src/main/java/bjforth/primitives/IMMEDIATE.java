@@ -16,35 +16,24 @@
  * You should have received a copy of the GNU General Public License
  * along with BJForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.machine;
+package bjforth.primitives;
 
-public class DictionaryBuilder {
+import bjforth.machine.Machine;
+import bjforth.machine.MachineException;
+import bjforth.variables.Variables;
 
-  private Dictionary dictionary = new Dictionary();
-
-  private DictionaryBuilder() {}
-
-  public static DictionaryBuilder aDictionary() {
-    return new DictionaryBuilder();
-  }
-
-  public DictionaryBuilder with(String name, DictionaryItem item) {
-    dictionary.put(name, item);
-    return this;
-  }
-
-  public DictionaryBuilder with(MachineState state) {
-    state
-        .getDictionary()
-        .items
-        .forEach(
-            (name, items) -> {
-              items.forEach(item -> dictionary.put(name, item));
-            });
-    return this;
-  }
-
-  public Dictionary build() {
-    return dictionary;
+public class IMMEDIATE implements Primitive {
+  @Override
+  public void execute(Machine machine) {
+    var LATESTAddr = Variables.LATEST().getAddress();
+    var LATESTValue = (Integer) machine.getMemoryAt(LATESTAddr);
+    var wordAddr = (Integer) machine.getMemoryAt(LATESTValue);
+    var maybeDictItem = machine.getDictionaryItem(wordAddr);
+    if (maybeDictItem.isPresent()) {
+      var dictItem = maybeDictItem.get();
+      dictItem.setIsImmediate(!dictItem.getIsImmediate());
+    } else {
+      throw new MachineException("DictionaryItem not found.");
+    }
   }
 }
