@@ -20,20 +20,26 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
-import bjforth.variables.Variables;
+import java.util.NoSuchElementException;
 
 public class HIDDEN implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var LATESTAddr = Variables.LATEST().getAddress();
-    var LATESTValue = (Integer) machine.getMemoryAt(LATESTAddr);
-    var wordAddr = (Integer) machine.getMemoryAt(LATESTValue);
-    var maybeDictItem = machine.getDictionaryItem(wordAddr);
-    if (maybeDictItem.isPresent()) {
-      var dictItem = maybeDictItem.get();
-      dictItem.setIsHidden(!dictItem.getIsHidden());
-    } else {
-      throw new MachineException("DictionaryItem not found.");
+    try {
+      var wordAddrObj = machine.popFromParameterStack();
+      if (wordAddrObj instanceof Integer wordAddr) {
+        var maybeDictItem = machine.getDictionaryItem(wordAddr);
+        if (maybeDictItem.isPresent()) {
+          var dictItem = maybeDictItem.get();
+          dictItem.setIsHidden(!dictItem.getIsHidden());
+        } else {
+          throw new MachineException("DictionaryItem not found.");
+        }
+      } else {
+        throw new MachineException("Unexpected parameter type.");
+      }
+    } catch (NoSuchElementException ex) {
+      throw new MachineException("ParameterStack error.");
     }
   }
 }

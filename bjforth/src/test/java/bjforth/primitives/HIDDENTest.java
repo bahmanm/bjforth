@@ -33,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import bjforth.machine.DictionaryItem;
 import bjforth.machine.MachineException;
-import bjforth.variables.Variables;
+import bjforth.utils.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -59,8 +59,7 @@ class HIDDENTest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(hiddenAddr, hidden).with(latestValue, wordAddr).build())
             .withDictionary(aDictionary().with(wordName, dictItem).build())
-            .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.LATEST(), latestValue)
+            .withParameterStack(aParameterStack().with(wordAddr).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
@@ -77,35 +76,58 @@ class HIDDENTest {
                 .with(state1)
                 .with(wordName, aDictionaryItem().with(dictItem).isHidden(!isHidden).build())
                 .build())
-        .hasMemoryEqualTo(
-            aMemory().with(state1).with(Variables.LATEST().getAddress(), latestValue).build())
+        .hasMemoryEqualTo(aMemory().with(state1).build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(state1);
   }
 
   @Test
-  @DisplayName("Throws if LATEST doesn't point to a dictionary item.")
+  @DisplayName("Throws if the parameter doesn't point to a dictionary item.")
   public void throwsIfMissingWord() {
     // GIVEN
     var hidden = PrimitiveFactory.HIDDEN();
     var hiddenAddr = nextInt();
     var ip = anInstructionPointer().with(hiddenAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var latestValue = nextInt();
+    var wordAddr = nextInt();
     var state1 =
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(hiddenAddr, hidden).build())
             .withDictionary(aDictionary().build())
-            .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.LATEST(), latestValue)
+            .withParameterStack(aParameterStack().with(wordAddr).build())
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(state1);
+    assertThat(state2)
+        .isEqualTo(
+            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+  }
+
+  @DisplayName("should throw if ParameterStack is already empty.")
+  @Test
+  void throwIfEmpty() {
+    // GIVEN
+    var hidden = PrimitiveFactory.HIDDEN();
+    var hiddenAddr = RandomUtils.nextInt();
+    var ip = anInstructionPointer().with(hiddenAddr).build();
+    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var state1 =
+        aMachineState()
+            .withInstrcutionPointer(ip)
+            .withNextInstructionPointer(nip)
+            .withMemory(aMemory().with(hiddenAddr, hidden).build())
+            .withParameterStack(aParameterStack().build())
+            .build();
+    var state2 = aMachineState().copyFrom(state1).build();
+    var machine = aMachine().withState(state2).build();
+
+    // EXPECT
+    assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
+    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
   }
 }
