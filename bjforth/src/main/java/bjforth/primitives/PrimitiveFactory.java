@@ -40,6 +40,12 @@ public class PrimitiveFactory {
     return containerBASE.get();
   }
 
+  private static PrimitiveContainer containerBRANCH = new PrimitiveContainer(BRANCH::new);
+
+  static Primitive BRANCH() {
+    return containerBRANCH.get();
+  }
+
   private static PrimitiveContainer containerCFA = new PrimitiveContainer(CFA::new);
 
   static Primitive CFA() {
