@@ -19,6 +19,7 @@
 package bjforth.machine;
 
 import java.util.Optional;
+import java.util.stream.IntStream;
 
 public class Machine {
 
@@ -102,12 +103,12 @@ public class Machine {
    * <p>To be used for debugging/testing purposes.
    */
   public void step() {
-    var ip = state.getInstructionPointer();
-    var content = getMemoryAt(ip);
+    var IP = state.getInstructionPointer();
+    var content = getMemoryAt(IP);
     if (content instanceof NativeSubroutine nativeSubroutine) {
       nativeSubroutine.call(this);
     } else {
-      throw new MachineException("don't know how to execute *(%d)".formatted(ip));
+      throw new MachineException("don't know how to execute *(%d)".formatted(IP));
     }
   }
 
@@ -119,9 +120,7 @@ public class Machine {
    * @param n N memory cells
    */
   public void step(int n) {
-    for (var i = 0; i < n; i++) {
-      step();
-    }
+    IntStream.range(0, n).forEach((_i) -> step());
   }
 
   /** Machine's "main loop". */
