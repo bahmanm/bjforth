@@ -358,6 +358,12 @@ public class PrimitiveFactory {
     return containerWORD.get();
   }
 
+  private static PrimitiveContainer containerZBRANCH = new PrimitiveContainer(ZBRANCH::new);
+
+  static Primitive ZBRANCH() {
+    return containerZBRANCH.get();
+  }
+
   private static PrimitiveContainer containerZEQU = new PrimitiveContainer(ZEQU::new);
 
   static Primitive ZEQU() {
