@@ -53,3 +53,4 @@ Forth words.
 
 - COLON @ jonesforth.S:1869
 - SEMICOLON @ jonesforth.S:1881
+- HIDE @ jonesforth.S:1949
