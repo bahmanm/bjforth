@@ -166,6 +166,12 @@ public class PrimitiveFactory {
     return containerHERE.get();
   }
 
+  private static PrimitiveContainer containerHIDDEN = new PrimitiveContainer(HIDDEN::new);
+
+  static Primitive HIDDEN() {
+    return containerHIDDEN.get();
+  }
+
   private static PrimitiveContainer containerIMMEDIATE = new PrimitiveContainer(IMMEDIATE::new);
 
   static Primitive IMMEDIATE() {
