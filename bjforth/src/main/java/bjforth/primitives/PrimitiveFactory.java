@@ -220,6 +220,12 @@ public class PrimitiveFactory {
     return containerLIT.get();
   }
 
+  private static PrimitiveContainer containerLITSTRING = new PrimitiveContainer(LITSTRING::new);
+
+  static Primitive LITSTRING() {
+    return containerLITSTRING.get();
+  }
+
   private static PrimitiveContainer containerLT = new PrimitiveContainer(LT::new);
 
   static Primitive LT() {
