@@ -328,6 +328,12 @@ public class PrimitiveFactory {
     return containerSWAP.get();
   }
 
+  private static PrimitiveContainer containerTELL = new PrimitiveContainer(TELL::new);
+
+  static Primitive TELL() {
+    return containerTELL.get();
+  }
+
   private static PrimitiveContainer containerTOR = new PrimitiveContainer(TOR::new);
 
   static Primitive TOR() {
