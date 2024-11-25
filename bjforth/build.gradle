@@ -6,6 +6,7 @@ import org.gradle.api.tasks.testing.Test
 plugins {
   id 'application'
   id 'com.diffplug.spotless' version '6.25.0'
+  id 'jacoco'
 }
 
 repositories {
@@ -100,4 +101,12 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 tasks.withType(JavaExec).configureEach {
+}
+
+test {
+  finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+  dependsOn test
 }
