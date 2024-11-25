@@ -1,0 +1,21 @@
+---
+codecov:
+  ci:
+    - "circleci.com"
+  require_ci_to_pass: true
+  notify:
+    after_n_builds: 1
+
+coverage:
+  status:
+    project:
+      default:
+        branches:
+          - "main"
+        target: "70%"
+        threshold: "5%"
+        base: auto
+        if_not_found: "success"
+        if_ci_failed: "error"
+        informational: false
+        only_pulls: false

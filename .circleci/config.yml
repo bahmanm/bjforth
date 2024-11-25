@@ -1,17 +1,20 @@
 ---
+version: 2.1
 
-version: 2
-
-jobs:
-  build:
+executors:
+  docker:
     docker:
       - image: bdockerimg/bmakelib:0.8.0--opensuse-tumbleweed
         environment:
           LANG: en_US.UTF-8
           JVM_OPTS: -Xmx1024m
-
     working_directory: ~/bjforth
+    resource_class: medium
 
+jobs:
+
+  test:
+    executor: docker
     steps:
       - run:
           name: Install the runtime
@@ -48,3 +51,50 @@ jobs:
 
       - store_test_results:
           path: bjforth/build/test-results
+
+      - persist_to_workspace:
+          root: bjforth/build
+          paths:
+            - reports
+
+  test_coverage:
+    executor: docker
+    steps:
+      - run:
+          name: Install Python
+          command: >-
+            zypper --non-interactive refresh
+            && zypper --non-interactive install python311
+
+      - checkout
+
+      - run:
+          name: Install Codecov-cli
+          command: >-
+            python3 -m venv .env
+            && source .env/bin/activate
+            && pip install -r requirements.txt
+
+      - attach_workspace:
+          at: bjforth/build
+
+      - run:
+          name: Upload the coverage reports
+          command: >-
+            source .env/bin/activate
+            && codecovcli --verbose \
+               upload-process \
+               --token "${CODECOV_TOKEN}" \
+               --git-service github \
+               --fail-on-error \
+               --dir=bjforth/build/reports/jacoco/test \
+               --report-type=coverage
+
+workflow:
+  version: 2.1
+  build_test:
+    jobs:
+      - test
+      - test_coverage:
+          requires:
+            - test
