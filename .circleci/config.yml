@@ -90,7 +90,7 @@ jobs:
                --dir=bjforth/build/reports/jacoco/test \
                --report-type=coverage
 
-workflow:
+workflows:
   version: 2.1
   build_test:
     jobs:
