@@ -90,11 +90,29 @@ jobs:
                --dir=bjforth/build/reports/jacoco/test \
                --report-type=coverage
 
+  license_scan:
+    executor: docker
+    steps:
+      - run:
+          name: Install Foss-cli
+          command: >-
+            wget -O - \
+               --header='Cache-Control: no-cache' \
+               'https://raw.githubusercontent.com/fossas/fossa-cli/master/install-latest.sh' \
+            | bash
+
+      - checkout
+      - run:
+          name: Analyse licenses
+          command: fossa analyze
+          working_directory: ~/bjforth
+
 workflows:
   version: 2.1
   build_test:
     jobs:
       - test
+      - license_scan
       - test_coverage:
           requires:
             - test
