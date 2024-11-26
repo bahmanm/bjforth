@@ -57,6 +57,7 @@ Forth words.
 - SEMICOLON @ jonesforth.S:1881
 - HIDE @ jonesforth.S:1949
 - TICK @ jonesforth.S:1983
+- QUIT @ jonesforth.S:2081
 
 
 ## License
