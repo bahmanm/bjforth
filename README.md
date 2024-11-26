@@ -5,6 +5,7 @@
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/bahmanm/bjforth)
 [![Matrix](https://img.shields.io/matrix/bjforth%3Amatrix.org?server_fqdn=matrix.org&style=flat&logo=matrix&color=%230e80c0)](https://matrix.to/#/#github-bahmanm-bjforth:matrix.org)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth?ref=badge_shield)
 
 bjForth which stands for _Bahman's Forth on the JVM_ is an attempt at writing a Forth which
 would allow the programmer to tap into the JVM and its ecosystem.
@@ -56,3 +57,7 @@ Forth words.
 - SEMICOLON @ jonesforth.S:1881
 - HIDE @ jonesforth.S:1949
 - TICK @ jonesforth.S:1983
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth?ref=badge_large)
