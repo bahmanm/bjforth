@@ -48,4 +48,3 @@ public class CFA implements Primitive {
     return "TCFA";
   }
 }
-
