@@ -37,4 +37,15 @@ public class CFA implements Primitive {
       throw new MachineException("ParameterStack error.");
     }
   }
+
+  @Override
+  public String getName() {
+    return ">CFA";
+  }
+
+  @Override
+  public String getDescriptiveName() {
+    return "TCFA";
+  }
 }
+

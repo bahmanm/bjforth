@@ -37,4 +37,9 @@ class RSPSTORE implements Primitive {
       throw new MachineException("ParameterStack error.");
     }
   }
+
+  @Override
+  public String getName() {
+    return "RSP!";
+  }
 }

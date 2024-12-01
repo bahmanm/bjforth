@@ -84,4 +84,9 @@ class QDUP implements Primitive {
       return value == 0;
     }
   }
+
+  @Override
+  public String getName() {
+    return "?DUP";
+  }
 }

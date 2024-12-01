@@ -53,4 +53,9 @@ class ZEQU implements Primitive {
       }
     }
   }
+
+  @Override
+  public String getName() {
+    return "0=";
+  }
 }

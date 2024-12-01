@@ -83,4 +83,9 @@ class DECR implements Primitive {
       return (byte) (value - 1);
     }
   }
+
+  @Override
+  public String getName() {
+    return "1-";
+  }
 }

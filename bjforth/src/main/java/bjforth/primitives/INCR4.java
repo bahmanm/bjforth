@@ -82,4 +82,9 @@ class INCR4 implements Primitive {
       return (byte) (value + 4);
     }
   }
+
+  @Override
+  public String getName() {
+    return "4+";
+  }
 }
