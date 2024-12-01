@@ -27,4 +27,9 @@ class RSPFETCH implements Primitive {
     var pointer = machine.getReturnStackPointer();
     machine.pushToParameterStack(pointer);
   }
+
+  @Override
+  public String getName() {
+    return "RSP@";
+  }
 }

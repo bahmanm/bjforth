@@ -33,4 +33,9 @@ class TWODROP implements Primitive {
       throw new MachineException("ParameterStack error.");
     }
   }
+
+  @Override
+  public String getName() {
+    return "2DROP";
+  }
 }

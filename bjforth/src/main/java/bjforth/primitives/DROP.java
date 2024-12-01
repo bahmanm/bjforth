@@ -32,4 +32,9 @@ class DROP implements Primitive {
       throw new MachineException("ParameterStack is already empty.");
     }
   }
+
+  @Override
+  public String getName() {
+    return "DROP";
+  }
 }

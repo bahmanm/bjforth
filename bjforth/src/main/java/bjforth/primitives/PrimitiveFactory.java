@@ -18,9 +18,12 @@
  */
 package bjforth.primitives;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class PrimitiveFactory {
+
+  private static List<PrimitiveContainer> primitiveContainers;
 
   private static PrimitiveContainer containerADD = new PrimitiveContainer(ADD::new);
 
@@ -268,6 +271,12 @@ public class PrimitiveFactory {
     return containerNROT.get();
   }
 
+  private static PrimitiveContainer containerNUMBER = new PrimitiveContainer(NUMBER::new);
+
+  static Primitive NUMBER() {
+    return containerNUMBER.get();
+  }
+
   private static PrimitiveContainer containerOVER = new PrimitiveContainer(OVER::new);
 
   static Primitive OVER() {
@@ -412,13 +421,81 @@ public class PrimitiveFactory {
     return containerZNEQU.get();
   }
 
-  private static PrimitiveContainer containerNUMBER = new PrimitiveContainer(NUMBER::new);
-
-  static Primitive NUMBER() {
-    return containerNUMBER.get();
+  PrimitiveFactory() {
+    primitiveContainers =
+        List.of(
+            containerADD,
+            containerADDSTORE,
+            containerBASE,
+            containerBRANCH,
+            containerCFA,
+            containerCOPY,
+            containerCREATE,
+            containerCOMMA,
+            containerDECR,
+            containerDECR4,
+            containerDFA,
+            containerDIV,
+            containerDOCOL,
+            containerDROP,
+            containerDSPFETCH,
+            containerDSPSTORE,
+            containerDUP,
+            containerEMIT,
+            containerEQU,
+            containerFETCH,
+            containerFIND,
+            containerFROMR,
+            containerGE,
+            containerGT,
+            containerHERE,
+            containerHIDDEN,
+            containerIMMEDIATE,
+            containerINCR,
+            containerINCR4,
+            containerKEY,
+            containerLATEST,
+            containerLBRAC,
+            containerLIT,
+            containerLITSTRING,
+            containerLT,
+            containerLTE,
+            containerMOD,
+            containerMOVE,
+            containerMUL,
+            containerNEQU,
+            containerNROT,
+            containerOVER,
+            containerQDUP,
+            containerRBRAC,
+            containerRDROP,
+            containerROT,
+            containerRSPFETCH,
+            containerRSPSTORE,
+            containerSTORE,
+            containerSUB,
+            containerSUBSTORE,
+            containerSWAP,
+            containerTELL,
+            containerTOR,
+            containerTWODROP,
+            containerTWODUP,
+            containerTWOSWAP,
+            containerWORD,
+            containerZBRANCH,
+            containerZEQU,
+            containerZGE,
+            containerZGT,
+            containerZLE,
+            containerZLT,
+            containerZNEQU);
   }
 
-  private static class PrimitiveContainer {
+  public static List<PrimitiveContainer> getPrimitiveContainers() {
+    return primitiveContainers;
+  }
+
+  static class PrimitiveContainer {
 
     private Primitive instance;
     private Supplier<Primitive> supplier;

@@ -69,4 +69,9 @@ class GT implements Primitive {
           || obj instanceof Long;
     }
   }
+
+  @Override
+  public String getName() {
+    return ">";
+  }
 }

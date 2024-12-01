@@ -27,4 +27,9 @@ class DSPFETCH implements Primitive {
     var pointer = machine.getParameterStackPointer();
     machine.pushToParameterStack(pointer);
   }
+
+  @Override
+  public String getName() {
+    return "DSP@";
+  }
 }

@@ -84,4 +84,9 @@ class DIV implements Primitive {
       return value1 / value2;
     }
   }
+
+  @Override
+  public String getName() {
+    return "/";
+  }
 }

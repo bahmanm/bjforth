@@ -37,4 +37,14 @@ public class DFA implements Primitive {
       throw new MachineException("ParameterStack error.");
     }
   }
+
+  @Override
+  public String getName() {
+    return ">DFA";
+  }
+
+  @Override
+  public String getDescriptiveName() {
+    return "TDFA";
+  }
 }
