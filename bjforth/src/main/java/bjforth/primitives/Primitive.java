@@ -32,4 +32,12 @@ public interface Primitive extends NativeSubroutine {
   }
 
   void execute(Machine machine);
+
+  default String getName() {
+    return getDescriptiveName();
+  }
+
+  default String getDescriptiveName() {
+    return this.getClass().getSimpleName();
+  }
 }
