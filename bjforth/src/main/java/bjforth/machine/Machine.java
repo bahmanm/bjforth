@@ -27,6 +27,7 @@ public class Machine {
 
   public Machine(MachineState state) {
     this.state = state;
+    new Bootstrap().apply(state);
   }
 
   public Object getMemoryAt(Integer address) {
