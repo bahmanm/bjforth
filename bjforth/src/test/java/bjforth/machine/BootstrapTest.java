@@ -16,14 +16,13 @@
  * You should have received a copy of the GNU General Public License
  * along with bjForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.bootstrap;
+package bjforth.machine;
 
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 
-import bjforth.machine.Bootstrap;
 import bjforth.variables.Variables;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,19 +33,15 @@ class BootstrapTest {
   @DisplayName("should place bjforth variable values in designated memory addresses")
   void placeVariables() {
     // GIVEN
-    var state1 = aMachineState().build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
-    var bootstrap = new Bootstrap();
+    var actualState = aMachineState().build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
+    var machine = aMachine().withState(referenceState).build();
 
-    // WHEN
-    bootstrap.apply(machine);
-
-    // THEN
-    assertThat(state2)
+    // EXPECT
+    assertThat(referenceState)
         .hasMemoryEqualTo(
             aMemory()
-                .with(state1)
+                .with(referenceState)
                 .with(Variables.HERE().getAddress(), 4)
                 .with(Variables.STATE().getAddress(), 0)
                 .with(Variables.BASE().getAddress(), 10)

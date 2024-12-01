@@ -20,12 +20,12 @@ package bjforth.machine;
 
 import bjforth.variables.Variables;
 
-public class Bootstrap {
+class Bootstrap {
 
-  public void apply(Machine machine) {
-    machine.setMemoryAt(Variables.HERE().getAddress(), 4);
-    machine.setMemoryAt(Variables.STATE().getAddress(), 0); // TODO Dummy value
-    machine.setMemoryAt(Variables.BASE().getAddress(), 10);
-    machine.setMemoryAt(Variables.LATEST().getAddress(), 0); // TODO Dummy value
+  public void apply(MachineState state) {
+    state.getMemory().set(Variables.HERE().getAddress(), 4);
+    state.getMemory().set(Variables.STATE().getAddress(), 0); // TODO Dummy value
+    state.getMemory().set(Variables.BASE().getAddress(), 10);
+    state.getMemory().set(Variables.LATEST().getAddress(), 0); // TODO Dummy value
   }
 }
