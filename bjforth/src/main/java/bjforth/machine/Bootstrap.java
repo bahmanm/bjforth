@@ -16,9 +16,8 @@
  * You should have received a copy of the GNU General Public License
  * along with bjForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.bootstrap;
+package bjforth.machine;
 
-import bjforth.machine.Machine;
 import bjforth.variables.Variables;
 
 public class Bootstrap {
