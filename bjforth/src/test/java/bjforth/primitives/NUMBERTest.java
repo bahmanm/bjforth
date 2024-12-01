@@ -28,7 +28,6 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import bjforth.machine.Bootstrap;
 import bjforth.machine.MachineException;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -45,32 +44,28 @@ class NUMBERTest {
     var ip = anInstructionPointer().with(numberAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var parameter = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(numberAddr, number).build())
             .withParameterStack(aParameterStack().with(Integer.toString(parameter)).build())
             .build();
-    var bootstrap = new Bootstrap();
-    // TODO Find a cleaner way to bootstrap `state1`
-    var _machine = aMachine().withState(state1).build();
-    bootstrap.apply(_machine);
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
-    bootstrap.apply(machine);
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().with(parameter).with(0).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
@@ -82,32 +77,28 @@ class NUMBERTest {
     var ip = anInstructionPointer().with(numberAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var parameter = RandomStringUtils.secure().next(4);
-    var state1 =
+    var actualState =
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(numberAddr, number).build())
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
-    var bootstrap = new Bootstrap();
-    // TODO Find a cleaner way to bootstrap `state1`
-    var _machine = aMachine().withState(state1).build();
-    bootstrap.apply(_machine);
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
-    bootstrap.apply(machine);
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().with((Object) null).with(-1).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
@@ -118,18 +109,18 @@ class NUMBERTest {
     var numberAddr = nextInt();
     var ip = anInstructionPointer().with(numberAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var actualState =
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(numberAddr, number).build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
