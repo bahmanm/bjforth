@@ -38,30 +38,30 @@ class BASETest {
     // GIVEN
     var base = PrimitiveFactory.BASE();
     var baseAddr = nextInt();
-    var baseValue = nextInt();
     var ip = anInstructionPointer().with(baseAddr).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var actualState =
         aMachineState()
             .withInstrcutionPointer(ip)
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(baseAddr, base).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.BASE(), baseValue)
+            .withVariable(Variables.BASE(), 10)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
-        .hasParameterStackEqualTo(aParameterStack().with(baseValue).build())
-        .hasReturnStackEqualTo(state1);
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
+        .hasParameterStackEqualTo(aParameterStack().with(10).build())
+        .hasReturnStackEqualTo(referenceState);
   }
 }
