@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -26,7 +27,6 @@ import static bjforth.machine.MachineStateInspectionUtils.*;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.DisplayName;
@@ -38,27 +38,27 @@ class DOCOLTest {
   @DisplayName("it pushes FIP onto return stack and incs it by 1")
   public void worksOk() {
     // GIVEN
-    var docol = PrimitiveFactory.DOCOL();
-    var docolAddress = nextInt();
-    var state1 =
-        aMachineState()
-            .withMemory(aMemory().with(docolAddress, docol).build())
-            .withInstrcutionPointer(docolAddress)
-            .build();
-    var state2 = aMachineState().copyFrom(state1).build();
+    var DOCOLaddr = getPrimitiveAddress(":");
+    var actualState =
+        aMachineState().withMemory(aMemory().build()).withInstrcutionPointer(DOCOLaddr).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
-    aMachine().withState(state2).build().step();
+    machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
-        .hasParameterStackEqualTo(state1)
+    assertThat(actualState)
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
+        .hasParameterStackEqualTo(referenceState)
         .hasReturnStackEqualTo(
-            aReturnStack().with(state1).with(nextInstructionPointer(state1)).build())
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
+            aReturnStack()
+                .with(referenceState)
+                .with(nextInstructionPointer(referenceState))
+                .build())
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().withInstructionPointer(state1).plus(2).build());
+            aNextInstructionPointer().withInstructionPointer(referenceState).plus(2).build());
   }
 }
