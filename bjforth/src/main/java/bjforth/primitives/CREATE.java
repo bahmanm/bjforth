@@ -31,9 +31,9 @@ public class CREATE implements Primitive {
     try {
       var lengthObject = machine.popFromParameterStack();
       var addressObject = machine.popFromParameterStack();
-      var HEREAddr = Variables.HERE().getAddress();
+      var HEREAddr = Variables.get("HERE").getAddress();
       var HEREValue = (Integer) machine.getMemoryAt(HEREAddr);
-      var LATESTAddr = Variables.LATEST().getAddress();
+      var LATESTAddr = Variables.get("LATEST").getAddress();
       if (lengthObject instanceof Integer _length && addressObject instanceof Integer nameAddr) {
         var name = (String) machine.getMemoryAt(nameAddr);
         machine.setMemoryAt(HEREValue, name);

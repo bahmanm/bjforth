@@ -62,7 +62,7 @@ class IMMEDIATETest {
                 aMemory().with(immediateAddr, immediate).with(latestValue, wordAddr).build())
             .withDictionary(aDictionary().with(wordName, dictItem).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.LATEST(), latestValue)
+            .withVariable(Variables.get("LATEST"), latestValue)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
@@ -80,7 +80,7 @@ class IMMEDIATETest {
                 .with(wordName, aDictionaryItem().with(dictItem).isImmediate(!isImmediate).build())
                 .build())
         .hasMemoryEqualTo(
-            aMemory().with(state1).with(Variables.LATEST().getAddress(), latestValue).build())
+            aMemory().with(state1).with(Variables.get("LATEST").getAddress(), latestValue).build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(state1);
   }
@@ -101,7 +101,7 @@ class IMMEDIATETest {
             .withMemory(aMemory().with(immediateAddr, immediate).build())
             .withDictionary(aDictionary().build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.LATEST(), latestValue)
+            .withVariable(Variables.get("LATEST"), latestValue)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();

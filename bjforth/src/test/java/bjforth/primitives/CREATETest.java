@@ -56,8 +56,8 @@ class CREATETest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(createAddr, create).with(nameAddr, name).build())
             .withParameterStack(aParameterStack().with(nameAddr, nameLength).build())
-            .withVariable(Variables.LATEST(), 0)
-            .withVariable(Variables.HERE(), hereValue)
+            .withVariable(Variables.get("LATEST"), 0)
+            .withVariable(Variables.get("HERE"), hereValue)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
@@ -74,8 +74,8 @@ class CREATETest {
         .hasMemoryEqualTo(
             aMemory()
                 .with(state1)
-                .with(Variables.HERE().getAddress(), hereValue + 1)
-                .with(Variables.LATEST().getAddress(), hereValue)
+                .with(Variables.get("HERE").getAddress(), hereValue + 1)
+                .with(Variables.get("LATEST").getAddress(), hereValue)
                 .with(hereValue, name)
                 .build())
         .hasParameterStackEqualTo(aParameterStack().build())

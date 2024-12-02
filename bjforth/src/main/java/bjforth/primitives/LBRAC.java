@@ -24,7 +24,7 @@ import bjforth.variables.Variables;
 public class LBRAC implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var STATEAddr = Variables.STATE().getAddress();
+    var STATEAddr = Variables.get("STATE").getAddress();
     machine.setMemoryAt(STATEAddr, 0);
   }
 }

@@ -25,7 +25,7 @@ public class HERE implements Primitive {
 
   @Override
   public void execute(Machine machine) {
-    var hereAddress = Variables.HERE().getAddress();
+    var hereAddress = Variables.get("HERE").getAddress();
     var hereValue = machine.getMemoryAt(hereAddress);
     machine.pushToParameterStack(hereValue);
   }

@@ -47,7 +47,7 @@ class RBRACTest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(rbracAddr, rbrac).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.STATE(), 0)
+            .withVariable(Variables.get("STATE"), 0)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
@@ -59,7 +59,8 @@ class RBRACTest {
     assertThat(state2)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
         .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasMemoryEqualTo(aMemory().with(state1).with(Variables.STATE().getAddress(), 1).build())
+        .hasMemoryEqualTo(
+            aMemory().with(state1).with(Variables.get("STATE").getAddress(), 1).build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(state1);
   }

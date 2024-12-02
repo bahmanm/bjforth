@@ -16,30 +16,20 @@
  * You should have received a copy of the GNU General Public License
  * along with bjForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.primitives;
+package bjforth.machine;
 
-import bjforth.machine.Machine;
-import bjforth.machine.MachineException;
+import bjforth.primitives.PrimitiveFactory;
 import bjforth.variables.Variables;
-import java.util.NoSuchElementException;
 
-public class COMMA implements Primitive {
-  @Override
-  public void execute(Machine machine) {
-    try {
-      var data = machine.popFromParameterStack();
-      var HEREAddr = Variables.get("HERE").getAddress();
-      var HEREValue = (Integer) machine.getMemoryAt(HEREAddr);
-      machine.setMemoryAt(HEREValue, data);
-      var newHEREValue = HEREValue + 1;
-      machine.setMemoryAt(HEREAddr, newHEREValue);
-    } catch (NoSuchElementException ex) {
-      throw new MachineException("ParameterStack error.");
+public class BootstrapUtils {
+
+  public static Integer getPrimitiveAddress(String word) {
+    var containers = PrimitiveFactory.getPrimitiveContainers();
+    for (int i = 0; i < containers.size(); i++) {
+      if (containers.get(i).get().getName().equals(word)) {
+        return Variables.variables.size() + i;
+      }
     }
-  }
-
-  @Override
-  public String getName() {
-    return ",";
+    return null;
   }
 }

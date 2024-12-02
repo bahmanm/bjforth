@@ -48,7 +48,7 @@ class LATESTTest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(latestAddr, latest).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.LATEST(), latestValue)
+            .withVariable(Variables.get("LATEST"), latestValue)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();

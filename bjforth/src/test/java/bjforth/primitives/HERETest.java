@@ -48,7 +48,7 @@ class HERETest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(hereAddr, here).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.HERE(), hereValue)
+            .withVariable(Variables.get("HERE"), hereValue)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();

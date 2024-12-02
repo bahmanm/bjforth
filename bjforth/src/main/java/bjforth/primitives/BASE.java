@@ -24,7 +24,7 @@ import bjforth.variables.Variables;
 public class BASE implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var baseAddr = Variables.BASE().getAddress();
+    var baseAddr = Variables.get("BASE").getAddress();
     var baseValue = machine.getMemoryAt(baseAddr);
     machine.pushToParameterStack(baseValue);
   }
