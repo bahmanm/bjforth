@@ -31,9 +31,9 @@ class ADDSTORE implements Primitive {
       var addrObject = machine.popFromParameterStack();
       if (addrObject instanceof Integer address) {
         var numberObject = machine.getMemoryAt(address);
-        var amountObject = machine.popFromParameterStack();
-        if (numberObject instanceof Number number && amountObject instanceof Number amount) {
-          var result = NumberUtils.add(number, amount);
+        var incrementObject = machine.popFromParameterStack();
+        if (numberObject instanceof Number number && incrementObject instanceof Number increment) {
+          var result = NumberUtils.add(number, increment);
           machine.setMemoryAt(address, result);
         } else {
           throw new MachineException("Invalid arguments.");

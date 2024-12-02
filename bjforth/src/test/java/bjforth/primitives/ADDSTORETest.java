@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -25,12 +26,10 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 
-import bjforth.machine.BootstrapUtils;
 import bjforth.machine.MachineException;
-import bjforth.utils.RandomUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,20 +39,17 @@ class ADDSTORETest {
   @Test
   void worksOk() {
     // GIVEN
-    var addstore = PrimitiveFactory.ADDSTORE();
-    var addstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(BootstrapUtils.getPrimitiveAddress("ADDSTORE")).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var addrToAddstore = RandomUtils.nextIntExcluding(addstoreAddr);
-    var initialValue = nextInt();
-    var increment = nextInt();
+    var ADDSTOREaddr = getPrimitiveAddress("+!");
+    var parameterAddress = RandomUtils.insecure().randomInt(1000, 2000);
+    var parameterValue = RandomUtils.insecure().randomInt(1, 10000000);
+    var increment = RandomUtils.insecure().randomInt(1, 10000000);
+    ;
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(
-                aMemory().with(addstoreAddr, addstore).with(addrToAddstore, initialValue).build())
-            .withParameterStack(aParameterStack().with(increment, addrToAddstore).build())
+            .withInstrcutionPointer(ADDSTOREaddr)
+            .withNextInstructionPointer(ADDSTOREaddr + 1)
+            .withMemory(aMemory().with(parameterAddress, parameterValue).build())
+            .withParameterStack(aParameterStack().with(increment, parameterAddress).build())
             .build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -68,7 +64,10 @@ class ADDSTORETest {
             aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasDictionaryEqualTo(referenceState)
         .hasMemoryEqualTo(
-            aMemory().with(referenceState).with(addrToAddstore, initialValue + increment).build())
+            aMemory()
+                .with(referenceState)
+                .with(parameterAddress, parameterValue + increment)
+                .build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(referenceState);
   }
@@ -77,15 +76,12 @@ class ADDSTORETest {
   @Test
   void throwsIfNonNumber() {
     // GIVEN
-    var addstore = PrimitiveFactory.ADDSTORE();
-    var addstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(addstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var ADDSTOREaddr = getPrimitiveAddress("+!");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(addstoreAddr, addstore).build())
+            .withInstrcutionPointer(ADDSTOREaddr)
+            .withNextInstructionPointer(ADDSTOREaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(new Object()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -105,15 +101,12 @@ class ADDSTORETest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var addstore = PrimitiveFactory.ADDSTORE();
-    var addstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(addstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var ADDSTOREaddr = getPrimitiveAddress("+!");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(addstoreAddr, addstore).build())
+            .withInstrcutionPointer(ADDSTOREaddr)
+            .withNextInstructionPointer(ADDSTOREaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();

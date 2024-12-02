@@ -28,14 +28,14 @@ class Bootstrap {
         (variable -> {
           state.getMemory().set(variable.getAddress(), variable.getInitialValue());
         }));
-    for (int i = Variables.variables.size();
-        i < PrimitiveFactory.getPrimitiveContainers().size() - 1;
-        i++) {
+    for (int i = 0; i < PrimitiveFactory.getPrimitiveContainers().size() - 1; i++) {
+      var address = i + Variables.variables.size();
       var primitive = PrimitiveFactory.getPrimitiveContainers().get(i).get();
       var dictItem =
-          new DictionaryItem(primitive.getName(), i, primitive.isImmediate(), primitive.isHidden());
+          new DictionaryItem(
+              primitive.getName(), address, primitive.isImmediate(), primitive.isHidden());
       state.getDictionary().put(primitive.getName(), dictItem);
-      state.getMemory().set(i, primitive);
+      state.getMemory().set(address, primitive);
     }
     state
         .getMemory()
