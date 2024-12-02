@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -38,41 +39,42 @@ import org.junit.jupiter.api.Test;
 
 class DSPSTORETest {
 
-  @DisplayName("sets the paramewter stack pointer to the value at the top of parameter stack")
+  @DisplayName("sets the parameter stack pointer to the value at the top of parameter stack")
   @Test
   void worksOk() {
     // GIVEN
-    var dspstore = PrimitiveFactory.DSPSTORE();
-    var dspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(dspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var DSPSTOREaddr = getPrimitiveAddress("DSP!");
     var pointerToStore = RandomUtils.nextInt(0, 5);
-    var state1ParameterStackElements =
+    var actualStateParameterStackElements =
         IntStream.range(0, pointerToStore + 5).mapToObj(i -> new Object()).toList();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(dspstoreAddr, dspstore).build())
+            .withInstrcutionPointer(DSPSTOREaddr)
+            .withNextInstructionPointer(DSPSTOREaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(
-                aParameterStack().with(state1ParameterStackElements).with(pointerToStore).build())
+                aParameterStack()
+                    .with(actualStateParameterStackElements)
+                    .with(pointerToStore)
+                    .build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(aMemory().with(state1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackPointerEqualTo(pointerToStore)
         .hasParameterStackEqualTo(
             aParameterStack()
-                .with(state1ParameterStackElements.subList(0, pointerToStore + 1))
+                .with(actualStateParameterStackElements.subList(0, pointerToStore + 1))
                 .build());
   }
 
@@ -80,77 +82,71 @@ class DSPSTORETest {
   @Test
   void throwsIfParameterStackEmpty() {
     // GIVEN
-    var dspstore = PrimitiveFactory.DSPSTORE();
-    var dspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(dspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var DSPSTOREaddr = getPrimitiveAddress("DSP!");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(dspstoreAddr, dspstore).build())
+            .withInstrcutionPointer(DSPSTOREaddr)
+            .withNextInstructionPointer(DSPSTOREaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(state1);
+    assertThat(actualState).isEqualTo(referenceState);
   }
 
   @DisplayName("should throw if parameter stack top is not a number.")
   @Test
   void throwsIfParameterStackNonNumber() {
     // GIVEN
-    var dspstore = PrimitiveFactory.DSPSTORE();
-    var dspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(dspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var DSPSTOREaddr = getPrimitiveAddress("DSP!");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(dspstoreAddr, dspstore).build())
+            .withInstrcutionPointer(DSPSTOREaddr)
+            .withNextInstructionPointer(DSPSTOREaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(new Object()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if pointer is beyond parameter stack size.")
   @Test
   void throwsIfPointerTooLarge() {
     // GIVEN
-    var dspstore = PrimitiveFactory.DSPSTORE();
-    var dspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(dspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var DSPSTOREaddr = getPrimitiveAddress("DSP!");
     var pointer = RandomUtils.nextInt(5, 10);
     var parameterStackElements = List.of(nextInt(), nextInt());
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(dspstoreAddr, dspstore).build())
+            .withInstrcutionPointer(DSPSTOREaddr)
+            .withNextInstructionPointer(DSPSTOREaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(
                 aParameterStack().with(parameterStackElements).with(pointer).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
             aMachineState()
-                .copyFrom(state1)
+                .copyFrom(referenceState)
                 .withParameterStack(aParameterStack().with(parameterStackElements).build())
                 .build());
   }
