@@ -23,9 +23,9 @@ import bjforth.variables.Variables;
 class Bootstrap {
 
   public void apply(MachineState state) {
-    state.getMemory().set(Variables.HERE().getAddress(), 4);
-    state.getMemory().set(Variables.STATE().getAddress(), 0); // TODO Dummy value
-    state.getMemory().set(Variables.BASE().getAddress(), 10);
-    state.getMemory().set(Variables.LATEST().getAddress(), 0); // TODO Dummy value
+    Variables.variables.forEach(
+        (variable -> {
+          state.getMemory().set(variable.getAddress(), variable.getInitialValue());
+        }));
   }
 }

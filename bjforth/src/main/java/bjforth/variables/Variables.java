@@ -18,43 +18,50 @@
  */
 package bjforth.variables;
 
+import java.util.Set;
+
 public class Variables {
 
   private static class DefaultVariableImpl implements Variable {
 
     private final Integer address;
+    private final Integer initialValue;
+    private final String name;
 
-    DefaultVariableImpl(Integer address) {
+    DefaultVariableImpl(String name, Integer address, Integer initialValue) {
+      this.name = name;
       this.address = address;
+      this.initialValue = initialValue;
     }
 
     @Override
     public Integer getAddress() {
       return address;
     }
+
+    @Override
+    public Object getInitialValue() {
+      return initialValue;
+    }
+
+    @Override
+    public String getName() {
+      return name;
+    }
   }
 
-  private static final Variable varHERE = new DefaultVariableImpl(0);
+  private static final Variable varHERE = new DefaultVariableImpl("HERE", 0, 4);
 
-  public static Variable HERE() {
-    return varHERE;
+  private static final Variable varSTATE = new DefaultVariableImpl("STATE", 1, 0);
+
+  private static final Variable varBASE = new DefaultVariableImpl("BASE", 2, 10);
+
+  private static final Variable varLATEST =
+      new DefaultVariableImpl("LATEST", 3, 1); // TODO Dummy initial value
+
+  public static Variable get(String name) {
+    return variables.stream().filter(variable -> variable.getName().equals(name)).findFirst().get();
   }
 
-  private static final Variable varSTATE = new DefaultVariableImpl(1);
-
-  public static Variable STATE() {
-    return varSTATE;
-  }
-
-  private static final Variable varBASE = new DefaultVariableImpl(2);
-
-  public static Variable BASE() {
-    return varBASE;
-  }
-
-  private static final Variable varLATEST = new DefaultVariableImpl(3);
-
-  public static Variable LATEST() {
-    return varLATEST;
-  }
+  public static Set<Variable> variables = Set.of(varHERE, varSTATE, varBASE, varLATEST);
 }

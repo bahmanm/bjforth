@@ -32,7 +32,7 @@ class NUMBER implements Primitive {
     try {
       var strObject = machine.popFromParameterStack();
       if (strObject instanceof String s) {
-        var base = (Integer) machine.getMemoryAt(Variables.BASE().getAddress());
+        var base = (Integer) machine.getMemoryAt(Variables.get("BASE").getAddress());
         Number number;
         try {
           number = StringToNumber.valueOf(s, base);

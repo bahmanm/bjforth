@@ -42,10 +42,10 @@ class BootstrapTest {
         .hasMemoryEqualTo(
             aMemory()
                 .with(referenceState)
-                .with(Variables.HERE().getAddress(), 4)
-                .with(Variables.STATE().getAddress(), 0)
-                .with(Variables.BASE().getAddress(), 10)
-                .with(Variables.LATEST().getAddress(), 0)
+                .with(Variables.get("HERE").getAddress(), 4)
+                .with(Variables.get("STATE").getAddress(), 0)
+                .with(Variables.get("BASE").getAddress(), 10)
+                .with(Variables.get("LATEST").getAddress(), 0)
                 .build());
   }
 

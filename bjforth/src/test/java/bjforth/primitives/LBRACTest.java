@@ -47,7 +47,7 @@ class LBRACTest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(lbracAddr, lbrac).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.STATE(), 1)
+            .withVariable(Variables.get("STATE"), 1)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
@@ -59,7 +59,8 @@ class LBRACTest {
     assertThat(state2)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
         .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasMemoryEqualTo(aMemory().with(state1).with(Variables.STATE().getAddress(), 0).build())
+        .hasMemoryEqualTo(
+            aMemory().with(state1).with(Variables.get("STATE").getAddress(), 0).build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(state1);
   }

@@ -25,7 +25,7 @@ import bjforth.variables.Variables;
 public class IMMEDIATE implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var LATESTAddr = Variables.LATEST().getAddress();
+    var LATESTAddr = Variables.get("LATEST").getAddress();
     var LATESTValue = (Integer) machine.getMemoryAt(LATESTAddr);
     var wordAddr = (Integer) machine.getMemoryAt(LATESTValue);
     var maybeDictItem = machine.getDictionaryItem(wordAddr);

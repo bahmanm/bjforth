@@ -51,7 +51,7 @@ class COMMATest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(commaAddr, comma).build())
             .withParameterStack(aParameterStack().with(parameter).build())
-            .withVariable(Variables.HERE(), hereValue)
+            .withVariable(Variables.get("HERE"), hereValue)
             .build();
     var state2 = aMachineState().copyFrom(state1).build();
     var machine = aMachine().withState(state2).build();
@@ -67,7 +67,7 @@ class COMMATest {
             aMemory()
                 .with(state1)
                 .with(hereValue, parameter)
-                .with(Variables.HERE().getAddress(), hereValue + 1)
+                .with(Variables.get("HERE").getAddress(), hereValue + 1)
                 .build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(state1);

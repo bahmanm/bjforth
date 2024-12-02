@@ -46,7 +46,7 @@ class BASETest {
             .withNextInstructionPointer(nip)
             .withMemory(aMemory().with(baseAddr, base).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.BASE(), 10)
+            .withVariable(Variables.get("BASE"), 10)
             .build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();

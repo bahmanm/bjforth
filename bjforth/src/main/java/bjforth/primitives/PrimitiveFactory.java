@@ -495,7 +495,7 @@ public class PrimitiveFactory {
     return primitiveContainers;
   }
 
-  static class PrimitiveContainer {
+  public static class PrimitiveContainer {
 
     private Primitive instance;
     private Supplier<Primitive> supplier;
@@ -505,7 +505,7 @@ public class PrimitiveFactory {
       this.supplier = supplier;
     }
 
-    private synchronized Primitive get() {
+    public synchronized Primitive get() {
       if (instance == null) {
         instance = supplier.get();
       }

@@ -20,5 +20,9 @@ package bjforth.variables;
 
 public interface Variable {
 
+  String getName();
+
   Integer getAddress();
+
+  Object getInitialValue();
 }

@@ -25,7 +25,7 @@ public class LATEST implements Primitive {
 
   @Override
   public void execute(Machine machine) {
-    var latestAddr = Variables.LATEST().getAddress();
+    var latestAddr = Variables.get("LATEST").getAddress();
     var latestValue = machine.getMemoryAt(latestAddr);
     machine.pushToParameterStack(latestValue);
   }
