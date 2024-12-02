@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -39,60 +40,55 @@ class COMMATest {
   @DisplayName("Set the memory and update HERE")
   public void worksOk() {
     // GIVEN
-    var comma = PrimitiveFactory.COMMA();
-    var commaAddr = nextInt();
-    var ip = anInstructionPointer().with(commaAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var COMMAaddr = getPrimitiveAddress(",");
     var parameter = nextInt();
-    var hereValue = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(commaAddr, comma).build())
+            .withInstrcutionPointer(COMMAaddr)
+            .withNextInstructionPointer(COMMAaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(parameter).build())
-            .withVariable(Variables.get("HERE"), hereValue)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
+    var HEREaddr = Variables.get("HERE").getAddress();
+    var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasMemoryEqualTo(
             aMemory()
-                .with(state1)
-                .with(hereValue, parameter)
-                .with(Variables.get("HERE").getAddress(), hereValue + 1)
+                .with(referenceState)
+                .with(HEREvalue, parameter)
+                .with(HEREaddr, HEREvalue + 1)
                 .build())
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var comma = PrimitiveFactory.COMMA();
-    var commaAddr = nextInt();
-    var ip = anInstructionPointer().with(commaAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var COMMAaddr = getPrimitiveAddress(",");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(commaAddr, comma).build())
+            .withInstrcutionPointer(COMMAaddr)
+            .withNextInstructionPointer(COMMAaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
