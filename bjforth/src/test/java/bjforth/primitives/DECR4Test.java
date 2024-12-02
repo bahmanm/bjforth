@@ -25,9 +25,9 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 
+import bjforth.machine.BootstrapUtils;
 import bjforth.machine.MachineException;
 import bjforth.utils.RandomUtils;
 import java.math.BigDecimal;
@@ -50,31 +50,29 @@ class DECR4Test {
   @ArgumentsSource(NumberArgumentProvider.class)
   void worksOkWithNumber(Object parameter, Object expectedResult, String parameterClassName) {
     // GIVEN
-    var decr4 = PrimitiveFactory.DECR4();
-    var decr4Addr = nextInt();
-    var ip = anInstructionPointer().with(decr4Addr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var DECR4addr = BootstrapUtils.getPrimitiveAddress("4-");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(decr4Addr, decr4).build())
+            .withInstrcutionPointer(DECR4addr)
+            .withNextInstructionPointer(DECR4addr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().with(expectedResult).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @DisplayName("should throw if top of parameter stack is not a number.")
@@ -82,48 +80,45 @@ class DECR4Test {
   @ArgumentsSource(NonNumberArgumentProvider.class)
   void throwsIfNonNumber(Object parameter, String parameterClassName) {
     // GIVEN
-    var decr4 = PrimitiveFactory.DECR4();
-    var decr4Addr = nextInt();
-    var ip = anInstructionPointer().with(decr4Addr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var DECR4addr = BootstrapUtils.getPrimitiveAddress("4-");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(decr4Addr, decr4).build())
+            .withInstrcutionPointer(DECR4addr)
+            .withNextInstructionPointer(DECR4addr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should trhow if ParameterStack is already empty.")
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var decr4 = PrimitiveFactory.DECR4();
-    var decr4Addr = nextInt();
-    var ip = anInstructionPointer().with(decr4Addr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var DECR4addr = BootstrapUtils.getPrimitiveAddress("4-");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(decr4Addr, decr4).build())
+            .withInstrcutionPointer(DECR4addr)
+            .withNextInstructionPointer(DECR4addr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 
   //////////////////////////////////////////////////////////////////////////////
