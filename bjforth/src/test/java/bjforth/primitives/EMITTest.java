@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -25,7 +26,6 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -73,30 +73,28 @@ class EMITTest {
     var str = RandomStringUtils.random(1);
     var ch = str.codePointAt(0);
 
-    var emit = PrimitiveFactory.EMIT();
-    var emitAddr = nextInt();
-    var ip = anInstructionPointer().with(emitAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var EMITaddr = getPrimitiveAddress("EMIT");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(emitAddr, emit).build())
+            .withInstrcutionPointer(EMITaddr)
+            .withNextInstructionPointer(EMITaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(ch).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
     assertThat(outputStream.toByteArray()).containsExactly(str.getBytes());
   }
 
@@ -104,47 +102,44 @@ class EMITTest {
   @Test
   void throwsIfNonNumber() {
     // GIVEN
-    var emit = PrimitiveFactory.EMIT();
-    var emitAddr = nextInt();
-    var ip = anInstructionPointer().with(emitAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var EMITaddr = getPrimitiveAddress("EMIT");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(emitAddr, emit).build())
+            .withInstrcutionPointer(EMITaddr)
+            .withNextInstructionPointer(EMITaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(new Object()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if ParameterStack is already empty.")
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var emit = PrimitiveFactory.EMIT();
-    var emitAddr = nextInt();
-    var ip = anInstructionPointer().with(emitAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var EMITaddr = getPrimitiveAddress("EMIT");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(emitAddr, emit).build())
+            .withInstrcutionPointer(EMITaddr)
+            .withNextInstructionPointer(EMITaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
