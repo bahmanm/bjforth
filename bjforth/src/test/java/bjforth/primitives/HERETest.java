@@ -18,14 +18,13 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.*;
 
 import bjforth.variables.Variables;
@@ -37,32 +36,34 @@ class HERETest {
   @DisplayName("Push the value of HERE to parameter stack.")
   public void worksOk() {
     // GIVEN
-    var here = PrimitiveFactory.HERE();
-    var hereAddr = nextInt();
-    var hereValue = nextInt();
-    var ip = anInstructionPointer().with(hereAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var HEREaddr = getPrimitiveAddress("HERE");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(hereAddr, here).build())
+            .withInstrcutionPointer(HEREaddr)
+            .withNextInstructionPointer(HEREaddr + 1)
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.get("HERE"), hereValue)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
-        .hasParameterStackEqualTo(aParameterStack().with(hereValue).build())
-        .hasReturnStackEqualTo(state1);
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
+        .hasParameterStackEqualTo(
+            aParameterStack()
+                .with(
+                    Variables.variables.size()
+                        + PrimitiveFactory.getPrimitiveContainers()
+                            .size()) /* TODO This assertion is likely to fail as soon as
+                                     bootstrapping extends to non-primitive words. */
+                .build())
+        .hasReturnStackEqualTo(referenceState);
   }
 }
