@@ -40,4 +40,12 @@ public interface Primitive extends NativeSubroutine {
   default String getDescriptiveName() {
     return this.getClass().getSimpleName();
   }
+
+  default Boolean isImmediate() {
+    return true;
+  }
+
+  default Boolean isHidden() {
+    return false;
+  }
 }

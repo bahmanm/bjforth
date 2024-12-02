@@ -79,6 +79,16 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
     return this;
   }
 
+  public MachineStateAssert hasMemoryEqualTo(Integer address, Object otherValue) {
+    isNotNull();
+    var actualValue = actual.getMemory().get(address);
+    if (!otherValue.equals(actualValue)) {
+      failWithMessage(
+          "Expected memory address <%s> to be <%s> but was <%s>", address, otherValue, actualValue);
+    }
+    return this;
+  }
+
   public MachineStateAssert hasMemoryEqualTo(Memory other) {
     isNotNull();
     return hasMemoryEqualTo(aMachineState().withMemory(other).build());

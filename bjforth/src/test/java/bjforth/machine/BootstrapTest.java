@@ -21,35 +21,53 @@ package bjforth.machine;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 
+import bjforth.primitives.PrimitiveFactory;
 import bjforth.variables.Variables;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class BootstrapTest {
 
+  Integer totalVariablesAndWords =
+      Variables.variables.size() + PrimitiveFactory.getPrimitiveContainers().size();
+
   @Test
   @DisplayName("should place bjforth variable values in designated memory addresses")
   void placeVariables() {
     // GIVEN
     var actualState = aMachineState().build();
-    var referenceState = aMachineState().copyFrom(actualState).build();
-    var machine = aMachine().withState(referenceState).build();
+    var machine = aMachine().withState(actualState).build();
 
     // EXPECT
-    assertThat(referenceState)
-        .hasMemoryEqualTo(
-            aMemory()
-                .with(referenceState)
-                .with(Variables.get("HERE").getAddress(), 4)
-                .with(Variables.get("STATE").getAddress(), 0)
-                .with(Variables.get("BASE").getAddress(), 10)
-                .with(Variables.get("LATEST").getAddress(), 0)
-                .build());
+    assertThat(actualState)
+        .hasMemoryEqualTo(Variables.get("HERE").getAddress(), totalVariablesAndWords)
+        .hasMemoryEqualTo(Variables.get("STATE").getAddress(), 0)
+        .hasMemoryEqualTo(Variables.get("BASE").getAddress(), 10)
+        .hasMemoryEqualTo(Variables.get("LATEST").getAddress(), totalVariablesAndWords);
   }
 
   @Test
-  @DisplayName("should update HERE during & after bootstrap is done.")
-  void updateHERE() {}
+  @DisplayName("should update HERE")
+  void updateHERE() {
+    // GIVEN
+    var actualState = aMachineState().build();
+    var machine = aMachine().withState(actualState).build();
+
+    // EXCEPT
+    assertThat(actualState)
+        .hasMemoryEqualTo(Variables.get("HERE").getAddress(), totalVariablesAndWords);
+  }
+
+  @Test
+  @DisplayName("should update LATEST")
+  void updateLATEST() {
+    // GIVEN
+    var actualState = aMachineState().build();
+    var machine = aMachine().withState(actualState).build();
+
+    // EXCEPT
+    assertThat(actualState)
+        .hasMemoryEqualTo(Variables.get("LATEST").getAddress(), totalVariablesAndWords);
+  }
 }
