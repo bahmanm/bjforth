@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -28,6 +29,7 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -36,30 +38,28 @@ class BRANCHTest {
   @DisplayName("Move NIP by the offset stored at NIP.")
   public void worksOk() {
     // GIVEN
-    var branch = PrimitiveFactory.BRANCH();
-    var branchAddr = nextInt();
-    var ip = anInstructionPointer().with(branchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var BRANCHaddr = getPrimitiveAddress("BRANCH");
     var offset = nextInt();
-    var state1 =
+    var nip = RandomUtils.insecure().randomInt(1000, 2000);
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
+            .withInstrcutionPointer(BRANCHaddr)
             .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(branchAddr, branch).with(branchAddr + 1, offset).build())
+            .withMemory(aMemory().with(nip, offset).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
+    assertThat(actualState)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(nip).plus(offset).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(state1).plus(offset).plus(1).build())
-        .hasMemoryEqualTo(state1)
+            aNextInstructionPointer().with(referenceState).plus(offset).plus(1).build())
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 }
