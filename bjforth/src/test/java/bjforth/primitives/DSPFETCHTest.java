@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -25,7 +26,6 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 
 import bjforth.machine.MachineException;
@@ -39,54 +39,49 @@ class DSPFETCHTest {
   @Test
   void worksOk() {
     // GIVEN
-    var dspfetch = PrimitiveFactory.DSPFETCH();
-    var dspfetchAddr = nextInt();
-    var ip = anInstructionPointer().with(dspfetchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var DSPFETCHaddr = getPrimitiveAddress("DSP@");
     var pointer = org.apache.commons.lang3.RandomUtils.nextInt(0, 5);
     var parameterStackElements =
         IntStream.range(0, pointer + 1).mapToObj(i -> new Object()).toList();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(dspfetchAddr, dspfetch).build())
+            .withInstrcutionPointer(DSPFETCHaddr)
+            .withNextInstructionPointer(DSPFETCHaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(parameterStackElements).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(aMemory().with(state1).build())
-        .hasParameterStackEqualTo(aParameterStack().with(state1).with(pointer).build());
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(aMemory().with(referenceState).build())
+        .hasParameterStackEqualTo(aParameterStack().with(referenceState).with(pointer).build());
   }
 
   @DisplayName("should throw if parameter stack is empty. ")
   @Test
   void throwsIfEmpty() {
     // GIVEN
-    var dspfetch = PrimitiveFactory.DSPFETCH();
-    var dspfetchAddr = nextInt();
-    var ip = anInstructionPointer().with(dspfetchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var DSPFETCHaddr = getPrimitiveAddress("DSP@");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(dspfetchAddr, dspfetch).build())
+            .withInstrcutionPointer(DSPFETCHaddr)
+            .withNextInstructionPointer(DSPFETCHaddr + 1)
+            .withMemory(aMemory().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
