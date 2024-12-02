@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -38,53 +39,48 @@ class CFATest {
   @DisplayName("Safely ignore a valid memory address.")
   public void worksOk() {
     // GIVEN
-    var cfa = PrimitiveFactory.CFA();
-    var cfaAddr = nextInt();
-    var ip = anInstructionPointer().with(cfaAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var TCFAaddr = getPrimitiveAddress(">CFA");
     var parameter = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(cfaAddr, cfa).build())
+            .withInstrcutionPointer(TCFAaddr)
+            .withNextInstructionPointer(TCFAaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var cfa = PrimitiveFactory.CFA();
-    var cfaAddr = nextInt();
-    var ip = anInstructionPointer().with(cfaAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var TCFAaddr = getPrimitiveAddress(">CFA");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(cfaAddr, cfa).build())
+            .withInstrcutionPointer(TCFAaddr)
+            .withNextInstructionPointer(TCFAaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
