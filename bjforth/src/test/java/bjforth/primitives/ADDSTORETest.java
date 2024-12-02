@@ -28,6 +28,7 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 
+import bjforth.machine.BootstrapUtils;
 import bjforth.machine.MachineException;
 import bjforth.utils.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -41,7 +42,7 @@ class ADDSTORETest {
     // GIVEN
     var addstore = PrimitiveFactory.ADDSTORE();
     var addstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(addstoreAddr).build();
+    var ip = anInstructionPointer().with(BootstrapUtils.getPrimitiveAddress("ADDSTORE")).build();
     var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var addrToAddstore = RandomUtils.nextIntExcluding(addstoreAddr);
     var initialValue = nextInt();

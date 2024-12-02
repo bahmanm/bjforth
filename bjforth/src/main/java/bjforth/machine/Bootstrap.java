@@ -18,6 +18,7 @@
  */
 package bjforth.machine;
 
+import bjforth.primitives.PrimitiveFactory;
 import bjforth.variables.Variables;
 
 class Bootstrap {
@@ -27,5 +28,25 @@ class Bootstrap {
         (variable -> {
           state.getMemory().set(variable.getAddress(), variable.getInitialValue());
         }));
+    for (int i = Variables.variables.size();
+        i < PrimitiveFactory.getPrimitiveContainers().size() - 1;
+        i++) {
+      var primitive = PrimitiveFactory.getPrimitiveContainers().get(i).get();
+      var dictItem =
+          new DictionaryItem(primitive.getName(), i, primitive.isImmediate(), primitive.isHidden());
+      state.getDictionary().put(primitive.getName(), dictItem);
+      state.getMemory().set(i, primitive);
+    }
+    state
+        .getMemory()
+        .set(
+            Variables.get("HERE").getAddress(),
+            Variables.variables.size() + PrimitiveFactory.getPrimitiveContainers().size());
+
+    state
+        .getMemory()
+        .set(
+            Variables.get("LATEST").getAddress(),
+            Variables.variables.size() + PrimitiveFactory.getPrimitiveContainers().size());
   }
 }
