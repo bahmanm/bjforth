@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -25,7 +26,6 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 
 import bjforth.variables.Variables;
 import org.junit.jupiter.api.DisplayName;
@@ -36,15 +36,12 @@ class BASETest {
   @DisplayName("Push the value of HERE to parameter stack.")
   public void worksOk() {
     // GIVEN
-    var base = PrimitiveFactory.BASE();
-    var baseAddr = nextInt();
-    var ip = anInstructionPointer().with(baseAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var BASEaddr = getPrimitiveAddress("BASE");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(baseAddr, base).build())
+            .withInstrcutionPointer(BASEaddr)
+            .withNextInstructionPointer(BASEaddr + 1)
+            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .withVariable(Variables.get("BASE"), 10)
             .build();
