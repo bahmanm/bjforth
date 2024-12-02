@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -39,30 +40,28 @@ class FROMRTest {
   @Test
   void worksOk() {
     // GIVEN
-    var fromr = PrimitiveFactory.FROMR();
-    var fromrAddr = nextInt();
-    var ip = anInstructionPointer().with(fromrAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var FROMRaddr = getPrimitiveAddress("R>");
     var object = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(fromrAddr, fromr).build())
+            .withInstrcutionPointer(FROMRaddr)
+            .withNextInstructionPointer(FROMRaddr + 1)
+            .withMemory(aMemory().build())
             .withReturnStack(aReturnStack().with(object).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(aMemory().with(state1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackEqualTo(aParameterStack().with(object).build())
         .hasReturnStackEqualTo(aReturnStack().build());
   }
@@ -71,22 +70,19 @@ class FROMRTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var fromr = PrimitiveFactory.FROMR();
-    var fromrAddr = nextInt();
-    var ip = anInstructionPointer().with(fromrAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var FROMRaddr = getPrimitiveAddress("R>");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(fromrAddr, fromr).build())
+            .withInstrcutionPointer(FROMRaddr)
+            .withNextInstructionPointer(FROMRaddr)
+            .withMemory(aMemory().build())
             .withReturnStack(aReturnStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
