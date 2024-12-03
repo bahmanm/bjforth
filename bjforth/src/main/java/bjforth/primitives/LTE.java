@@ -72,6 +72,6 @@ class LTE implements Primitive {
 
   @Override
   public String getName() {
-    return ">=";
+    return "<=";
   }
 }
