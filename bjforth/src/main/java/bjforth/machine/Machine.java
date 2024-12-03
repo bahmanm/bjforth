@@ -108,6 +108,8 @@ public class Machine {
     var content = getMemoryAt(IP);
     if (content instanceof NativeSubroutine nativeSubroutine) {
       nativeSubroutine.call(this);
+    } else if (content instanceof Integer address) {
+      state.setInstructionPointer(address);
     } else {
       throw new MachineException("don't know how to execute *(%d)".formatted(IP));
     }
