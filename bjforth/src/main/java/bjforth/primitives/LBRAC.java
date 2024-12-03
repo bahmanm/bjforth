@@ -30,6 +30,6 @@ public class LBRAC implements Primitive {
 
   @Override
   public String getName() {
-    return "]";
+    return "[";
   }
 }
