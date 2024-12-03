@@ -27,4 +27,9 @@ public class LBRAC implements Primitive {
     var STATEAddr = Variables.get("STATE").getAddress();
     machine.setMemoryAt(STATEAddr, 0);
   }
+
+  @Override
+  public String getName() {
+    return "]";
+  }
 }
