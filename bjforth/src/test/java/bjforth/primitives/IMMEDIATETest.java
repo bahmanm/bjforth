@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.DictionaryBuilder.aDictionary;
 import static bjforth.machine.DictionaryItemBuilder.aDictionaryItem;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
@@ -45,69 +46,68 @@ class IMMEDIATETest {
   @DisplayName("Toggles the value of Immediate flag for the word pointed to by LATEST.")
   public void worksOk() {
     // GIVEN
-    var immediate = PrimitiveFactory.IMMEDIATE();
-    var immediateAddr = nextInt();
-    var ip = anInstructionPointer().with(immediateAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var IMMEDIATEaddr = getPrimitiveAddress("IMMEDIATE");
     var wordName = RandomStringUtils.secure().next(5);
     var wordAddr = nextInt();
     var latestValue = nextInt();
     var isImmediate = nextBoolean();
     var dictItem = new DictionaryItem(wordName, wordAddr, isImmediate, false);
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(
-                aMemory().with(immediateAddr, immediate).with(latestValue, wordAddr).build())
+            .withInstrcutionPointer(IMMEDIATEaddr)
+            .withNextInstructionPointer(IMMEDIATEaddr + 1)
+            .withMemory(aMemory().with(latestValue, wordAddr).build())
             .withDictionary(aDictionary().with(wordName, dictItem).build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.get("LATEST"), latestValue)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    machine.setMemoryAt(Variables.get("LATEST").getAddress(), latestValue);
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasDictionaryEqualTo(
             aDictionary()
-                .with(state1)
+                .with(referenceState)
                 .with(wordName, aDictionaryItem().with(dictItem).isImmediate(!isImmediate).build())
                 .build())
         .hasMemoryEqualTo(
-            aMemory().with(state1).with(Variables.get("LATEST").getAddress(), latestValue).build())
+            aMemory()
+                .with(referenceState)
+                .with(Variables.get("LATEST").getAddress(), latestValue)
+                .build())
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
   @DisplayName("Throws if LATEST doesn't point to a dictionary item.")
   public void throwsIfMissingWord() {
     // GIVEN
+    var IMMEDIATEaddr = getPrimitiveAddress("IMMEDIATE");
     var immediate = PrimitiveFactory.IMMEDIATE();
     var immediateAddr = nextInt();
-    var ip = anInstructionPointer().with(immediateAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
     var latestValue = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
+            .withInstrcutionPointer(IMMEDIATEaddr)
+            .withNextInstructionPointer(IMMEDIATEaddr + 1)
             .withMemory(aMemory().with(immediateAddr, immediate).build())
             .withDictionary(aDictionary().build())
             .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.get("LATEST"), latestValue)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    machine.setMemoryAt(Variables.get("LATEST").getAddress(), latestValue);
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(state1);
+    assertThat(actualState).isEqualTo(referenceState);
   }
 }
