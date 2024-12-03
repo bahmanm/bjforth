@@ -29,9 +29,4 @@ class LIT implements Primitive {
     machine.setNextInstructionPointer(nip + 1);
     machine.pushToParameterStack(literal);
   }
-
-  @Override
-  public String getName() {
-    return "<";
-  }
 }
