@@ -27,4 +27,9 @@ public class RBRAC implements Primitive {
     var STATEAddr = Variables.get("STATE").getAddress();
     machine.setMemoryAt(STATEAddr, 1);
   }
+
+  @Override
+  public String getName() {
+    return "]";
+  }
 }
