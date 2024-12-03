@@ -47,6 +47,6 @@ class Bootstrap {
         .getMemory()
         .set(
             Variables.get("LATEST").getAddress(),
-            Variables.variables.size() + PrimitiveFactory.getPrimitiveContainers().size());
+            Variables.variables.size() + PrimitiveFactory.getPrimitiveContainers().size()-1);
   }
 }
