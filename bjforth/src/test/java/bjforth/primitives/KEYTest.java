@@ -18,14 +18,13 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import bjforth.machine.MachineException;
@@ -42,12 +41,12 @@ class KEYTest {
   private final InputStream originalSystemIn = System.in;
 
   @AfterEach
-  private void restoreSystemIn() {
+  public void restoreSystemIn() {
     System.setIn(originalSystemIn);
   }
 
   @BeforeEach
-  private void resetKEY() {
+  public void resetKEY() {
     PrimitiveFactoryModificationUtils.resetAllPrimitives();
   }
 
@@ -60,29 +59,26 @@ class KEYTest {
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
 
-    var key = PrimitiveFactory.KEY();
-    var keyAddr = nextInt();
-    var ip = anInstructionPointer().with(keyAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var KEYaddr = getPrimitiveAddress("KEY");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(keyAddr, key).build())
+            .withInstrcutionPointer(KEYaddr)
+            .withNextInstructionPointer(KEYaddr + 1)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().with(str.codePointAt(0)).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @DisplayName("throws if reaches end of input stream.")
@@ -93,23 +89,19 @@ class KEYTest {
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
 
-    var key = PrimitiveFactory.KEY();
-    var keyAddr = nextInt();
-    var ip = anInstructionPointer().with(keyAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var KEYaddr = getPrimitiveAddress("KEY");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(keyAddr, key).build())
+            .withInstrcutionPointer(KEYaddr)
+            .withNextInstructionPointer(KEYaddr + 1)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step)
         .isInstanceOf(MachineException.class)
         .hasMessage("End of stream");
-    assertThat(state2).isEqualTo(state1);
+    assertThat(actualState).isEqualTo(referenceState);
   }
 }
