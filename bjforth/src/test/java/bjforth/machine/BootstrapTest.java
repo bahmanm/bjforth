@@ -68,6 +68,6 @@ class BootstrapTest {
 
     // EXCEPT
     assertThat(actualState)
-        .hasMemoryEqualTo(Variables.get("LATEST").getAddress(), totalVariablesAndWords-1);
+        .hasMemoryEqualTo(Variables.get("LATEST").getAddress(), totalVariablesAndWords - 1);
   }
 }
