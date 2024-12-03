@@ -28,8 +28,8 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 
+import bjforth.machine.BootstrapUtils;
 import bjforth.machine.MachineException;
-import bjforth.utils.RandomUtils;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -43,27 +43,24 @@ class MOVETest {
   @Test
   void worksOk() {
     // GIVEN
-    var move = PrimitiveFactory.MOVE();
-    var moveAddr = nextInt();
-    var ip = anInstructionPointer().with(moveAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var MOVEaddr = BootstrapUtils.getPrimitiveAddress("MOVE");
     var nObjectsToMove = org.apache.commons.lang3.RandomUtils.nextInt(1, 20);
-    var fromAddr = RandomUtils.nextIntExcluding(moveAddr);
-    var toAddr = RandomUtils.nextIntExcluding(moveAddr, fromAddr);
+    var fromAddr = org.apache.commons.lang3.RandomUtils.insecure().randomInt(1000, 1500);
+    var toAddr = org.apache.commons.lang3.RandomUtils.insecure().randomInt(1501, 2000);
     var cellsToMove =
         IntStream.range(0, nObjectsToMove)
             .boxed()
             .map(n -> Map.entry(fromAddr + n, new Object()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(moveAddr, move).with(cellsToMove).build())
+            .withInstrcutionPointer(MOVEaddr)
+            .withNextInstructionPointer(MOVEaddr + 1)
+            .withMemory(aMemory().with(cellsToMove).build())
             .withParameterStack(aParameterStack().with(toAddr, fromAddr, nObjectsToMove).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
@@ -73,160 +70,152 @@ class MOVETest {
         cellsToMove.entrySet().stream()
             .map(e -> Map.entry(toAddr + (e.getKey() - fromAddr), e.getValue()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(aMemory().with(state1).with(movedCells).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(aMemory().with(referenceState).with(movedCells).build())
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @DisplayName("should throw if the top of the stack is not a number.")
   @Test
   void throwsIfTopNonNumber() {
     // GIVEN
-    var move = PrimitiveFactory.MOVE();
-    var moveAddr = nextInt();
-    var ip = anInstructionPointer().with(moveAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var MOVEaddr = BootstrapUtils.getPrimitiveAddress("MOVE");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(moveAddr, move).build())
+            .withInstrcutionPointer(MOVEaddr)
+            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt(), nextInt(), new Object()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if the 2nd top of the stack is not a number.")
   @Test
   void throwsIf2ndTopNonNumber() {
     // GIVEN
-    var move = PrimitiveFactory.MOVE();
-    var moveAddr = nextInt();
-    var ip = anInstructionPointer().with(moveAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var MOVEaddr = BootstrapUtils.getPrimitiveAddress("MOVE");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(moveAddr, move).build())
+            .withInstrcutionPointer(MOVEaddr)
+            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt(), new Object(), nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if the 3rd top of the stack is not a number.")
   @Test
   void throwsIf3rdTopNonNumber() {
     // GIVEN
-    var move = PrimitiveFactory.MOVE();
-    var moveAddr = nextInt();
-    var ip = anInstructionPointer().with(moveAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var MOVEaddr = BootstrapUtils.getPrimitiveAddress("MOVE");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(moveAddr, move).build())
+            .withInstrcutionPointer(MOVEaddr)
+            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(new Object(), nextInt(), nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if ParameterStack is already empty.")
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var move = PrimitiveFactory.MOVE();
-    var moveAddr = nextInt();
-    var ip = anInstructionPointer().with(moveAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var MOVEaddr = BootstrapUtils.getPrimitiveAddress("MOVE");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(moveAddr, move).build())
+            .withInstrcutionPointer(MOVEaddr)
+            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 
   @DisplayName("should throw if ParameterStack has only 1 element.")
   @Test
   void throwIfOnlyOneElement() {
     // GIVEN
-    var move = PrimitiveFactory.MOVE();
-    var moveAddr = nextInt();
-    var ip = anInstructionPointer().with(moveAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var MOVEaddr = BootstrapUtils.getPrimitiveAddress("MOVE");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(moveAddr, move).build())
+            .withInstrcutionPointer(MOVEaddr)
+            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if ParameterStack has only 2 elements.")
   @Test
   void throwIfOnly2Elements() {
     // GIVEN
-    var move = PrimitiveFactory.MOVE();
-    var moveAddr = nextInt();
-    var ip = anInstructionPointer().with(moveAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var MOVEaddr = BootstrapUtils.getPrimitiveAddress("MOVE");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(moveAddr, move).build())
+            .withInstrcutionPointer(MOVEaddr)
+            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt(), nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 }
