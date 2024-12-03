@@ -28,8 +28,10 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.utils.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import bjforth.machine.BootstrapUtils;
 import bjforth.machine.MachineException;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -39,59 +41,70 @@ class LITSTRINGTest {
   @Test
   void worksOk() {
     // GIVEN
-    var litstring = PrimitiveFactory.LITSTRING();
-    var litstringAddr = nextInt();
-    var ip = anInstructionPointer().with(litstringAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var string = RandomStringUtils.secure().next(10);
-    var stringAddr = litstringAddr + 1;
-    var state1 =
+    var LITSTRINGaddr = BootstrapUtils.getPrimitiveAddress("LITSTRING");
+    var aString = RandomStringUtils.insecure().next(10);
+    var memoryAddress = RandomUtils.insecure().randomInt(1000, 2000);
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(litstringAddr, litstring).with(stringAddr, string).build())
+            .withInstrcutionPointer(memoryAddress)
+            .withNextInstructionPointer(memoryAddress + 1)
+            .withMemory(
+                aMemory()
+                    .with(memoryAddress, LITSTRINGaddr)
+                    .with(memoryAddress + 1, aString)
+                    .build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
-    machine.step();
+    machine.step(2);
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(stringAddr).plus(1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(memoryAddress).plus(2).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(stringAddr).plus(2).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
-        .hasParameterStackEqualTo(aParameterStack().with(stringAddr).build())
-        .hasReturnStackEqualTo(state1);
+            aNextInstructionPointer().with(memoryAddress).plus(3).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
+        .hasParameterStackEqualTo(aParameterStack().with(memoryAddress + 1).build())
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @DisplayName("throws an exception in case NIP doesn't point to a string.")
   @Test
   void throwIfNoString() {
     // GIVEN
-    var litstring = PrimitiveFactory.LITSTRING();
-    var litstringAddr = nextInt();
-    var ip = anInstructionPointer().with(litstringAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var LITSTRINGaddr = BootstrapUtils.getPrimitiveAddress("LITSTRING");
     var invalidData = nextInt();
-    var stringAddr = litstringAddr + 1;
-    var state1 =
+    var memoryAddress = RandomUtils.insecure().randomInt(1000, 2000);
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
+            .withInstrcutionPointer(memoryAddress)
+            .withNextInstructionPointer(memoryAddress + 1)
             .withMemory(
-                aMemory().with(litstringAddr, litstring).with(stringAddr, invalidData).build())
+                aMemory()
+                    .with(memoryAddress, LITSTRINGaddr)
+                    .with(memoryAddress + 1, invalidData)
+                    .build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
-    assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThrows(
+        MachineException.class,
+        () -> {
+          machine.step(2);
+        });
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(LITSTRINGaddr).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(memoryAddress).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
+        .hasReturnStackEqualTo(referenceState);
   }
 }
