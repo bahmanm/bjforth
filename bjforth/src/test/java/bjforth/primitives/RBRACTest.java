@@ -25,8 +25,8 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 
+import bjforth.machine.BootstrapUtils;
 import bjforth.variables.Variables;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,31 +37,27 @@ class RBRACTest {
   @DisplayName("Sets STATE to 1")
   public void worksOk() {
     // GIVEN
-    var rbrac = PrimitiveFactory.RBRAC();
-    var rbracAddr = nextInt();
-    var ip = anInstructionPointer().with(rbracAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var RBRACaddr = BootstrapUtils.getPrimitiveAddress("]");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rbracAddr, rbrac).build())
-            .withParameterStack(aParameterStack().build())
-            .withVariable(Variables.get("STATE"), 0)
+            .withInstrcutionPointer(RBRACaddr)
+            .withNextInstructionPointer(RBRACaddr + 1)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasMemoryEqualTo(
-            aMemory().with(state1).with(Variables.get("STATE").getAddress(), 1).build())
+            aMemory().with(referenceState).with(Variables.get("STATE").getAddress(), 1).build())
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 }

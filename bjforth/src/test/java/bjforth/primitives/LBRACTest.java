@@ -37,7 +37,7 @@ class LBRACTest {
   @DisplayName("Sets STATE to 0")
   public void worksOk() {
     // GIVEN
-    var LBRACaddr = getPrimitiveAddress("]");
+    var LBRACaddr = getPrimitiveAddress("[");
     var actualState =
         aMachineState()
             .withInstrcutionPointer(LBRACaddr)
