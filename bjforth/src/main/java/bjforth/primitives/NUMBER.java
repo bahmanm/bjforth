@@ -24,6 +24,7 @@ import bjforth.variables.Variables;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 class NUMBER implements Primitive {
 
@@ -61,11 +62,7 @@ class NUMBER implements Primitive {
       } else {
         Number result = null;
         result = toInteger(s, 10);
-        if (result != null) {
-          return result;
-        } else {
-          return new BigDecimal(s);
-        }
+        return Objects.requireNonNullElseGet(result, () -> new BigDecimal(s));
       }
     }
 
