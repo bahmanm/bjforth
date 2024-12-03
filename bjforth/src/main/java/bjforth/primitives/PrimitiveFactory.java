@@ -462,6 +462,7 @@ public class PrimitiveFactory {
           containerMUL,
           containerNEQU,
           containerNROT,
+          containerNUMBER,
           containerOVER,
           containerQDUP,
           containerRBRAC,
