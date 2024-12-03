@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -25,7 +26,6 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 
 import bjforth.utils.RandomUtils;
@@ -47,31 +47,31 @@ class LITTest {
   @ArgumentsSource(LiteralProvider.class)
   void worksOk(Object literal, String literalClassName) {
     // GIVEN
-    var lit = PrimitiveFactory.LIT();
-    var litAddr = nextInt();
-    var ip = anInstructionPointer().with(litAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var LITaddr = getPrimitiveAddress("LIT");
+    var memoryAddress = org.apache.commons.lang3.RandomUtils.insecure().randomInt(1000, 2000);
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(litAddr, lit).with(nip, literal).build())
+            .withInstrcutionPointer(memoryAddress)
+            .withNextInstructionPointer(memoryAddress + 1)
+            .withMemory(
+                aMemory().with(memoryAddress, LITaddr).with(memoryAddress + 1, literal).build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
-    machine.step();
+    machine.step(2);
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(2).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(2).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(memoryAddress).plus(2).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(memoryAddress).plus(3).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().with(literal).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   //////////////////////////////////////////////////////////////////////////////
