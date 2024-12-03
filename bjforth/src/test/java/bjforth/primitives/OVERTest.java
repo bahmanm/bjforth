@@ -18,11 +18,11 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -39,82 +39,74 @@ class OVERTest {
   @DisplayName("gets the 2nd element of ParameterStack and push it on top.")
   void worksOk() {
     // GIVEN
-    var over = PrimitiveFactory.OVER();
-    var overAddr = nextInt();
-    var ip = anInstructionPointer().with(overAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var OVERaddr = getPrimitiveAddress("OVER");
     var parameter1 = nextInt();
     var parameter2 = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(overAddr, over).build())
+            .withInstrcutionPointer(OVERaddr)
+            .withNextInstructionPointer(OVERaddr + 1)
             .withParameterStack(aParameterStack().with(parameter2, parameter1).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(
             aParameterStack().with(parameter2, parameter1, parameter2).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
   @DisplayName("should throw if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var over = PrimitiveFactory.OVER();
-    var overAddr = nextInt();
-    var ip = anInstructionPointer().with(overAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var OVERaddr = getPrimitiveAddress("OVER");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(overAddr, over).build())
+            .withInstrcutionPointer(OVERaddr)
+            .withNextInstructionPointer(OVERaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 
   @Test
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var over = PrimitiveFactory.OVER();
-    var overAddr = nextInt();
-    var ip = anInstructionPointer().with(overAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var OVERaddr = getPrimitiveAddress("OVER");
     var parameter = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(overAddr, over).build())
+            .withInstrcutionPointer(OVERaddr)
+            .withNextInstructionPointer(OVERaddr + 1)
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 }
