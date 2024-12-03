@@ -18,11 +18,11 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -39,16 +39,12 @@ class NUMBERTest {
   @DisplayName("Convert top of ParameterStack to number.")
   public void worksOk() {
     // GIVEN
-    var number = PrimitiveFactory.NUMBER();
-    var numberAddr = nextInt();
-    var ip = anInstructionPointer().with(numberAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var NUMBERaddr = getPrimitiveAddress("NUMBER");
     var parameter = nextInt();
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(numberAddr, number).build())
+            .withInstrcutionPointer(NUMBERaddr)
+            .withNextInstructionPointer(NUMBERaddr + 1)
             .withParameterStack(aParameterStack().with(Integer.toString(parameter)).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -72,16 +68,12 @@ class NUMBERTest {
   @DisplayName("Attempt to convert an invalid parameter to a number.")
   public void invalidParameter() {
     // GIVEN
-    var number = PrimitiveFactory.NUMBER();
-    var numberAddr = nextInt();
-    var ip = anInstructionPointer().with(numberAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var NUMBERaddr = getPrimitiveAddress("NUMBER");
     var parameter = RandomStringUtils.secure().next(4);
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(numberAddr, number).build())
+            .withInstrcutionPointer(NUMBERaddr)
+            .withNextInstructionPointer(NUMBERaddr + 1)
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -105,15 +97,11 @@ class NUMBERTest {
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var number = PrimitiveFactory.NUMBER();
-    var numberAddr = nextInt();
-    var ip = anInstructionPointer().with(numberAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var NUMBERaddr = getPrimitiveAddress("NUMBER");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(numberAddr, number).build())
+            .withInstrcutionPointer(NUMBERaddr)
+            .withNextInstructionPointer(NUMBERaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
