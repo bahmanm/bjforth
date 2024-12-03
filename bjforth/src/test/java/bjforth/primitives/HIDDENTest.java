@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.DictionaryBuilder.aDictionary;
 import static bjforth.machine.DictionaryItemBuilder.aDictionaryItem;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
@@ -33,7 +34,6 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import bjforth.machine.DictionaryItem;
 import bjforth.machine.MachineException;
-import bjforth.utils.RandomUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -41,93 +41,84 @@ import org.junit.jupiter.api.Test;
 class HIDDENTest {
 
   @Test
-  @DisplayName("Toggles the value of Hidden flag for the word pointed to by LATEST.")
+  @DisplayName("Toggles the value of Hidden flag for the word on the parameter stack.")
   public void worksOk() {
     // GIVEN
-    var hidden = PrimitiveFactory.HIDDEN();
-    var hiddenAddr = nextInt();
-    var ip = anInstructionPointer().with(hiddenAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var HIDDENaddr = getPrimitiveAddress("HIDDEN");
     var wordName = RandomStringUtils.secure().next(5);
     var wordAddr = nextInt();
     var latestValue = nextInt();
     var isHidden = nextBoolean();
     var dictItem = new DictionaryItem(wordName, wordAddr, false, isHidden);
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(hiddenAddr, hidden).with(latestValue, wordAddr).build())
+            .withInstrcutionPointer(HIDDENaddr)
+            .withNextInstructionPointer(HIDDENaddr + 1)
             .withDictionary(aDictionary().with(wordName, dictItem).build())
+            .withMemory(aMemory().with(latestValue, wordAddr).build())
             .withParameterStack(aParameterStack().with(wordAddr).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
-
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasDictionaryEqualTo(
             aDictionary()
-                .with(state1)
+                .with(referenceState)
                 .with(wordName, aDictionaryItem().with(dictItem).isHidden(!isHidden).build())
                 .build())
-        .hasMemoryEqualTo(aMemory().with(state1).build())
+        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
   @DisplayName("Throws if the parameter doesn't point to a dictionary item.")
   public void throwsIfMissingWord() {
     // GIVEN
-    var hidden = PrimitiveFactory.HIDDEN();
-    var hiddenAddr = nextInt();
-    var ip = anInstructionPointer().with(hiddenAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var HIDDENaddr = getPrimitiveAddress("HIDDEN");
     var wordAddr = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(hiddenAddr, hidden).build())
-            .withDictionary(aDictionary().build())
+            .withInstrcutionPointer(HIDDENaddr)
+            .withNextInstructionPointer(HIDDENaddr + 1)
             .withParameterStack(aParameterStack().with(wordAddr).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if ParameterStack is already empty.")
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var hidden = PrimitiveFactory.HIDDEN();
-    var hiddenAddr = RandomUtils.nextInt();
-    var ip = anInstructionPointer().with(hiddenAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var HIDDENaddr = getPrimitiveAddress("HIDDEN");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(hiddenAddr, hidden).build())
+            .withInstrcutionPointer(HIDDENaddr)
+            .withNextInstructionPointer(HIDDENaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
