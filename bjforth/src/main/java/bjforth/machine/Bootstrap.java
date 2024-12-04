@@ -28,7 +28,7 @@ class Bootstrap {
         (variable -> {
           state.getMemory().set(variable.getAddress(), variable.getInitialValue());
         }));
-    for (int i = 0; i < PrimitiveFactory.getPrimitiveContainers().size() - 1; i++) {
+    for (int i = 0; i < PrimitiveFactory.getPrimitiveContainers().size(); i++) {
       var address = i + Variables.variables.size();
       var primitive = PrimitiveFactory.getPrimitiveContainers().get(i).get();
       var dictItem =
