@@ -18,11 +18,11 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -39,82 +39,74 @@ class TWODROPTest {
   @DisplayName("drops the top 2 elements of stack, ie abc -> a")
   void worksOk() {
     // GIVEN
-    var twodrop = PrimitiveFactory.TWODROP();
-    var twodropAddr = nextInt();
-    var ip = anInstructionPointer().with(twodropAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var TWODROPaddr = getPrimitiveAddress("2DROP");
     var parameter1 = nextInt();
     var parameter2 = nextInt();
     var parameter3 = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(twodropAddr, twodrop).build())
+            .withInstrcutionPointer(TWODROPaddr)
+            .withNextInstructionPointer(TWODROPaddr + 1)
             .withParameterStack(aParameterStack().with(parameter3, parameter2, parameter1).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().with(parameter3).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
   @DisplayName("should trhow if ParameterStack is already empty.")
   void throwIfEmpty() {
     // GIVEN
-    var twodrop = PrimitiveFactory.TWODROP();
-    var twodropAddr = nextInt();
-    var ip = anInstructionPointer().with(twodropAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var TWODROPaddr = getPrimitiveAddress("2DROP");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(twodropAddr, twodrop).build())
+            .withInstrcutionPointer(TWODROPaddr)
+            .withNextInstructionPointer(TWODROPaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 
   @Test
   @DisplayName("should throw if ParameterStack has only 1 element.")
   void throwIfParameterStackOneElement() {
     // GIVEN
-    var twodrop = PrimitiveFactory.TWODROP();
-    var twodropAddr = nextInt();
-    var ip = anInstructionPointer().with(twodropAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var TWODROPaddr = getPrimitiveAddress("2DROP");
     var parameter = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(twodropAddr, twodrop).build())
+            .withInstrcutionPointer(TWODROPaddr)
+            .withNextInstructionPointer(TWODROPaddr + 1)
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 }
