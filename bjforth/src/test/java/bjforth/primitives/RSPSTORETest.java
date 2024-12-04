@@ -30,6 +30,7 @@ import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import bjforth.machine.BootstrapUtils;
 import bjforth.machine.MachineException;
 import java.util.stream.IntStream;
 import org.apache.commons.lang3.RandomUtils;
@@ -42,16 +43,12 @@ class RSPSTORETest {
   @Test
   void worksOk() {
     // GIVEN
-    var rspstore = PrimitiveFactory.RSPSTORE();
-    var rspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(rspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var RSPSTOREaddr = BootstrapUtils.getPrimitiveAddress("RSP!");
     var pointerToStore = RandomUtils.nextInt(0, 5);
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rspstoreAddr, rspstore).build())
+            .withInstrcutionPointer(RSPSTOREaddr)
+            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(pointerToStore).build())
             .withReturnStack(
                 aReturnStack()
@@ -59,18 +56,19 @@ class RSPSTORETest {
                         IntStream.range(0, pointerToStore + 5).mapToObj(i -> new Object()).toList())
                     .build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(aMemory().with(state1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackPointerEqualTo(pointerToStore);
   }
@@ -79,101 +77,94 @@ class RSPSTORETest {
   @Test
   void throwsIfParameterStackEmpty() {
     // GIVEN
-    var rspstore = PrimitiveFactory.RSPSTORE();
-    var rspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(rspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var RSPSTOREaddr = BootstrapUtils.getPrimitiveAddress("RSP!");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rspstoreAddr, rspstore).build())
+            .withInstrcutionPointer(RSPSTOREaddr)
+            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withReturnStack(aReturnStack().with(nextInt()).build())
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(state1);
+    assertThat(actualState).isEqualTo(referenceState);
   }
 
   @DisplayName("should throw if parameter stack top is not a number.")
   @Test
   void throwsIfParameterStackNonNumber() {
     // GIVEN
-    var rspstore = PrimitiveFactory.RSPSTORE();
-    var rspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(rspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var RSPSTOREaddr = BootstrapUtils.getPrimitiveAddress("RSP!");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rspstoreAddr, rspstore).build())
+            .withInstrcutionPointer(RSPSTOREaddr)
+            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(new Object()).build())
             .withReturnStack(aReturnStack().with(nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if return stack is empty.")
   @Test
   void throwsIfReturnStackEmpty() {
     // GIVEN
-    var rspstore = PrimitiveFactory.RSPSTORE();
-    var rspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(rspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var RSPSTOREaddr = BootstrapUtils.getPrimitiveAddress("RSP!");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rspstoreAddr, rspstore).build())
+            .withInstrcutionPointer(RSPSTOREaddr)
+            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @DisplayName("should throw if pointer is beyond return stack size.")
   @Test
   void throwsIfPointerTooLarge() {
     // GIVEN
-    var rspstore = PrimitiveFactory.RSPSTORE();
-    var rspstoreAddr = nextInt();
-    var ip = anInstructionPointer().with(rspstoreAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var RSPSTOREaddr = BootstrapUtils.getPrimitiveAddress("RSP!");
     var pointer = RandomUtils.nextInt(5, 10);
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rspstoreAddr, rspstore).build())
+            .withInstrcutionPointer(RSPSTOREaddr)
+            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(pointer).build())
             .withReturnStack(aReturnStack().with(nextInt(), nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2)
+    assertThat(actualState)
         .isEqualTo(
-            aMachineState().copyFrom(state1).withParameterStack(aParameterStack().build()).build());
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 }
