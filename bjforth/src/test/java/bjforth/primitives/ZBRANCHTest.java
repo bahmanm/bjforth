@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -25,10 +26,10 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.*;
 
 import bjforth.machine.MachineException;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -38,85 +39,80 @@ class ZBRANCHTest {
   @DisplayName("Move NIP by the offset stored at NIP in case of top of parameter stack is 0.")
   public void worksOkIfZero() {
     // GIVEN
-    var zbranch = PrimitiveFactory.ZBRANCH();
-    var zbranchAddr = nextInt();
-    var ip = anInstructionPointer().with(zbranchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var offset = nextInt();
-    var state1 =
+    var ZBRANCHaddr = getPrimitiveAddress("0BRANCH");
+    var offset = RandomUtils.insecure().randomInt(10, 200);
+    var memoryAddress = RandomUtils.insecure().randomInt(1000, 1500);
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(zbranchAddr, zbranch).with(zbranchAddr + 1, offset).build())
+            .withInstrcutionPointer(memoryAddress)
+            .withNextInstructionPointer(memoryAddress + 1)
+            .withMemory(
+                aMemory().with(memoryAddress, ZBRANCHaddr).with(memoryAddress + 1, offset).build())
             .withParameterStack(aParameterStack().with(0).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
-    machine.step();
+    machine.step(2);
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(nip).plus(offset).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(
+            anInstructionPointer().with(referenceState).plus(offset).plus(1).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(state1).plus(offset).plus(1).build())
-        .hasMemoryEqualTo(state1)
+            aNextInstructionPointer().with(referenceState).plus(offset).plus(1).build())
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
-  @DisplayName("Skip over offset in case of top of parameter stack is 0.")
+  @DisplayName("Skip over offset in case of top of parameter stack is not 0.")
   public void worksOkIfNotZero() {
     // GIVEN
-    var zbranch = PrimitiveFactory.ZBRANCH();
-    var zbranchAddr = nextInt();
-    var ip = anInstructionPointer().with(zbranchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var offset = nextInt();
-    var state1 =
+    var ZBRANCHaddr = getPrimitiveAddress("0BRANCH");
+    var offset = RandomUtils.insecure().randomInt(10, 200);
+    var memoryAddress = RandomUtils.insecure().randomInt(1000, 1500);
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(zbranchAddr, zbranch).with(nip, offset).build())
+            .withInstrcutionPointer(memoryAddress)
+            .withNextInstructionPointer(memoryAddress + 1)
+            .withMemory(
+                aMemory().with(memoryAddress, ZBRANCHaddr).with(memoryAddress + 1, offset).build())
             .withParameterStack(aParameterStack().with(1).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
-    machine.step();
+    machine.step(2);
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(nip).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(2).build())
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(2).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(2).build())
+        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @Test
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
-    // GIVEN
-    var zbranch = PrimitiveFactory.ZBRANCH();
-    var zbranchAddr = nextInt();
-    var ip = anInstructionPointer().with(zbranchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var ZBRANCHaddr = getPrimitiveAddress("0BRANCH");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(zbranchAddr, zbranch).build())
+            .withInstrcutionPointer(ZBRANCHaddr)
+            .withNextInstructionPointer(ZBRANCHaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
-    // EXPECT
+    // THEN
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
