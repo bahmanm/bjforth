@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
@@ -39,30 +40,28 @@ class TORTest {
   @Test
   void worksOk() {
     // GIVEN
-    var tor = PrimitiveFactory.TOR();
-    var torAddr = nextInt();
-    var ip = anInstructionPointer().with(torAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var TORaddr = getPrimitiveAddress(">R");
     var object = nextInt();
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(torAddr, tor).build())
+            .withInstrcutionPointer(TORaddr)
+            .withNextInstructionPointer(TORaddr + 1)
             .withParameterStack(aParameterStack().with(object).build())
+            .withReturnStack(aReturnStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(aMemory().with(state1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(aReturnStack().with(object).build());
   }
@@ -71,22 +70,19 @@ class TORTest {
   @Test
   void throwIfEmpty() {
     // GIVEN
-    var tor = PrimitiveFactory.TOR();
-    var torAddr = nextInt();
-    var ip = anInstructionPointer().with(torAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var TORaddr = getPrimitiveAddress(">R");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(torAddr, tor).build())
+            .withInstrcutionPointer(TORaddr)
+            .withNextInstructionPointer(TORaddr + 1)
             .withParameterStack(aParameterStack().build())
+            .withReturnStack(aReturnStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(state2).isEqualTo(aMachineState().copyFrom(state1).build());
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
