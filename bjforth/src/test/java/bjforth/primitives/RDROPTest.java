@@ -18,11 +18,11 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -38,29 +38,26 @@ class RDROPTest {
   @DisplayName("drops the top of return stack.")
   public void workOk() {
     // GIVEN
-    var rdrop = PrimitiveFactory.RDROP();
-    var rdropAddr = nextInt();
-    var ip = anInstructionPointer().with(rdropAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var RDROPaddr = getPrimitiveAddress("RDROP");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rdropAddr, rdrop).build())
+            .withInstrcutionPointer(RDROPaddr)
+            .withNextInstructionPointer(RDROPaddr + 1)
             .withReturnStack(aReturnStack().with(nextInt()).build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(state1)
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(referenceState)
         .hasReturnStackEqualTo(aReturnStack().build());
   }
 
@@ -68,22 +65,18 @@ class RDROPTest {
   @DisplayName("should throw if return stack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var rdrop = PrimitiveFactory.RDROP();
-    var rdropAddr = nextInt();
-    var ip = anInstructionPointer().with(rdropAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var RDROPaddr = getPrimitiveAddress("RDROP");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rdropAddr, rdrop).build())
+            .withInstrcutionPointer(RDROPaddr)
+            .withNextInstructionPointer(RDROPaddr + 1)
             .withReturnStack(aReturnStack().build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(state2).isEqualTo(state1);
+    assertThat(actualState).isEqualTo(referenceState);
   }
 }
