@@ -18,15 +18,16 @@
  */
 package bjforth.primitives;
 
+import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
+import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
-import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -41,55 +42,49 @@ class RSPFETCHTest {
   @Test
   void worksOk() {
     // GIVEN
-    var rspfetch = PrimitiveFactory.RSPFETCH();
-    var rspfetchAddr = nextInt();
-    var ip = anInstructionPointer().with(rspfetchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
+    var RSPFETCHaddr = getPrimitiveAddress("RSP@");
     var pointer = org.apache.commons.lang3.RandomUtils.nextInt(0, 5);
-    var state1 =
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rspfetchAddr, rspfetch).build())
+            .withInstrcutionPointer(RSPFETCHaddr)
+            .withNextInstructionPointer(RSPFETCHaddr + 1)
             .withReturnStack(
                 aReturnStack()
                     .with(IntStream.range(0, pointer + 1).mapToObj(i -> new Object()).toList())
                     .build())
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(state2)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(state1).plus(1).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(state1).plus(1).build())
-        .hasDictionaryEqualTo(state1)
-        .hasMemoryEqualTo(aMemory().with(state1).build())
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackEqualTo(aParameterStack().with(pointer).build())
-        .hasReturnStackEqualTo(state1);
+        .hasReturnStackEqualTo(referenceState);
   }
 
   @DisplayName("should throw if return stack is empty.")
   @Test
   void throwsIfEmpty() {
     // GIVEN
-    var rspfetch = PrimitiveFactory.RSPFETCH();
-    var rspfetchAddr = nextInt();
-    var ip = anInstructionPointer().with(rspfetchAddr).build();
-    var nip = aNextInstructionPointer().with(ip).plus(1).build();
-    var state1 =
+    var RSPFETCHaddr = getPrimitiveAddress("RSP@");
+    var actualState =
         aMachineState()
-            .withInstrcutionPointer(ip)
-            .withNextInstructionPointer(nip)
-            .withMemory(aMemory().with(rspfetchAddr, rspfetch).build())
+            .withInstrcutionPointer(RSPFETCHaddr)
+            .withNextInstructionPointer(RSPFETCHaddr)
             .build();
-    var state2 = aMachineState().copyFrom(state1).build();
-    var machine = aMachine().withState(state2).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
