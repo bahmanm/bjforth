@@ -44,7 +44,7 @@ class BootstrapTest {
         .hasMemoryEqualTo(Variables.get("HERE").getAddress(), totalVariablesAndWords)
         .hasMemoryEqualTo(Variables.get("STATE").getAddress(), 0)
         .hasMemoryEqualTo(Variables.get("BASE").getAddress(), 10)
-        .hasMemoryEqualTo(Variables.get("LATEST").getAddress(), totalVariablesAndWords);
+        .hasMemoryEqualTo(Variables.get("LATEST").getAddress(), totalVariablesAndWords - 1);
   }
 
   @Test
