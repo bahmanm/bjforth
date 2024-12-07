@@ -32,4 +32,9 @@ public class LBRAC implements Primitive {
   public String getName() {
     return "[";
   }
+
+  @Override
+  public Boolean isImmediate() {
+    return true;
+  }
 }
