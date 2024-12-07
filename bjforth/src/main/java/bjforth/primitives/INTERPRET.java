@@ -27,7 +27,7 @@ public class INTERPRET implements Primitive {
   public void execute(Machine machine) {
     var STATE = (Integer) machine.getMemoryAt(Variables.get("STATE").getAddress());
     var HEREaddr = Variables.get("HERE").getAddress();
-    var HERE = (Integer) machine.getMemoryAt(HEREaddr);
+    var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
 
     PrimitiveFactory.WORD().execute(machine);
     var obj = machine.peekIntoParameterStack();
@@ -37,18 +37,22 @@ public class INTERPRET implements Primitive {
       if (STATE == 0 || dictItem.getIsImmediate()) {
         machine.setNextInstructionPointer(dictItem.getAddress());
       } else {
-        machine.setMemoryAt(HERE, dictItem.getAddress());
+        machine.setMemoryAt(HEREvalue, dictItem.getAddress());
         machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 1);
       }
     } catch (MachineException _ex) { // Not in dictionary. Check if it's a number.
       machine.pushToParameterStack(obj);
       try {
         PrimitiveFactory.NUMBER().execute(machine);
+        var numberStatus = (Integer) machine.popFromParameterStack();
+        if (numberStatus != 0) {
+          throw new MachineException("Invalid number.");
+        }
         var number = (Number) machine.popFromParameterStack();
         if (STATE == 1) { // Compiling mode
-          machine.setMemoryAt(HERE, machine.getDictionaryItem("LIT").get().getAddress());
-          machine.setMemoryAt(HERE + 1, number);
-          machine.setMemoryAt(HERE, (Integer) machine.getMemoryAt(HERE) + 2);
+          machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+          machine.setMemoryAt(HEREvalue + 1, number);
+          machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
         } else { // Immediate mode
           machine.pushToParameterStack(number);
         }
