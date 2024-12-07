@@ -185,6 +185,12 @@ public class PrimitiveFactory {
     return containerIMMEDIATE.get();
   }
 
+  private static PrimitiveContainer containerINTERPRET = new PrimitiveContainer(INTERPRET::new);
+
+  static Primitive INTERPRET() {
+    return containerINTERPRET.get();
+  }
+
   private static PrimitiveContainer containerINCR = new PrimitiveContainer(INCR::new);
 
   static Primitive INCR() {
@@ -448,6 +454,7 @@ public class PrimitiveFactory {
           containerHERE,
           containerHIDDEN,
           containerIMMEDIATE,
+          containerINTERPRET,
           containerINCR,
           containerINCR4,
           containerKEY,
