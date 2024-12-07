@@ -30,6 +30,7 @@ import static org.assertj.core.api.Assertions.*;
 import bjforth.variables.Variables;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -89,7 +90,7 @@ class INTERPRETTest {
   void compilingReplaceWordWithAddress() {
     // GIVEN
     var wordStr = "+";
-    var str = wordStr + " ${wordStr}";
+    var str = wordStr + " ";
     var wordAddr = getPrimitiveAddress("+");
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
@@ -119,6 +120,47 @@ class INTERPRETTest {
                 .with(referenceState)
                 .with(Variables.get("HERE").getAddress(), HEREdereferenced)
                 .with(HEREdereferenced - 1, wordAddr)
+                .build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasReturnStackEqualTo(referenceState);
+  }
+
+  @DisplayName("Compiling mode: Replace a literal number with LIT <number>.")
+  @Test
+  void numberReplaceWithLITAndNumber() {
+    // GIVEN
+    var number = RandomUtils.insecure().randomInt();
+    var str = "%d ".formatted(number);
+    var LITaddr = getPrimitiveAddress("LIT");
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
+    var actualState =
+        aMachineState()
+            .withInstrcutionPointer(INTERPRETaddr)
+            .withNextInstructionPointer(INTERPRETaddr + 1)
+            .build();
+    var machine = aMachine().withState(actualState).build();
+    machine.setMemoryAt(Variables.get("STATE").getAddress(), 1);
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    var HEREdereferenced = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
+    assertThat(actualState)
+        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
+        .hasNextInstructionPointerEqualTo(
+            aNextInstructionPointer().with(referenceState).plus(1).build())
+        .hasVariableEqualTo(Variables.get("HERE"), HEREdereferenced)
+        .hasMemoryEqualTo(
+            aMemory()
+                .with(referenceState)
+                .with(Variables.get("HERE").getAddress(), HEREdereferenced)
+                .with(HEREdereferenced - 2, LITaddr)
+                .with(HEREdereferenced - 1, number)
                 .build())
         .hasDictionaryEqualTo(referenceState)
         .hasReturnStackEqualTo(referenceState);
