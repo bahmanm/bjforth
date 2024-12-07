@@ -53,7 +53,7 @@ class INTERPRETTest {
 
   @DisplayName("Immediate mode: Executes the word.")
   @Test
-  void immediateExecutesWord() {
+  void immediateExecuteWord() {
     // GIVEN
     var wordStr = "+";
     var str = wordStr + " ";
