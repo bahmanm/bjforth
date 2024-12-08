@@ -30,8 +30,8 @@ import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPoin
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextBoolean;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
 import bjforth.machine.DictionaryItem;
 import bjforth.machine.MachineException;
@@ -109,5 +109,18 @@ class IMMEDIATETest {
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
     assertThat(actualState).isEqualTo(referenceState);
+  }
+
+  @DisplayName("IMMEDIATE is an immediate word.")
+  @Test
+  void isImmediate() {
+    // GIVEN
+    var actualState = aMachineState().build();
+    var machine = aMachine().withState(actualState).build();
+
+    // EXCEPT
+    org.assertj.core.api.Assertions.assertThat(
+            machine.getDictionaryItem("IMMEDIATE").get().getIsImmediate())
+        .isTrue();
   }
 }
