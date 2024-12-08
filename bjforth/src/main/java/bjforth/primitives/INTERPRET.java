@@ -46,6 +46,7 @@ public class INTERPRET implements Primitive {
         PrimitiveFactory.NUMBER().execute(machine);
         var numberStatus = (Integer) machine.popFromParameterStack();
         if (numberStatus != 0) {
+          machine.popFromParameterStack();
           throw new MachineException("Invalid number.");
         }
         var number = (Number) machine.popFromParameterStack();
