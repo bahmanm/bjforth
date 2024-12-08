@@ -36,4 +36,9 @@ public class IMMEDIATE implements Primitive {
       throw new MachineException("DictionaryItem not found.");
     }
   }
+
+  @Override
+  public Boolean isImmediate() {
+    return true;
+  }
 }
