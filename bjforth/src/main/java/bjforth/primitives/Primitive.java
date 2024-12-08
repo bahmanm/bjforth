@@ -42,7 +42,7 @@ public interface Primitive extends NativeSubroutine {
   }
 
   default Boolean isImmediate() {
-    return true;
+    return false;
   }
 
   default Boolean isHidden() {

@@ -42,6 +42,10 @@ class Stack {
     data.addLast(item);
   }
 
+  public Object peek() {
+    return data.peek();
+  }
+
   public int getPointer() {
     if (data.size() <= 0) {
       throw new MachineException("Empty stack");

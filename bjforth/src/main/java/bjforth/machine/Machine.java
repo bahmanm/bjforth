@@ -46,6 +46,10 @@ public class Machine {
     return state.getParameterStack().pop();
   }
 
+  public Object peekIntoParameterStack() {
+    return state.getParameterStack().peek();
+  }
+
   public int getParameterStackPointer() {
     return state.getParameterStack().getPointer();
   }
