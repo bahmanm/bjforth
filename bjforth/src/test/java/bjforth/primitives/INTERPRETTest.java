@@ -28,9 +28,11 @@ import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPoin
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.*;
 
+import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -200,5 +202,28 @@ class INTERPRETTest {
         .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasDictionaryEqualTo(referenceState)
         .hasReturnStackEqualTo(referenceState);
+  }
+
+  @DisplayName("Invalid input - not a word, not a number")
+  @Test
+  void invalidInput() {
+    // GIVEN
+    var str = "%s ".formatted(RandomStringUtils.insecure().next(15));
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
+    var actualState =
+        aMachineState()
+            .withInstrcutionPointer(INTERPRETaddr)
+            .withNextInstructionPointer(INTERPRETaddr + 1)
+            .build();
+    var machine = aMachine().withState(actualState).build();
+    machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // EXPECT
+    assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
