@@ -88,23 +88,4 @@ class QUITTest {
         .hasMemoryEqualTo(referenceState)
         .hasReturnStackEqualTo(aReturnStack().build());
   }
-
-  @Test
-  @DisplayName("should throw if return stack is already empty.")
-  public void throwIfEmpty() {
-    // GIVEN
-    var RDROPaddr = getPrimitiveAddress("RDROP");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(RDROPaddr)
-            .withNextInstructionPointer(RDROPaddr + 1)
-            .withReturnStack(aReturnStack().build())
-            .build();
-    var machine = aMachine().withState(actualState).build();
-    var referenceState = aMachineState().copyFrom(actualState).build();
-
-    // EXPECT
-    assertThrows(MachineException.class, machine::step);
-    assertThat(actualState).isEqualTo(referenceState);
-  }
 }
