@@ -27,10 +27,7 @@ import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import bjforth.machine.MachineException;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.apache.commons.lang3.RandomUtils;
