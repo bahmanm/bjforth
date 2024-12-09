@@ -26,9 +26,11 @@ public interface Primitive extends NativeSubroutine {
   @Override
   default void call(Machine machine) {
     execute(machine);
-    var nextWordAddr = machine.getNextInstructionPointer();
-    machine.setNextInstructionPointer(nextWordAddr + 1);
-    machine.jumpTo(nextWordAddr);
+    if (!isBypassNextInstructionPointer()) {
+      var nextWordAddr = machine.getNextInstructionPointer();
+      machine.setNextInstructionPointer(nextWordAddr + 1);
+      machine.jumpTo(nextWordAddr);
+    }
   }
 
   void execute(Machine machine);
@@ -46,6 +48,10 @@ public interface Primitive extends NativeSubroutine {
   }
 
   default Boolean isHidden() {
+    return false;
+  }
+
+  default Boolean isBypassNextInstructionPointer() {
     return false;
   }
 }
