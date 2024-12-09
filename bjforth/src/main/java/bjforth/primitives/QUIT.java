@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Bahman Movaqar
+ * Copyright 2024 Bahman Movaqar
  *
  * This file is part of bjForth.
  *
@@ -19,39 +19,26 @@
 package bjforth.primitives;
 
 import bjforth.machine.Machine;
-import bjforth.machine.NativeSubroutine;
+import java.util.NoSuchElementException;
 
-public interface Primitive extends NativeSubroutine {
+public class QUIT implements Primitive {
 
   @Override
-  default void call(Machine machine) {
-    execute(machine);
-    if (!isBypassNextInstructionPointer()) {
-      var nextWordAddr = machine.getNextInstructionPointer();
-      machine.setNextInstructionPointer(nextWordAddr + 1);
-      machine.jumpTo(nextWordAddr);
+  public void execute(Machine machine) {
+    try {
+      while (true) {
+        machine.popFromReturnStack();
+      }
+    } catch (NoSuchElementException _ex) { // Return stack is empty
     }
+    var nip = machine.getNextInstructionPointer();
+    PrimitiveFactory.INTERPRET().execute(machine);
+    machine.setNextInstructionPointer(nip);
+    machine.jumpTo(machine.getDictionaryItem("INTERPRET").get().getAddress());
   }
 
-  void execute(Machine machine);
-
-  default String getName() {
-    return getDescriptiveName();
-  }
-
-  default String getDescriptiveName() {
-    return this.getClass().getSimpleName();
-  }
-
-  default Boolean isImmediate() {
-    return false;
-  }
-
-  default Boolean isHidden() {
-    return false;
-  }
-
-  default Boolean isBypassNextInstructionPointer() {
-    return false;
+  @Override
+  public Boolean isBypassNextInstructionPointer() {
+    return true;
   }
 }

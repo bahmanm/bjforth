@@ -293,6 +293,12 @@ public class PrimitiveFactory {
     return containerQDUP.get();
   }
 
+  private static PrimitiveContainer containerQUIT = new PrimitiveContainer(QUIT::new);
+
+  static Primitive QUIT() {
+    return containerQUIT.get();
+  }
+
   private static PrimitiveContainer containerRBRAC = new PrimitiveContainer(RBRAC::new);
 
   static Primitive RBRAC() {
@@ -472,6 +478,7 @@ public class PrimitiveFactory {
           containerNUMBER,
           containerOVER,
           containerQDUP,
+          containerQUIT,
           containerRBRAC,
           containerRDROP,
           containerROT,
