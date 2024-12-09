@@ -39,12 +39,12 @@ class WORDTest {
   private final InputStream originalSystemIn = System.in;
 
   @AfterEach
-  private void restoreSystemIn() {
+  public void restoreSystemIn() {
     System.setIn(originalSystemIn);
   }
 
   @BeforeEach
-  private void resetPrimitives() {
+  public void resetPrimitives() {
     PrimitiveFactoryModificationUtils.resetAllPrimitives();
   }
 
