@@ -54,7 +54,7 @@ class QUITTest {
   }
 
   @Test
-  @DisplayName("drops the top of return stack.")
+  @DisplayName("Empties the return stack and jumps to INTERPRET")
   public void workOk() {
     // GIVEN
     var wordStr = "+";
