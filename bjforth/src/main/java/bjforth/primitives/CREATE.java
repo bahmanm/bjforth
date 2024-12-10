@@ -29,18 +29,14 @@ public class CREATE implements Primitive {
   @Override
   public void execute(Machine machine) {
     try {
-      var lengthObject = machine.popFromParameterStack();
-      var addressObject = machine.popFromParameterStack();
+      var nameObj = machine.popFromParameterStack();
       var HEREAddr = Variables.get("HERE").getAddress();
       var HEREValue = (Integer) machine.getMemoryAt(HEREAddr);
       var LATESTAddr = Variables.get("LATEST").getAddress();
-      if (lengthObject instanceof Integer _length && addressObject instanceof Integer nameAddr) {
-        var name = (String) machine.getMemoryAt(nameAddr);
-        machine.setMemoryAt(HEREValue, name);
-        var newHEREValue = HEREValue + 1;
-        machine.setMemoryAt(HEREAddr, newHEREValue);
+
+      if (nameObj instanceof String name) {
         machine.setMemoryAt(LATESTAddr, HEREValue);
-        var dictItem = new DictionaryItem(name, HEREValue, false, true);
+        var dictItem = new DictionaryItem(name, HEREValue, false, false);
         machine.createDictionaryItem(name, dictItem);
       } else {
         throw new MachineException("Invalid argument");

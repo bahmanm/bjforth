@@ -20,12 +20,10 @@ package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.DictionaryBuilder.aDictionary;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -46,13 +44,10 @@ class CREATETest {
     var CREATEaddr = getPrimitiveAddress("CREATE");
     var nameAddr = nextInt();
     var name = RandomStringUtils.insecure().next(10);
-    var nameLength = name.length();
     var actualState =
         aMachineState()
             .withInstrcutionPointer(CREATEaddr)
-            .withNextInstructionPointer(CREATEaddr + 1)
-            .withMemory(aMemory().with(nameAddr, name).build())
-            .withParameterStack(aParameterStack().with(nameAddr, nameLength).build())
+            .withParameterStack(aParameterStack().with(name).build())
             .withVariable(Variables.get("LATEST"), 0)
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -65,20 +60,16 @@ class CREATETest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasDictionaryEqualTo(
             aDictionary()
                 .with(referenceState)
-                .with(name, new DictionaryItem(name, HEREvalue, false, true))
+                .with(name, new DictionaryItem(name, HEREvalue, false, false))
                 .build())
         .hasMemoryEqualTo(
             aMemory()
                 .with(actualState)
-                .with(HEREaddr, HEREvalue + 1)
+                .with(HEREaddr, HEREvalue)
                 .with(Variables.get("LATEST").getAddress(), HEREvalue)
-                .with(HEREvalue, name)
                 .build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(actualState);
