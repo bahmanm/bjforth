@@ -31,9 +31,7 @@ public class QUIT implements Primitive {
       }
     } catch (NoSuchElementException _ex) { // Return stack is empty
     }
-    var nip = machine.getNextInstructionPointer();
-    PrimitiveFactory.INTERPRET().execute(machine);
-    machine.setNextInstructionPointer(nip);
+    machine.setNextInstructionPointer(machine.getDictionaryItem("QUIT").get().getAddress());
     machine.jumpTo(machine.getDictionaryItem("INTERPRET").get().getAddress());
   }
 
