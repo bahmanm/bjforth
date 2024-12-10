@@ -35,11 +35,11 @@ class Stack {
   }
 
   public Object pop() {
-    return data.removeLast();
+    return data.removeFirst();
   }
 
   public void push(Object item) {
-    data.addLast(item);
+    data.addFirst(item);
   }
 
   public Object peek() {

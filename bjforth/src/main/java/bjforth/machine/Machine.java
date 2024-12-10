@@ -136,4 +136,18 @@ public class Machine {
       step();
     }
   }
+
+  public static void main(String[] args) {
+    System.out.println("bjForth <https://github.com/bahmanm/bjforth>");
+    System.out.println("⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯");
+
+    var state = new MachineState(0, 0, new Memory(), new Dictionary(), new Stack(), new Stack());
+    var machine = new Machine(state);
+
+    var QUITaddr = machine.getDictionaryItem("QUIT").get().getAddress();
+    var INTERPRETaddr = machine.getDictionaryItem("INTERPRET").get().getAddress();
+
+    machine.jumpTo(QUITaddr);
+    machine.loop();
+  }
 }
