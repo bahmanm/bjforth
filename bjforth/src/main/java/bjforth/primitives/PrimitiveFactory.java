@@ -59,6 +59,12 @@ public class PrimitiveFactory {
     return containerCHAR.get();
   }
 
+  private static PrimitiveContainer containerCOLON = new PrimitiveContainer(COLON::new);
+
+  static Primitive COLON() {
+    return containerCOLON.get();
+  }
+
   private static PrimitiveContainer containerCOPY = new PrimitiveContainer(COPY::new);
 
   static Primitive COPY() {
@@ -451,6 +457,7 @@ public class PrimitiveFactory {
           containerBRANCH,
           containerCFA,
           containerCHAR,
+          containerCOLON,
           containerCOPY,
           containerCREATE,
           containerCOMMA,
