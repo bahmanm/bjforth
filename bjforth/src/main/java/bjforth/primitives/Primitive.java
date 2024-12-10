@@ -28,7 +28,6 @@ public interface Primitive extends NativeSubroutine {
     execute(machine);
     if (!isBypassNextInstructionPointer()) {
       var nextWordAddr = machine.getNextInstructionPointer();
-      machine.setNextInstructionPointer(nextWordAddr + 1);
       machine.jumpTo(nextWordAddr);
     }
   }
