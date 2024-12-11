@@ -35,7 +35,7 @@ public class INTERPRET implements Primitive {
       PrimitiveFactory.FIND().execute(machine);
       var dictItem = machine.getDictionaryItem((Integer) machine.popFromParameterStack()).get();
       if (STATE == 0 || dictItem.getIsImmediate()) {
-        machine.setNextInstructionPointer(dictItem.getAddress());
+        machine.jumpTo(dictItem.getAddress());
       } else {
         machine.setMemoryAt(HEREvalue, dictItem.getAddress());
         machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 1);
@@ -61,5 +61,10 @@ public class INTERPRET implements Primitive {
         throw new MachineException("Invalid word or number.");
       }
     }
+  }
+
+  @Override
+  public Boolean isBypassNextInstructionPointer() {
+    return true;
   }
 }
