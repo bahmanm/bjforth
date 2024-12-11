@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Bahman Movaqar
+ * Copyright 2024 Bahman Movaqar
  *
  * This file is part of bjForth.
  *
@@ -19,73 +19,55 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.DictionaryBuilder.aDictionary;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static bjforth.machine.ReturnStackBuilder.aReturnStack;
+import static org.junit.jupiter.api.Assertions.*;
 
-import bjforth.machine.DictionaryItem;
 import bjforth.machine.MachineException;
-import bjforth.variables.Variables;
-import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CREATETest {
+class EXITTest {
 
+  @DisplayName("Restore NIP from ReturnStack")
   @Test
-  @DisplayName("Create the dictionary item and the header.")
-  public void worksOk() {
+  void worksOk() {
     // GIVEN
-    var CREATEaddr = getPrimitiveAddress("CREATE");
-    var nameAddr = nextInt();
-    var name = RandomStringUtils.insecure().next(10);
+    var EXITaddr = getPrimitiveAddress("EXIT");
+    var NIPold = RandomUtils.insecure().randomInt(1000, 2000);
+    var NIPnew = NIPold - 100;
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(CREATEaddr)
-            .withParameterStack(aParameterStack().with(name).build())
-            .withVariable(Variables.get("LATEST"), 0)
+            .withReturnStack(aReturnStack().with(NIPnew).build())
+            .withNextInstructionPointer(NIPold)
+            .withInstrcutionPointer(EXITaddr)
             .build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
-    var HEREaddr = Variables.get("HERE").getAddress();
-    var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
 
     // WHEN
     machine.step();
 
     // THEN
     assertThat(actualState)
-        .hasDictionaryEqualTo(
-            aDictionary()
-                .with(referenceState)
-                .with(name, new DictionaryItem(name, HEREvalue, false, false))
-                .build())
-        .hasMemoryEqualTo(
-            aMemory()
-                .with(actualState)
-                .with(HEREaddr, HEREvalue)
-                .with(Variables.get("LATEST").getAddress(), HEREvalue)
-                .build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(actualState);
+        .hasMemoryEqualTo(referenceState)
+        .hasReturnStackEqualTo(aReturnStack().build())
+        .hasNextInstructionPointerEqualTo(NIPnew + 1);
   }
 
   @Test
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
-    var CREATEaddr = getPrimitiveAddress("CREATE");
+    var COMMAaddr = getPrimitiveAddress(",");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(CREATEaddr)
-            .withNextInstructionPointer(CREATEaddr + 1)
-            .withMemory(aMemory().build())
-            .withParameterStack(aParameterStack().build())
+            .withInstrcutionPointer(COMMAaddr)
+            .withNextInstructionPointer(COMMAaddr + 1)
+            .withReturnStack(aReturnStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();

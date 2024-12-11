@@ -18,31 +18,30 @@
  */
 package bjforth.primitives;
 
-import bjforth.machine.DictionaryItem;
+import static bjforth.primitives.PrimitiveFactory.*;
+
 import bjforth.machine.Machine;
-import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
-import java.util.NoSuchElementException;
 
-public class CREATE implements Primitive {
-
+public class COLON implements Primitive {
   @Override
   public void execute(Machine machine) {
-    try {
-      var nameObj = machine.popFromParameterStack();
-      var HEREAddr = Variables.get("HERE").getAddress();
-      var HEREValue = (Integer) machine.getMemoryAt(HEREAddr);
-      var LATESTAddr = Variables.get("LATEST").getAddress();
+    WORD().execute(machine);
+    CREATE().execute(machine);
 
-      if (nameObj instanceof String name) {
-        machine.setMemoryAt(LATESTAddr, HEREValue);
-        var dictItem = new DictionaryItem(name, HEREValue, false, false);
-        machine.createDictionaryItem(name, dictItem);
-      } else {
-        throw new MachineException("Invalid argument");
-      }
-    } catch (NoSuchElementException ex) {
-      throw new MachineException("ParameterStack error.");
-    }
+    var LATESTvalue = (Integer) machine.getMemoryAt(Variables.get("LATEST").getAddress());
+    var DOCOLaddr = machine.getDictionaryItem("DOCOL").get().getAddress();
+    machine.setMemoryAt(LATESTvalue, DOCOLaddr);
+    machine.setMemoryAt(Variables.get("HERE").getAddress(), LATESTvalue + 1);
+    machine.pushToParameterStack(LATESTvalue);
+    HIDDEN().execute(machine);
+    RBRAC().execute(machine);
+
+    machine.setMemoryAt(Variables.get("HERE").getAddress(), LATESTvalue + 1);
+  }
+
+  @Override
+  public String getName() {
+    return ":";
   }
 }

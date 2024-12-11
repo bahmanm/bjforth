@@ -18,31 +18,35 @@
  */
 package bjforth.primitives;
 
-import bjforth.machine.DictionaryItem;
+import static bjforth.primitives.PrimitiveFactory.*;
+
 import bjforth.machine.Machine;
-import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
-import java.util.NoSuchElementException;
 
-public class CREATE implements Primitive {
-
+public class SEMICOLON implements Primitive {
   @Override
   public void execute(Machine machine) {
-    try {
-      var nameObj = machine.popFromParameterStack();
-      var HEREAddr = Variables.get("HERE").getAddress();
-      var HEREValue = (Integer) machine.getMemoryAt(HEREAddr);
-      var LATESTAddr = Variables.get("LATEST").getAddress();
+    var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
+    machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("EXIT").get().getAddress());
+    var LATESTvalue = (Integer) machine.getMemoryAt(Variables.get("LATEST").getAddress());
+    machine.pushToParameterStack(LATESTvalue);
+    HIDDEN().execute(machine);
+    LBRAC().execute(machine);
+    EXIT().execute(machine);
+  }
 
-      if (nameObj instanceof String name) {
-        machine.setMemoryAt(LATESTAddr, HEREValue);
-        var dictItem = new DictionaryItem(name, HEREValue, false, false);
-        machine.createDictionaryItem(name, dictItem);
-      } else {
-        throw new MachineException("Invalid argument");
-      }
-    } catch (NoSuchElementException ex) {
-      throw new MachineException("ParameterStack error.");
-    }
+  @Override
+  public Boolean isImmediate() {
+    return true;
+  }
+
+  @Override
+  public String getName() {
+    return ";";
+  }
+
+  @Override
+  public Boolean isBypassNextInstructionPointer() {
+    return true;
   }
 }

@@ -59,6 +59,12 @@ public class PrimitiveFactory {
     return containerCHAR.get();
   }
 
+  private static PrimitiveContainer containerCOLON = new PrimitiveContainer(COLON::new);
+
+  static Primitive COLON() {
+    return containerCOLON.get();
+  }
+
   private static PrimitiveContainer containerCOPY = new PrimitiveContainer(COPY::new);
 
   static Primitive COPY() {
@@ -147,6 +153,12 @@ public class PrimitiveFactory {
 
   static Primitive EXECUTE() {
     return containerEXECUTE.get();
+  }
+
+  private static PrimitiveContainer containerEXIT = new PrimitiveContainer(EXIT::new);
+
+  static Primitive EXIT() {
+    return containerEXIT.get();
   }
 
   private static PrimitiveContainer containerFETCH = new PrimitiveContainer(FETCH::new);
@@ -341,6 +353,12 @@ public class PrimitiveFactory {
     return containerRSPSTORE.get();
   }
 
+  private static PrimitiveContainer containerSEMICOLON = new PrimitiveContainer(SEMICOLON::new);
+
+  static Primitive SEMICOLON() {
+    return containerSEMICOLON.get();
+  }
+
   private static PrimitiveContainer containerSTORE = new PrimitiveContainer(STORE::new);
 
   static Primitive STORE() {
@@ -451,6 +469,7 @@ public class PrimitiveFactory {
           containerBRANCH,
           containerCFA,
           containerCHAR,
+          containerCOLON,
           containerCOPY,
           containerCREATE,
           containerCOMMA,
@@ -466,6 +485,7 @@ public class PrimitiveFactory {
           containerEMIT,
           containerEQU,
           containerEXECUTE,
+          containerEXIT,
           containerFETCH,
           containerFIND,
           containerFROMR,
@@ -498,6 +518,7 @@ public class PrimitiveFactory {
           containerROT,
           containerRSPFETCH,
           containerRSPSTORE,
+          containerSEMICOLON,
           containerSTORE,
           containerSUB,
           containerSUBSTORE,

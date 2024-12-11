@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Bahman Movaqar
+ * Copyright 2024 Bahman Movaqar
  *
  * This file is part of bjForth.
  *
@@ -19,12 +19,17 @@
 package bjforth.primitives;
 
 import bjforth.machine.Machine;
+import bjforth.machine.MachineException;
+import java.util.NoSuchElementException;
 
-class DOCOL implements Primitive {
-
+public class EXIT implements Primitive {
   @Override
   public void execute(Machine machine) {
-    machine.pushToReturnStack(machine.getNextInstructionPointer());
-    machine.setNextInstructionPointer(machine.getInstrcutionPointer() + 1);
+    try {
+      var value = (Integer) machine.popFromReturnStack();
+      machine.setNextInstructionPointer(value);
+    } catch (NoSuchElementException _ex) {
+      throw new MachineException("Return stack empty.");
+    }
   }
 }
