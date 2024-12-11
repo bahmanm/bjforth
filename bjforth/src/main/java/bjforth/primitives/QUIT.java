@@ -18,6 +18,8 @@
  */
 package bjforth.primitives;
 
+import static bjforth.primitives.PrimitiveFactory.DOCOL;
+
 import bjforth.machine.Machine;
 import java.util.NoSuchElementException;
 
@@ -25,6 +27,7 @@ public class QUIT implements Primitive {
 
   @Override
   public void execute(Machine machine) {
+    DOCOL().execute(machine);
     try {
       while (true) {
         machine.popFromReturnStack();
