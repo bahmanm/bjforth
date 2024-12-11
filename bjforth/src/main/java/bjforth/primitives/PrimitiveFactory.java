@@ -353,6 +353,12 @@ public class PrimitiveFactory {
     return containerRSPSTORE.get();
   }
 
+  private static PrimitiveContainer containerSEMICOLON = new PrimitiveContainer(SEMICOLON::new);
+
+  static Primitive SEMICOLON() {
+    return containerSEMICOLON.get();
+  }
+
   private static PrimitiveContainer containerSTORE = new PrimitiveContainer(STORE::new);
 
   static Primitive STORE() {
@@ -512,6 +518,7 @@ public class PrimitiveFactory {
           containerROT,
           containerRSPFETCH,
           containerRSPSTORE,
+          containerSEMICOLON,
           containerSTORE,
           containerSUB,
           containerSUBSTORE,
