@@ -43,8 +43,8 @@ public class MachineStateAssert extends AbstractAssert<MachineStateAssert, Machi
       failWithMessage("Expected Dictionary to have keys <%s> but was <%s>", otherKeys, actualKeys);
     }
     for (var k : actualKeys) {
-      var actualValue = actual.getDictionary().get(k);
-      var otherValue = other.getDictionary().get(k);
+      var actualValue = actual.getDictionary().get(k).get();
+      var otherValue = other.getDictionary().get(k).get();
       if (!actualValue.equals(otherValue)) {
         failWithMessage(
             "Expected Dictionary to have mapping <%s -> %s> but was <%s -> %s>",

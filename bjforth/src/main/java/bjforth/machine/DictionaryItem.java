@@ -71,6 +71,11 @@ public class DictionaryItem {
   }
 
   @Override
+  public String toString() {
+    return "DictionaryItem(%s, %d, %s, %s)".formatted(name, address, isImmediate, isHidden);
+  }
+
+  @Override
   public int hashCode() {
     final int prime = 31;
     int result = 1;

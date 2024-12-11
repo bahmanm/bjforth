@@ -35,10 +35,10 @@ import org.junit.jupiter.api.Test;
 class DOCOLTest {
 
   @Test
-  @DisplayName("it pushes FIP onto return stack and incs it by 1")
+  @DisplayName("it pushes IP onto return stack and sets NIP")
   public void worksOk() {
     // GIVEN
-    var DOCOLaddr = getPrimitiveAddress(":");
+    var DOCOLaddr = getPrimitiveAddress("DOCOL");
     var actualState =
         aMachineState().withMemory(aMemory().build()).withInstrcutionPointer(DOCOLaddr).build();
     var machine = aMachine().withState(actualState).build();
