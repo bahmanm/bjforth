@@ -31,15 +31,13 @@ public class COLON implements Primitive {
 
     var LATESTvalue = (Integer) machine.getMemoryAt(Variables.get("LATEST").getAddress());
     var DOCOLaddr = machine.getDictionaryItem("DOCOL").get().getAddress();
-    machine.setMemoryAt(machine.getNextInstructionPointer(), DOCOLaddr);
-    LATEST().execute(machine);
-    FETCH().execute(machine);
+    machine.setMemoryAt(LATESTvalue, DOCOLaddr);
+    machine.setMemoryAt(Variables.get("HERE").getAddress(), LATESTvalue + 1);
+    machine.pushToParameterStack(LATESTvalue);
     HIDDEN().execute(machine);
     RBRAC().execute(machine);
 
-    machine.setMemoryAt(
-        Variables.get("HERE").getAddress(),
-        (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress()) + 1);
+    machine.setMemoryAt(Variables.get("HERE").getAddress(), LATESTvalue + 1);
   }
 
   @Override
