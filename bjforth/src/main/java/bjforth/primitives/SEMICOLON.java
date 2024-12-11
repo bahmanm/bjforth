@@ -26,6 +26,7 @@ import bjforth.variables.Variables;
 public class SEMICOLON implements Primitive {
   @Override
   public void execute(Machine machine) {
+    DOCOL().execute(machine);
     var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
     machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("EXIT").get().getAddress());
     var LATESTvalue = (Integer) machine.getMemoryAt(Variables.get("LATEST").getAddress());
@@ -43,10 +44,5 @@ public class SEMICOLON implements Primitive {
   @Override
   public String getName() {
     return ";";
-  }
-
-  @Override
-  public Boolean isBypassNextInstructionPointer() {
-    return true;
   }
 }
