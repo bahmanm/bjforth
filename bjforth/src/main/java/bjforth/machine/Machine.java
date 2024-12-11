@@ -18,7 +18,9 @@
  */
 package bjforth.machine;
 
+import bjforth.primitives.PrimitiveFactory;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Machine {
@@ -102,11 +104,7 @@ public class Machine {
     state.setInstructionPointer(address);
   }
 
-  /**
-   * Executes exactly ONE memory cell and stops.
-   *
-   * <p>To be used for debugging/testing purposes.
-   */
+  /** Executes exactly ONE memory cell and stops. */
   public void step() {
     var IP = state.getInstructionPointer();
     var content = getMemoryAt(IP);
@@ -142,11 +140,9 @@ public class Machine {
     System.out.println("⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯");
 
     var state = new MachineState(0, 0, new Memory(), new Dictionary(), new Stack(), new Stack());
-    var machine = new Machine(state);
-
+    var machine = new Machine(state); // Bootstraps the components like memory and dictionary
     var QUITaddr = machine.getDictionaryItem("QUIT").get().getAddress();
-    var INTERPRETaddr = machine.getDictionaryItem("INTERPRET").get().getAddress();
-
+    machine.setNextInstructionPointer(machine.getDictionaryItem("INTERPRET").get().getAddress());
     machine.jumpTo(QUITaddr);
     machine.loop();
   }
