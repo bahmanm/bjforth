@@ -26,6 +26,7 @@ import bjforth.variables.Variables;
 public class COLON implements Primitive {
   @Override
   public void execute(Machine machine) {
+    DOCOL().execute(machine);
     WORD().execute(machine);
     CREATE().execute(machine);
 
