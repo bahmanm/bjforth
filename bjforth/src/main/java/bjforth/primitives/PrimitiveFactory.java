@@ -155,6 +155,12 @@ public class PrimitiveFactory {
     return containerEXECUTE.get();
   }
 
+  private static PrimitiveContainer containerEXIT = new PrimitiveContainer(EXIT::new);
+
+  static Primitive EXIT() {
+    return containerEXIT.get();
+  }
+
   private static PrimitiveContainer containerFETCH = new PrimitiveContainer(FETCH::new);
 
   static Primitive FETCH() {
@@ -473,6 +479,7 @@ public class PrimitiveFactory {
           containerEMIT,
           containerEQU,
           containerEXECUTE,
+          containerEXIT,
           containerFETCH,
           containerFIND,
           containerFROMR,
