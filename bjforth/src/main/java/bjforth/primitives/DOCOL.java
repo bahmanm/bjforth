@@ -25,6 +25,11 @@ class DOCOL implements Primitive {
   @Override
   public void execute(Machine machine) {
     machine.pushToReturnStack(machine.getNextInstructionPointer());
-    machine.setNextInstructionPointer(machine.getInstrcutionPointer() + 1);
+    //    machine.setNextInstructionPointer(machine.getInstrcutionPointer() + 1);
+  }
+
+  @Override
+  public Boolean isImmediate() {
+    return true;
   }
 }
