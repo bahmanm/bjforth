@@ -22,6 +22,9 @@ import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
 
+import static bjforth.primitives.PrimitiveFactory.FIND;
+import static bjforth.primitives.PrimitiveFactory.WORD;
+
 public class INTERPRET implements Primitive {
   @Override
   public void execute(Machine machine) {
@@ -29,10 +32,10 @@ public class INTERPRET implements Primitive {
     var HEREaddr = Variables.get("HERE").getAddress();
     var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
 
-    PrimitiveFactory.WORD().execute(machine);
+    WORD().execute(machine);
     var obj = machine.peekIntoParameterStack();
     try {
-      PrimitiveFactory.FIND().execute(machine);
+      FIND().execute(machine);
       var dictItem = machine.getDictionaryItem((Integer) machine.popFromParameterStack()).get();
       if (STATE == 0 || dictItem.getIsImmediate()) {
         machine.jumpTo(dictItem.getAddress());
