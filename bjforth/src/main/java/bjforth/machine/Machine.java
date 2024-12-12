@@ -18,9 +18,7 @@
  */
 package bjforth.machine;
 
-import bjforth.primitives.PrimitiveFactory;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Machine {
@@ -111,7 +109,7 @@ public class Machine {
     if (content instanceof NativeSubroutine nativeSubroutine) {
       nativeSubroutine.call(this);
     } else if (content instanceof Integer address) {
-      state.setInstructionPointer(address);
+      jumpTo(address);
     } else {
       throw new MachineException("don't know how to execute *(%d)".formatted(IP));
     }
