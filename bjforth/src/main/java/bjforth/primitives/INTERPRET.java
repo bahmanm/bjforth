@@ -18,12 +18,12 @@
  */
 package bjforth.primitives;
 
+import static bjforth.primitives.PrimitiveFactory.FIND;
+import static bjforth.primitives.PrimitiveFactory.WORD;
+
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
-
-import static bjforth.primitives.PrimitiveFactory.FIND;
-import static bjforth.primitives.PrimitiveFactory.WORD;
 
 public class INTERPRET implements Primitive {
   @Override
