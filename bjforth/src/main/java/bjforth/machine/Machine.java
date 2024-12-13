@@ -102,6 +102,13 @@ public class Machine {
     state.setInstructionPointer(address);
   }
 
+  public void DOCOL(Boolean calledByPrimitive) {
+    pushToReturnStack(getNextInstructionPointer());
+    if (!calledByPrimitive) {
+      setNextInstructionPointer(getInstrcutionPointer() + 1);
+    }
+  }
+
   /** Executes exactly ONE memory cell and stops. */
   public void step() {
     var IP = state.getInstructionPointer();
@@ -110,8 +117,12 @@ public class Machine {
       nativeSubroutine.call(this);
     } else if (content instanceof Integer address) {
       jumpTo(address);
+    } else if (content instanceof String s && "DOCOL".equals(s)) {
+      DOCOL(false);
+      jumpTo(getInstrcutionPointer() + 1);
     } else {
-      throw new MachineException("don't know how to execute *(%d)".formatted(IP));
+      //      throw new MachineException("don't know how to execute *(%d)".formatted(IP));
+      jumpTo(getInstrcutionPointer() + 1);
     }
   }
 
