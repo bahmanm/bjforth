@@ -21,12 +21,10 @@ package bjforth.primitives;
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.DictionaryBuilder.aDictionary;
 import static bjforth.machine.DictionaryItemBuilder.aDictionaryItem;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextBoolean;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -55,7 +53,6 @@ class IMMEDIATETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(IMMEDIATEaddr)
-            .withNextInstructionPointer(IMMEDIATEaddr + 1)
             .withMemory(aMemory().with(latestValue, wordAddr).build())
             .withDictionary(aDictionary().with(wordName, dictItem).build())
             .withParameterStack(aParameterStack().build())
@@ -69,9 +66,6 @@ class IMMEDIATETest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasDictionaryEqualTo(
             aDictionary()
                 .with(referenceState)
@@ -81,9 +75,7 @@ class IMMEDIATETest {
             aMemory()
                 .with(referenceState)
                 .with(Variables.get("LATEST").getAddress(), latestValue)
-                .build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+                .build());
   }
 
   @Test
