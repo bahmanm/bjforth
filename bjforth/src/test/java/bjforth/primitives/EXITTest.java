@@ -49,13 +49,14 @@ class EXITTest {
     var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
+    machine.enterThreadedCode();
     machine.step();
 
     // THEN
     assertThat(actualState)
         .hasMemoryEqualTo(referenceState)
         .hasReturnStackEqualTo(aReturnStack().build())
-        .hasNextInstructionPointerEqualTo(NIPnew + 1);
+        .hasNextInstructionPointerEqualTo(NIPnew);
   }
 
   @Test
