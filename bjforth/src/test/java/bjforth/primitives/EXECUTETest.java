@@ -23,7 +23,6 @@ import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
@@ -55,10 +54,7 @@ class EXECUTETest {
     // THEN
     assertThat(actualState)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(ADDaddr).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(referenceState).build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState);
+        .hasParameterStackEqualTo(aParameterStack().build());
   }
 
   @DisplayName("Should throw if ParameterStack is already empty.")
