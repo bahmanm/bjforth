@@ -73,3 +73,11 @@ compile : gradle( classes )
 clean : gradle( clean )
 clean:
 	-@rm -rf build bjforth/build
+
+####################################################################################################
+
+.PHONY : package
+
+package : bmakelib.error-if-blank( VERSION )
+package : test
+package : gradle( shadowJar )
