@@ -124,7 +124,7 @@ jobs:
       - run:
           name: Build the packages
           command: >-
-            make VERSION=${TAG} package
+            make VERSION=${CIRCLE_TAG} package
 
       - run:
           name: Create the GitHub release
@@ -134,11 +134,11 @@ jobs:
               -u ${GITHUB_USERNAME} \
               -r ${CIRCLE_PROJECT_REPONAME} \
               -c ${CIRCLE_SHA1} \
-              -n ${TAG} \
+              -n ${CIRCLE_TAG} \
               - draft \
               - soft \
               - generatenotes \
-              ${TAG} \
+              ${CIRCLE_TAG} \
               artefacts         
 
 workflows:
