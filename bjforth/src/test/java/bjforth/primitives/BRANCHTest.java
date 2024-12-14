@@ -57,7 +57,7 @@ class BRANCHTest {
     assertThat(actualState)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(nip).plus(offset).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(offset).plus(1).build())
+            aNextInstructionPointer().with(referenceState).plus(offset).build())
         .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(referenceState);

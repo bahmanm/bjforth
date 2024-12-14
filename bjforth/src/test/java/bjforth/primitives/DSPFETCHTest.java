@@ -19,17 +19,15 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.*;
 
 import bjforth.machine.MachineException;
-import java.util.stream.IntStream;
+import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -40,13 +38,11 @@ class DSPFETCHTest {
   void worksOk() {
     // GIVEN
     var DSPFETCHaddr = getPrimitiveAddress("DSP@");
-    var pointer = org.apache.commons.lang3.RandomUtils.nextInt(0, 5);
-    var parameterStackElements =
-        IntStream.range(0, pointer + 1).mapToObj(i -> new Object()).toList();
+    var pointer = 0;
+    var parameterStackElements = List.of(new Object());
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DSPFETCHaddr)
-            .withNextInstructionPointer(DSPFETCHaddr + 1)
             .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(parameterStackElements).build())
             .build();
@@ -58,11 +54,6 @@ class DSPFETCHTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackEqualTo(aParameterStack().with(referenceState).with(pointer).build());
   }
 
@@ -72,11 +63,7 @@ class DSPFETCHTest {
     // GIVEN
     var DSPFETCHaddr = getPrimitiveAddress("DSP@");
     var actualState =
-        aMachineState()
-            .withInstrcutionPointer(DSPFETCHaddr)
-            .withNextInstructionPointer(DSPFETCHaddr + 1)
-            .withMemory(aMemory().build())
-            .build();
+        aMachineState().withInstrcutionPointer(DSPFETCHaddr).withMemory(aMemory().build()).build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 

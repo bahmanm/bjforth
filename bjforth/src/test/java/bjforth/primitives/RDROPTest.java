@@ -19,11 +19,9 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -42,7 +40,6 @@ class RDROPTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RDROPaddr)
-            .withNextInstructionPointer(RDROPaddr + 1)
             .withReturnStack(aReturnStack().with(nextInt()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -52,13 +49,7 @@ class RDROPTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
-        .hasReturnStackEqualTo(aReturnStack().build());
+    assertThat(actualState).hasReturnStackEqualTo(aReturnStack().build());
   }
 
   @Test
@@ -69,7 +60,6 @@ class RDROPTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RDROPaddr)
-            .withNextInstructionPointer(RDROPaddr + 1)
             .withReturnStack(aReturnStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();

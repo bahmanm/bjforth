@@ -18,6 +18,9 @@
  */
 package bjforth.primitives;
 
+import static bjforth.primitives.PrimitiveFactory.FIND;
+import static bjforth.primitives.PrimitiveFactory.WORD;
+
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
@@ -29,13 +32,13 @@ public class INTERPRET implements Primitive {
     var HEREaddr = Variables.get("HERE").getAddress();
     var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
 
-    PrimitiveFactory.WORD().execute(machine);
+    WORD().execute(machine);
     var obj = machine.peekIntoParameterStack();
     try {
-      PrimitiveFactory.FIND().execute(machine);
+      FIND().execute(machine);
       var dictItem = machine.getDictionaryItem((Integer) machine.popFromParameterStack()).get();
       if (STATE == 0 || dictItem.getIsImmediate()) {
-        machine.setNextInstructionPointer(dictItem.getAddress());
+        machine.jumpTo(dictItem.getAddress());
       } else {
         machine.setMemoryAt(HEREvalue, dictItem.getAddress());
         machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 1);
@@ -61,5 +64,10 @@ public class INTERPRET implements Primitive {
         throw new MachineException("Invalid word or number.");
       }
     }
+  }
+
+  @Override
+  public Boolean isBypassNextInstructionPointer() {
+    return true;
   }
 }

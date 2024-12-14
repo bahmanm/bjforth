@@ -27,9 +27,8 @@ public interface Primitive extends NativeSubroutine {
   default void call(Machine machine) {
     execute(machine);
     if (!isBypassNextInstructionPointer()) {
-      var nextWordAddr = machine.getNextInstructionPointer();
-      machine.setNextInstructionPointer(nextWordAddr + 1);
-      machine.jumpTo(nextWordAddr);
+      var NIP = machine.getNextInstructionPointer();
+      machine.jumpTo(NIP);
     }
   }
 

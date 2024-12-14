@@ -28,6 +28,7 @@ public class EXIT implements Primitive {
     try {
       var value = (Integer) machine.popFromReturnStack();
       machine.setNextInstructionPointer(value);
+      machine.exitThreadedCode();
     } catch (NoSuchElementException _ex) {
       throw new MachineException("Return stack empty.");
     }

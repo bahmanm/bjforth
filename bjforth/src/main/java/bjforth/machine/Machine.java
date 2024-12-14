@@ -102,20 +102,49 @@ public class Machine {
     state.setInstructionPointer(address);
   }
 
-  /**
-   * Executes exactly ONE memory cell and stops.
-   *
-   * <p>To be used for debugging/testing purposes.
-   */
+  public void DOCOL(Boolean calledByPrimitive) {
+    pushToReturnStack(getNextInstructionPointer());
+    if (!calledByPrimitive) {
+      setNextInstructionPointer(getInstrcutionPointer() + 1);
+    }
+  }
+
+  private Integer threadedCodeDepth = 0;
+
+  public void enterThreadedCode() {
+    threadedCodeDepth += 1;
+  }
+
+  public void exitThreadedCode() {
+    if (threadedCodeDepth == 0) {
+      throw new MachineException("Invalid threadedCode depth.");
+    } else {
+      threadedCodeDepth -= 1;
+    }
+  }
+
+  private void applyThreadedCode(Integer IP) {
+    if (threadedCodeDepth > 0) {
+      setNextInstructionPointer(IP + 1);
+    }
+  }
+
+  /** Executes exactly ONE memory cell and stops. */
   public void step() {
     var IP = state.getInstructionPointer();
     var content = getMemoryAt(IP);
     if (content instanceof NativeSubroutine nativeSubroutine) {
       nativeSubroutine.call(this);
     } else if (content instanceof Integer address) {
-      state.setInstructionPointer(address);
+      jumpTo(address);
+      applyThreadedCode(IP);
+    } else if (content instanceof String s && "DOCOL".equals(s)) {
+      enterThreadedCode();
+      DOCOL(false);
+      jumpTo(getInstrcutionPointer() + 1);
     } else {
-      throw new MachineException("don't know how to execute *(%d)".formatted(IP));
+      //      throw new MachineException("don't know how to execute *(%d)".formatted(IP));
+      jumpTo(getInstrcutionPointer() + 1);
     }
   }
 
@@ -135,5 +164,17 @@ public class Machine {
     while (true) {
       step();
     }
+  }
+
+  public static void main(String[] args) {
+    System.out.println("bjForth <https://github.com/bahmanm/bjforth>");
+    System.out.println("⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯");
+
+    var state = new MachineState(0, 0, new Memory(), new Dictionary(), new Stack(), new Stack());
+    var machine = new Machine(state); // Bootstraps the components like memory and dictionary
+    var QUITaddr = machine.getDictionaryItem("QUIT").get().getAddress();
+    machine.setNextInstructionPointer(machine.getDictionaryItem("INTERPRET").get().getAddress());
+    machine.jumpTo(QUITaddr);
+    machine.loop();
   }
 }

@@ -80,7 +80,7 @@ class QUITTest {
     // THEN
     assertThat(actualState)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(INTERPRETaddr).build())
-        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(nip).build())
+        .hasNextInstructionPointerEqualTo(aNextInstructionPointer().with(QUITaddr).build())
         .hasDictionaryEqualTo(referenceState)
         .hasMemoryEqualTo(referenceState)
         .hasReturnStackEqualTo(aReturnStack().build());

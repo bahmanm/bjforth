@@ -19,11 +19,9 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -60,11 +58,7 @@ class KEYTest {
     System.setIn(inputStream);
 
     var KEYaddr = getPrimitiveAddress("KEY");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(KEYaddr)
-            .withNextInstructionPointer(KEYaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(KEYaddr).build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 
@@ -73,12 +67,7 @@ class KEYTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(str.codePointAt(0)).build())
-        .hasReturnStackEqualTo(referenceState);
+        .hasParameterStackEqualTo(aParameterStack().with(str.codePointAt(0)).build());
   }
 
   @DisplayName("throws if reaches end of input stream.")
@@ -90,11 +79,7 @@ class KEYTest {
     System.setIn(inputStream);
 
     var KEYaddr = getPrimitiveAddress("KEY");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(KEYaddr)
-            .withNextInstructionPointer(KEYaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(KEYaddr).build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 

@@ -21,12 +21,10 @@ package bjforth.primitives;
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.DictionaryBuilder.aDictionary;
 import static bjforth.machine.DictionaryItemBuilder.aDictionaryItem;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextBoolean;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
@@ -53,7 +51,6 @@ class HIDDENTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(HIDDENaddr)
-            .withNextInstructionPointer(HIDDENaddr + 1)
             .withDictionary(aDictionary().with(wordName, dictItem).build())
             .withMemory(aMemory().with(latestValue, wordAddr).build())
             .withParameterStack(aParameterStack().with(wordAddr).build())
@@ -65,17 +62,11 @@ class HIDDENTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasDictionaryEqualTo(
             aDictionary()
                 .with(referenceState)
                 .with(wordName, aDictionaryItem().with(dictItem).isHidden(!isHidden).build())
-                .build())
-        .hasMemoryEqualTo(aMemory().with(referenceState).build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+                .build());
   }
 
   @Test

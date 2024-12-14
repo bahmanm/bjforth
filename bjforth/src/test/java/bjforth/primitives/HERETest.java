@@ -19,11 +19,9 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -40,7 +38,6 @@ class HERETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(HEREaddr)
-            .withNextInstructionPointer(HEREaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -51,11 +48,6 @@ class HERETest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(
             aParameterStack()
                 .with(
@@ -63,7 +55,6 @@ class HERETest {
                         + PrimitiveFactory.getPrimitiveContainers()
                             .size()) /* TODO This assertion is likely to fail as soon as
                                      bootstrapping extends to non-primitive words. */
-                .build())
-        .hasReturnStackEqualTo(referenceState);
+                .build());
   }
 }

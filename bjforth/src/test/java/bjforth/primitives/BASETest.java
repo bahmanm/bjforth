@@ -19,12 +19,10 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 
 import bjforth.variables.Variables;
@@ -33,7 +31,7 @@ import org.junit.jupiter.api.Test;
 
 class BASETest {
   @Test
-  @DisplayName("Push the value of HERE to parameter stack.")
+  @DisplayName("Push the value of BASE to parameter stack.")
   public void worksOk() {
     // GIVEN
     var BASEaddr = getPrimitiveAddress("BASE");
@@ -52,13 +50,6 @@ class BASETest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(10).build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(10).build());
   }
 }

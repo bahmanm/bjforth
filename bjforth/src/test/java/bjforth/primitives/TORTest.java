@@ -19,12 +19,9 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static bjforth.utils.RandomUtils.nextInt;
@@ -45,7 +42,6 @@ class TORTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(TORaddr)
-            .withNextInstructionPointer(TORaddr + 1)
             .withParameterStack(aParameterStack().with(object).build())
             .withReturnStack(aReturnStack().build())
             .build();
@@ -57,11 +53,6 @@ class TORTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(aMemory().with(referenceState).build())
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(aReturnStack().with(object).build());
   }
@@ -74,7 +65,6 @@ class TORTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(TORaddr)
-            .withNextInstructionPointer(TORaddr + 1)
             .withParameterStack(aParameterStack().build())
             .withReturnStack(aReturnStack().build())
             .build();

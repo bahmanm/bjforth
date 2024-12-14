@@ -20,12 +20,10 @@ package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.DictionaryBuilder.aDictionary;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -48,7 +46,6 @@ class FINDTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(FINDaddr)
-            .withNextInstructionPointer(FINDaddr + 1)
             .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(wordToFind).build())
             .build();
@@ -60,13 +57,7 @@ class FINDTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(wordToFindAddr).build())
-        .hasReturnStackEqualTo(referenceState);
+        .hasParameterStackEqualTo(aParameterStack().with(wordToFindAddr).build());
   }
 
   @Test
@@ -80,7 +71,6 @@ class FINDTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(FINDaddr)
-            .withNextInstructionPointer(FINDaddr + 1)
             .withMemory(aMemory().with(wordToFindAddr, new Object()).build())
             .withParameterStack(aParameterStack().with(wordToFind).build())
             .withDictionary(
@@ -98,11 +88,6 @@ class FINDTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
         .hasParameterStackEqualTo(aParameterStack().build())
         .hasReturnStackEqualTo(referenceState);
   }

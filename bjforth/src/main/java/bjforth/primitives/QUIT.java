@@ -25,15 +25,14 @@ public class QUIT implements Primitive {
 
   @Override
   public void execute(Machine machine) {
+    machine.DOCOL(true);
     try {
       while (true) {
         machine.popFromReturnStack();
       }
     } catch (NoSuchElementException _ex) { // Return stack is empty
     }
-    var nip = machine.getNextInstructionPointer();
-    PrimitiveFactory.INTERPRET().execute(machine);
-    machine.setNextInstructionPointer(nip);
+    machine.setNextInstructionPointer(machine.getDictionaryItem("QUIT").get().getAddress());
     machine.jumpTo(machine.getDictionaryItem("INTERPRET").get().getAddress());
   }
 

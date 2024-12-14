@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Bahman Movaqar
+ * Copyright 2024 Bahman Movaqar
  *
  * This file is part of bjForth.
  *
@@ -20,11 +20,10 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-class DOCOL implements Primitive {
-
+public class TOSTRING implements Primitive {
   @Override
   public void execute(Machine machine) {
-    machine.pushToReturnStack(machine.getNextInstructionPointer());
-    machine.setNextInstructionPointer(machine.getInstrcutionPointer() + 1);
+    var obj = machine.peekIntoParameterStack();
+    System.out.println(obj.toString());
   }
 }

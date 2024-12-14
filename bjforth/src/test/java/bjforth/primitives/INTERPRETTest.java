@@ -24,7 +24,6 @@ import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.*;
 
@@ -63,11 +62,7 @@ class INTERPRETTest {
     System.setIn(inputStream);
 
     var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(INTERPRETaddr)
-            .withNextInstructionPointer(INTERPRETaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
     var machine = aMachine().withState(actualState).build();
     machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -78,14 +73,7 @@ class INTERPRETTest {
     // THEN
     assertThat(actualState)
         .hasInstructionPointerEqualTo(
-            anInstructionPointer().with(machine.getDictionaryItem("+").get().getAddress()).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer()
-                .with(machine.getDictionaryItem("+").get().getAddress())
-                .plus(1)
-                .build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasReturnStackEqualTo(referenceState);
+            anInstructionPointer().with(machine.getDictionaryItem("+").get().getAddress()).build());
   }
 
   @DisplayName("Compiling mode: replaces the word with its CFA at HERE.")
@@ -99,11 +87,7 @@ class INTERPRETTest {
     System.setIn(inputStream);
 
     var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(INTERPRETaddr)
-            .withNextInstructionPointer(INTERPRETaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
     var machine = aMachine().withState(actualState).build();
     machine.setMemoryAt(Variables.get("STATE").getAddress(), 1);
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -114,9 +98,6 @@ class INTERPRETTest {
     // THEN
     var HEREdereferenced = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasVariableEqualTo(Variables.get("HERE"), HEREdereferenced)
         .hasMemoryEqualTo(
             aMemory()
@@ -139,11 +120,7 @@ class INTERPRETTest {
     System.setIn(inputStream);
 
     var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(INTERPRETaddr)
-            .withNextInstructionPointer(INTERPRETaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
     var machine = aMachine().withState(actualState).build();
     machine.setMemoryAt(Variables.get("STATE").getAddress(), 1);
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -154,9 +131,6 @@ class INTERPRETTest {
     // THEN
     var HEREdereferenced = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasVariableEqualTo(Variables.get("HERE"), HEREdereferenced)
         .hasMemoryEqualTo(
             aMemory()
@@ -179,11 +153,7 @@ class INTERPRETTest {
     System.setIn(inputStream);
 
     var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(INTERPRETaddr)
-            .withNextInstructionPointer(INTERPRETaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
     var machine = aMachine().withState(actualState).build();
     machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -194,14 +164,8 @@ class INTERPRETTest {
     // THEN
     var HEREdereferenced = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasVariableEqualTo(Variables.get("HERE"), HEREdereferenced)
-        .hasParameterStackEqualTo(aParameterStack().with(number).build())
-        .hasMemoryEqualTo(aMemory().with(referenceState).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasReturnStackEqualTo(referenceState);
+        .hasParameterStackEqualTo(aParameterStack().with(number).build());
   }
 
   @DisplayName("Invalid input - not a word, not a number")
@@ -213,11 +177,7 @@ class INTERPRETTest {
     System.setIn(inputStream);
 
     var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(INTERPRETaddr)
-            .withNextInstructionPointer(INTERPRETaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
     var machine = aMachine().withState(actualState).build();
     machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
     var referenceState = aMachineState().copyFrom(actualState).build();

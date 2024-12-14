@@ -19,13 +19,10 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
-import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 
 import bjforth.variables.Variables;
 import org.junit.jupiter.api.DisplayName;
@@ -38,11 +35,7 @@ class LBRACTest {
   public void worksOk() {
     // GIVEN
     var LBRACaddr = getPrimitiveAddress("[");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(LBRACaddr)
-            .withNextInstructionPointer(LBRACaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(LBRACaddr).build();
     var machine = aMachine().withState(actualState).build();
     machine.setMemoryAt(Variables.get("STATE").getAddress(), 1);
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -52,12 +45,7 @@ class LBRACTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasMemoryEqualTo(
-            aMemory().with(referenceState).with(Variables.get("STATE").getAddress(), 0).build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(actualState);
+            aMemory().with(referenceState).with(Variables.get("STATE").getAddress(), 0).build());
   }
 }

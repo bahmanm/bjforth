@@ -26,12 +26,12 @@ import bjforth.variables.Variables;
 public class COLON implements Primitive {
   @Override
   public void execute(Machine machine) {
+    machine.DOCOL(true);
     WORD().execute(machine);
     CREATE().execute(machine);
 
     var LATESTvalue = (Integer) machine.getMemoryAt(Variables.get("LATEST").getAddress());
-    var DOCOLaddr = machine.getDictionaryItem("DOCOL").get().getAddress();
-    machine.setMemoryAt(LATESTvalue, DOCOLaddr);
+    machine.setMemoryAt(LATESTvalue, "DOCOL");
     machine.setMemoryAt(Variables.get("HERE").getAddress(), LATESTvalue + 1);
     machine.pushToParameterStack(LATESTvalue);
     HIDDEN().execute(machine);

@@ -19,11 +19,9 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
@@ -46,7 +44,6 @@ class TWODROPTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(TWODROPaddr)
-            .withNextInstructionPointer(TWODROPaddr + 1)
             .withParameterStack(aParameterStack().with(parameter3, parameter2, parameter1).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -56,14 +53,7 @@ class TWODROPTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(parameter3).build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(parameter3).build());
   }
 
   @Test
@@ -74,7 +64,6 @@ class TWODROPTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(TWODROPaddr)
-            .withNextInstructionPointer(TWODROPaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -94,7 +83,6 @@ class TWODROPTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(TWODROPaddr)
-            .withNextInstructionPointer(TWODROPaddr + 1)
             .withParameterStack(aParameterStack().with(parameter).build())
             .build();
     var machine = aMachine().withState(actualState).build();

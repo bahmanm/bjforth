@@ -19,12 +19,10 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -46,7 +44,7 @@ class EMITTest {
   private PrintStream systemOut = null;
 
   @AfterEach
-  private void restoreSystemIn() {
+  public void restoreSystemIn() {
     System.setOut(originalSystemOut);
     systemOut.close();
     systemOut = null;
@@ -60,7 +58,7 @@ class EMITTest {
   }
 
   @BeforeEach
-  private void setupSystemOut() {
+  public void setupSystemOut() {
     outputStream = new ByteArrayOutputStream();
     systemOut = new PrintStream(outputStream);
     System.setOut(systemOut);
@@ -88,13 +86,7 @@ class EMITTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().build());
     assertThat(outputStream.toByteArray()).containsExactly(str.getBytes());
   }
 

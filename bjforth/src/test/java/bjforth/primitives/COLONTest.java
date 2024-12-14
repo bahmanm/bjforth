@@ -77,7 +77,7 @@ class COLONTest {
         .hasMemoryEqualTo(
             aMemory()
                 .with(referenceState)
-                .with(referenceLATESTvalue + 1, getPrimitiveAddress("DOCOL"))
+                .with(referenceLATESTvalue + 1, "DOCOL")
                 .with(Variables.get("HERE").getAddress(), referenceHEREvalue + 1)
                 .with(Variables.get("STATE").getAddress(), 1)
                 .with(Variables.get("LATEST").getAddress(), referenceLATESTvalue + 1)

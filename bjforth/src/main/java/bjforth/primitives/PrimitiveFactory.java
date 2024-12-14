@@ -107,12 +107,6 @@ public class PrimitiveFactory {
     return containerDIV.get();
   }
 
-  private static PrimitiveContainer containerDOCOL = new PrimitiveContainer(DOCOL::new);
-
-  static Primitive DOCOL() {
-    return containerDOCOL.get();
-  }
-
   private static PrimitiveContainer containerDROP = new PrimitiveContainer(DROP::new);
 
   static Primitive DROP() {
@@ -395,6 +389,12 @@ public class PrimitiveFactory {
     return containerTOR.get();
   }
 
+  private static PrimitiveContainer containerTOSTRING = new PrimitiveContainer(TOSTRING::new);
+
+  static Primitive TOSTRING() {
+    return containerTOSTRING.get();
+  }
+
   private static PrimitiveContainer containerTWODROP = new PrimitiveContainer(TWODROP::new);
 
   static Primitive TWODROP() {
@@ -477,7 +477,6 @@ public class PrimitiveFactory {
           containerDECR4,
           containerDFA,
           containerDIV,
-          containerDOCOL,
           containerDROP,
           containerDSPFETCH,
           containerDSPSTORE,
@@ -525,6 +524,7 @@ public class PrimitiveFactory {
           containerSWAP,
           containerTELL,
           containerTOR,
+          containerTOSTRING,
           containerTWODROP,
           containerTWODUP,
           containerTWOSWAP,
