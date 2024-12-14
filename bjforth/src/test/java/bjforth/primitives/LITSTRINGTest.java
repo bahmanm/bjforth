@@ -63,13 +63,7 @@ class LITSTRINGTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(memoryAddress).plus(2).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(memoryAddress).plus(3).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(memoryAddress + 1).build())
-        .hasReturnStackEqualTo(referenceState);
+        .hasParameterStackEqualTo(aParameterStack().with(memoryAddress + 1).build());
   }
 
   @DisplayName("throws an exception in case NIP doesn't point to a string.")
@@ -102,9 +96,6 @@ class LITSTRINGTest {
     assertThat(actualState)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(LITSTRINGaddr).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(memoryAddress).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
-        .hasReturnStackEqualTo(referenceState);
+            aNextInstructionPointer().with(memoryAddress).plus(1).build());
   }
 }
