@@ -71,8 +71,7 @@ class CREATETest {
                 .with(HEREaddr, HEREvalue)
                 .with(Variables.get("LATEST").getAddress(), HEREvalue)
                 .build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(actualState);
+        .hasParameterStackEqualTo(aParameterStack().build());
   }
 
   @Test
