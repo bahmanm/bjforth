@@ -18,12 +18,10 @@
  */
 package bjforth.primitives;
 
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.utils.RandomUtils.nextInt;
 import static org.assertj.core.api.Assertions.*;
@@ -55,7 +53,6 @@ class MOVETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(MOVEaddr)
-            .withNextInstructionPointer(MOVEaddr + 1)
             .withMemory(aMemory().with(cellsToMove).build())
             .withParameterStack(aParameterStack().with(toAddr, fromAddr, nObjectsToMove).build())
             .build();
@@ -71,13 +68,8 @@ class MOVETest {
             .map(e -> Map.entry(toAddr + (e.getKey() - fromAddr), e.getValue()))
             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
         .hasMemoryEqualTo(aMemory().with(referenceState).with(movedCells).build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+        .hasParameterStackEqualTo(aParameterStack().build());
   }
 
   @DisplayName("should throw if the top of the stack is not a number.")
@@ -88,7 +80,6 @@ class MOVETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(MOVEaddr)
-            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt(), nextInt(), new Object()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -112,7 +103,6 @@ class MOVETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(MOVEaddr)
-            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt(), new Object(), nextInt()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -136,7 +126,6 @@ class MOVETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(MOVEaddr)
-            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().with(new Object(), nextInt(), nextInt()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -160,7 +149,6 @@ class MOVETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(MOVEaddr)
-            .withNextInstructionPointer(MOVEaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
