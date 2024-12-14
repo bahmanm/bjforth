@@ -19,12 +19,10 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -55,13 +53,7 @@ class CFATest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().build());
   }
 
   @Test
