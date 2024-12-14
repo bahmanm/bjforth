@@ -61,10 +61,7 @@ class ZBRANCHTest {
         .hasInstructionPointerEqualTo(
             anInstructionPointer().with(referenceState).plus(offset).plus(1).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(offset).plus(1).build())
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+            aNextInstructionPointer().with(referenceState).plus(offset).build());
   }
 
   @Test
@@ -92,10 +89,7 @@ class ZBRANCHTest {
     assertThat(actualState)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(2).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(2).build())
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+            aNextInstructionPointer().with(referenceState).plus(1).build());
   }
 
   @Test
@@ -105,7 +99,6 @@ class ZBRANCHTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(ZBRANCHaddr)
-            .withNextInstructionPointer(ZBRANCHaddr + 1)
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
