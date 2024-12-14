@@ -19,11 +19,9 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 
 import java.io.ByteArrayInputStream;
@@ -58,11 +56,7 @@ class WORDTest {
     System.setIn(inputStream);
 
     var WORDaddr = getPrimitiveAddress("WORD");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(WORDaddr)
-            .withNextInstructionPointer(WORDaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(WORDaddr).build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 
@@ -70,13 +64,7 @@ class WORDTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(wordStr).build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(wordStr).build());
   }
 
   @DisplayName("skips leading space")
@@ -89,11 +77,7 @@ class WORDTest {
     System.setIn(inputStream);
 
     var WORDaddr = getPrimitiveAddress("WORD");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(WORDaddr)
-            .withNextInstructionPointer(WORDaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(WORDaddr).build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 
@@ -101,13 +85,7 @@ class WORDTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(wordStr).build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(wordStr).build());
   }
 
   @DisplayName("skips comment lines")
@@ -127,11 +105,7 @@ class WORDTest {
     System.setIn(inputStream);
 
     var WORDaddr = getPrimitiveAddress("WORD");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(WORDaddr)
-            .withNextInstructionPointer(WORDaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(WORDaddr).build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 
@@ -139,12 +113,6 @@ class WORDTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(wordStr).build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(wordStr).build());
   }
 }
