@@ -135,11 +135,11 @@ jobs:
               -r ${CIRCLE_PROJECT_REPONAME} \
               -c ${CIRCLE_SHA1} \
               -n ${CIRCLE_TAG} \
-              - draft \
-              - soft \
-              - generatenotes \
+              -draft \
+              -soft \
+              -generatenotes \
               ${CIRCLE_TAG} \
-              artefacts         
+              bjforth/build/libs
 
 workflows:
   build_test:
