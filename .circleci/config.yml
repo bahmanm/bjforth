@@ -115,7 +115,7 @@ jobs:
           name: Install the development tools
           command: >-
             zypper --non-interactive refresh
-            && zypper --non-interactive install go
+            && zypper --non-interactive install go java-21-openjdk-devel
             && { source /etc/profile || true; }
             && go install github.com/tcnksm/ghr@latest
 
