@@ -57,6 +57,37 @@ jobs:
           paths:
             - reports
 
+  release:
+    executor: docker
+
+    steps:
+      - run:
+          name: Install the development tools
+          command: >-
+            go install github.com/tcnksm/ghr@latest
+
+      - checkout
+
+      - run:
+          name: Build the packages
+          command: >-
+            make VERSION=${TAG} package
+
+      - run:
+          name: Create the GitHub release
+          command: >-
+            ghr \
+              -t ${GITHUB_TOKEN} \
+              -u ${GITHUB_USERNAME} \
+              -r ${CIRCLE_PROJECT_REPONAME} \
+              -c ${CIRCLE_SHA1} \
+              -n ${TAG} \
+              - draft \
+              - soft \
+              - generatenotes \
+              ${TAG} \
+              artefacts
+
   test_coverage:
     executor: docker
     steps:
@@ -108,11 +139,18 @@ jobs:
           working_directory: ~/bjforth
 
 workflows:
-  version: 2.1
   build_test:
     jobs:
-      - test
       - license_scan
+      - test
       - test_coverage:
           requires:
             - test
+      - release:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.+/
+            branches:
+              ignore: /.*/
