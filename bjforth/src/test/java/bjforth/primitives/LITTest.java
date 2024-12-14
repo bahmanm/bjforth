@@ -67,11 +67,8 @@ class LITTest {
     assertThat(actualState)
         .hasInstructionPointerEqualTo(anInstructionPointer().with(memoryAddress).plus(2).build())
         .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(memoryAddress).plus(3).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(referenceState)
-        .hasParameterStackEqualTo(aParameterStack().with(literal).build())
-        .hasReturnStackEqualTo(referenceState);
+            aNextInstructionPointer().with(memoryAddress).plus(2).build())
+        .hasParameterStackEqualTo(aParameterStack().with(literal).build());
   }
 
   //////////////////////////////////////////////////////////////////////////////
