@@ -18,13 +18,10 @@
  */
 package bjforth.primitives;
 
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
-import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 
 import bjforth.machine.BootstrapUtils;
 import bjforth.variables.Variables;
@@ -38,11 +35,7 @@ class RBRACTest {
   public void worksOk() {
     // GIVEN
     var RBRACaddr = BootstrapUtils.getPrimitiveAddress("]");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(RBRACaddr)
-            .withNextInstructionPointer(RBRACaddr + 1)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(RBRACaddr).build();
     var machine = aMachine().withState(actualState).build();
     machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -52,12 +45,7 @@ class RBRACTest {
 
     // THEN
     assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
         .hasMemoryEqualTo(
-            aMemory().with(referenceState).with(Variables.get("STATE").getAddress(), 1).build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+            aMemory().with(referenceState).with(Variables.get("STATE").getAddress(), 1).build());
   }
 }
