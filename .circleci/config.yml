@@ -117,7 +117,7 @@ jobs:
             zypper --non-interactive refresh
             && zypper --non-interactive install go
             && { source /etc/profile || true; }
-            go install github.com/tcnksm/ghr@latest
+            && go install github.com/tcnksm/ghr@latest
 
       - checkout
 
