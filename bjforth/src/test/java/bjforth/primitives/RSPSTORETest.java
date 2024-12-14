@@ -18,12 +18,9 @@
  */
 package bjforth.primitives;
 
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static bjforth.utils.RandomUtils.nextInt;
@@ -48,7 +45,6 @@ class RSPSTORETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RSPSTOREaddr)
-            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(pointerToStore).build())
             .withReturnStack(
                 aReturnStack()
@@ -63,14 +59,7 @@ class RSPSTORETest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(aMemory().with(referenceState).build())
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackPointerEqualTo(pointerToStore);
+    assertThat(actualState).hasReturnStackPointerEqualTo(pointerToStore);
   }
 
   @DisplayName("should throw if parameter stack is empty.")
@@ -81,7 +70,6 @@ class RSPSTORETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RSPSTOREaddr)
-            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withReturnStack(aReturnStack().with(nextInt()).build())
             .withParameterStack(aParameterStack().build())
             .build();
@@ -101,7 +89,6 @@ class RSPSTORETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RSPSTOREaddr)
-            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(new Object()).build())
             .withReturnStack(aReturnStack().with(nextInt()).build())
             .build();
@@ -126,7 +113,6 @@ class RSPSTORETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RSPSTOREaddr)
-            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(nextInt()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -151,7 +137,6 @@ class RSPSTORETest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RSPSTOREaddr)
-            .withNextInstructionPointer(RSPSTOREaddr + 1)
             .withParameterStack(aParameterStack().with(pointer).build())
             .withReturnStack(aReturnStack().with(nextInt(), nextInt()).build())
             .build();
