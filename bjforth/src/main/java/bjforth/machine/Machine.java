@@ -109,6 +109,26 @@ public class Machine {
     }
   }
 
+  private Integer threadedCodeDepth = 0;
+
+  public void enterThreadedCode() {
+    threadedCodeDepth += 1;
+  }
+
+  public void exitThreadedCode() {
+    if (threadedCodeDepth == 0) {
+      throw new MachineException("Invalid threadedCode depth.");
+    } else {
+      threadedCodeDepth -= 1;
+    }
+  }
+
+  private void applyThreadedCode(Integer IP) {
+    if (threadedCodeDepth > 0) {
+      setNextInstructionPointer(IP + 1);
+    }
+  }
+
   /** Executes exactly ONE memory cell and stops. */
   public void step() {
     var IP = state.getInstructionPointer();
@@ -117,7 +137,9 @@ public class Machine {
       nativeSubroutine.call(this);
     } else if (content instanceof Integer address) {
       jumpTo(address);
+      applyThreadedCode(IP);
     } else if (content instanceof String s && "DOCOL".equals(s)) {
+      enterThreadedCode();
       DOCOL(false);
       jumpTo(getInstrcutionPointer() + 1);
     } else {
