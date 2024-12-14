@@ -46,7 +46,6 @@ class SEMICOLONTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(SEMICOLONaddr)
-            .withNextInstructionPointer(SEMICOLONaddr + 1)
             .withReturnStack(aReturnStack().with(NIP).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -59,9 +58,7 @@ class SEMICOLONTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasReturnStackEqualTo(aReturnStack().build())
-        .hasNextInstructionPointerEqualTo(NIP);
+    assertThat(actualState).hasReturnStackEqualTo(aReturnStack().with(NIP).build());
     Assertions.assertThat(machine.getDictionaryItem("FOO").get().getIsHidden()).isFalse();
   }
 }
