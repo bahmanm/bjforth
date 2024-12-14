@@ -117,11 +117,7 @@ jobs:
             zypper --non-interactive refresh
             && zypper --non-interactive install go java-21-openjdk-devel
             && { source /etc/profile || true; }
-
-      - run:
-          name: Install ghr
-          command: >-
-            go install github.com/tcnksm/ghr@latest
+            && GOPATH=/usr/local go install github.com/tcnksm/ghr@latest
 
       - checkout
 
