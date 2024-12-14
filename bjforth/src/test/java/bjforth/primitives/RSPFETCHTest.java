@@ -19,13 +19,10 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.*;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
-import static bjforth.machine.NextInstructionPointerBuilder.aNextInstructionPointer;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
 import static org.assertj.core.api.Assertions.*;
@@ -47,7 +44,6 @@ class RSPFETCHTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(RSPFETCHaddr)
-            .withNextInstructionPointer(RSPFETCHaddr + 1)
             .withReturnStack(
                 aReturnStack()
                     .with(IntStream.range(0, pointer + 1).mapToObj(i -> new Object()).toList())
@@ -60,14 +56,7 @@ class RSPFETCHTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasInstructionPointerEqualTo(anInstructionPointer().with(referenceState).plus(1).build())
-        .hasNextInstructionPointerEqualTo(
-            aNextInstructionPointer().with(referenceState).plus(1).build())
-        .hasDictionaryEqualTo(referenceState)
-        .hasMemoryEqualTo(aMemory().with(referenceState).build())
-        .hasParameterStackEqualTo(aParameterStack().with(pointer).build())
-        .hasReturnStackEqualTo(referenceState);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(pointer).build());
   }
 
   @DisplayName("should throw if return stack is empty.")
@@ -75,11 +64,7 @@ class RSPFETCHTest {
   void throwsIfEmpty() {
     // GIVEN
     var RSPFETCHaddr = getPrimitiveAddress("RSP@");
-    var actualState =
-        aMachineState()
-            .withInstrcutionPointer(RSPFETCHaddr)
-            .withNextInstructionPointer(RSPFETCHaddr)
-            .build();
+    var actualState = aMachineState().withInstrcutionPointer(RSPFETCHaddr).build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 
