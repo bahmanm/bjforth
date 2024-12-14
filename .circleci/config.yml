@@ -114,6 +114,9 @@ jobs:
       - run:
           name: Install the development tools
           command: >-
+            zypper --non-interactive refresh
+            && zypper --non-interactive install go
+            && { source /etc/profile || true; }
             go install github.com/tcnksm/ghr@latest
 
       - checkout
