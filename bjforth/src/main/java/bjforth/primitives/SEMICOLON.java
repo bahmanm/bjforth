@@ -26,9 +26,11 @@ import bjforth.variables.Variables;
 public class SEMICOLON implements Primitive {
   @Override
   public void execute(Machine machine) {
-    DOCOL().execute(machine);
+    machine.DOCOL(true);
+    machine.enterThreadedCode(); // TODO TO be removed.
     var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
     machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("EXIT").get().getAddress());
+    machine.setMemoryAt(Variables.get("HERE").getAddress(), HEREvalue + 1);
     var LATESTvalue = (Integer) machine.getMemoryAt(Variables.get("LATEST").getAddress());
     machine.pushToParameterStack(LATESTvalue);
     HIDDEN().execute(machine);
