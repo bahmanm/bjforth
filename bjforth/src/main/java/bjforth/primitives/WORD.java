@@ -52,7 +52,7 @@ class WORD implements Primitive {
           }
           break;
         case IN_WORD:
-          if (ch == ' ') {
+          if (ch == ' ' || ch == '\n') {
             state = State.END;
           } else {
             result.appendCodePoint(ch);
