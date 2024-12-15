@@ -136,4 +136,25 @@ class WORDTest {
     // THEN
     assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(wordStr).build());
   }
+
+  @DisplayName("Treat balanced pairs of parentheses and the content between them as comments.")
+  @Test
+  void parensAsComments() {
+    // GIVEN
+    var wordStr = RandomStringUtils.randomAlphanumeric(10);
+    var str = wordStr + " ( this is a comment)" + '\n';
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var WORDaddr = getPrimitiveAddress("WORD");
+    var actualState = aMachineState().withInstrcutionPointer(WORDaddr).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(wordStr).build());
+  }
 }
