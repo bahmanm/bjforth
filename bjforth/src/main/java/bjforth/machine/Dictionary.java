@@ -37,18 +37,19 @@ class Dictionary {
 
   public void put(String name, DictionaryItem item) {
     List<DictionaryItem> currentValue;
-    if (items.containsKey(name)) {
-      currentValue = items.get(name);
+    var nameUpper = name.toUpperCase();
+    if (items.containsKey(nameUpper)) {
+      currentValue = items.get(nameUpper);
     } else {
       currentValue = new ArrayList<>();
     }
     currentValue.add(item);
-    items.put(name, currentValue);
+    items.put(nameUpper, currentValue);
     reverseLookup.putIfAbsent(item.getAddress(), item.getName());
   }
 
   public Optional<DictionaryItem> get(String name) {
-    return Optional.ofNullable(items.get(name))
+    return Optional.ofNullable(items.get(name.toUpperCase()))
         .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
   }
 
