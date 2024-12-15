@@ -18,6 +18,8 @@
  */
 package bjforth.primitives;
 
+import static bjforth.primitives.PrimitiveFactory.KEY;
+
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 
@@ -33,18 +35,16 @@ class WORD implements Primitive {
   @Override
   public void execute(Machine machine) {
     var state = State.BEGIN;
-    var keyWord = PrimitiveFactory.KEY();
     var result = new StringBuilder();
     int parenthesesCount = 0;
     while (state != State.END) {
-      keyWord.execute(machine);
+      KEY().execute(machine);
       var ch = (int) machine.popFromParameterStack();
       switch (state) {
         case BEGIN:
           if (ch == '\\') {
             state = State.IN_COMMENT;
-          }
-          if (ch == '(') {
+          } else if (ch == '(') {
             state = State.IN_COMMENT;
             parenthesesCount += 1;
           } else if (ch != ' ' && ch != '\n') {
