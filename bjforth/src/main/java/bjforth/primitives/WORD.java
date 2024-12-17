@@ -21,7 +21,6 @@ package bjforth.primitives;
 import static bjforth.primitives.PrimitiveFactory.KEY;
 
 import bjforth.machine.Machine;
-import bjforth.machine.MachineException;
 
 class WORD implements Primitive {
 
@@ -36,7 +35,6 @@ class WORD implements Primitive {
   public void execute(Machine machine) {
     var state = State.BEGIN;
     var result = new StringBuilder();
-    int parenthesesCount = 0;
     while (state != State.END) {
       KEY().execute(machine);
       var ch = (int) machine.popFromParameterStack();
@@ -44,9 +42,6 @@ class WORD implements Primitive {
         case BEGIN:
           if (ch == '\\') {
             state = State.IN_COMMENT;
-          } else if (ch == '(') {
-            state = State.IN_COMMENT;
-            parenthesesCount += 1;
           } else if (ch != ' ' && ch != '\n') {
             result.appendCodePoint(ch);
             state = State.IN_WORD;
@@ -55,15 +50,6 @@ class WORD implements Primitive {
         case IN_COMMENT:
           if (ch == '\n') {
             state = State.BEGIN;
-          } else if (ch == ')') {
-            if (parenthesesCount > 0) {
-              parenthesesCount -= 1;
-            } else {
-              throw new MachineException("Imbalanced parentheses.");
-            }
-            if (parenthesesCount == 0) {
-              state = State.BEGIN;
-            }
           }
           break;
         case IN_WORD:
