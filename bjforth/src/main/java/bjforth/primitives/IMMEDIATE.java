@@ -27,8 +27,7 @@ public class IMMEDIATE implements Primitive {
   public void execute(Machine machine) {
     var LATESTAddr = Variables.get("LATEST").getAddress();
     var LATESTValue = (Integer) machine.getMemoryAt(LATESTAddr);
-    var wordAddr = (Integer) machine.getMemoryAt(LATESTValue);
-    var maybeDictItem = machine.getDictionaryItem(wordAddr);
+    var maybeDictItem = machine.getDictionaryItem(LATESTValue);
     if (maybeDictItem.isPresent()) {
       var dictItem = maybeDictItem.get();
       dictItem.setIsImmediate(!dictItem.getIsImmediate());
