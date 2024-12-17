@@ -28,13 +28,15 @@ class WORD implements Primitive {
     BEGIN,
     END,
     IN_COMMENT,
-    IN_WORD;
+    IN_WORD,
+    IN_CHAR;
   }
 
   @Override
   public void execute(Machine machine) {
     var state = State.BEGIN;
     var result = new StringBuilder();
+    var isChar = false;
     while (state != State.END) {
       KEY().execute(machine);
       var ch = (int) machine.popFromParameterStack();
@@ -42,6 +44,9 @@ class WORD implements Primitive {
         case BEGIN:
           if (ch == '\\') {
             state = State.IN_COMMENT;
+          } else if (ch == '\'') {
+            state = State.IN_CHAR;
+            isChar = true;
           } else if (ch != ' ' && ch != '\n') {
             result.appendCodePoint(ch);
             state = State.IN_WORD;
@@ -59,10 +64,21 @@ class WORD implements Primitive {
             result.appendCodePoint(ch);
           }
           break;
+        case IN_CHAR:
+          if (ch == '\'') {
+            state = State.END;
+          } else {
+            result.appendCodePoint(ch);
+          }
+          break;
         default:
           break;
       }
     }
-    machine.pushToParameterStack(result.toString());
+    if (isChar) {
+      machine.pushToParameterStack(result.charAt(0));
+    } else {
+      machine.pushToParameterStack(result.toString());
+    }
   }
 }

@@ -143,7 +143,7 @@ class INTERPRETTest {
         .hasReturnStackEqualTo(referenceState);
   }
 
-  @DisplayName("Immediate mode: Push the literal onto ParameterStack.")
+  @DisplayName("Immediate mode: Push the literal number onto ParameterStack.")
   @Test
   void immediatePushNumberToStack() {
     // GIVEN
@@ -168,7 +168,7 @@ class INTERPRETTest {
         .hasParameterStackEqualTo(aParameterStack().with(number).build());
   }
 
-  @DisplayName("Invalid input - not a word, not a number")
+  @DisplayName("Invalid input - not a word, not a number, not a character")
   @Test
   void invalidInput() {
     // GIVEN
@@ -185,5 +185,64 @@ class INTERPRETTest {
     // EXPECT
     assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
     assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
+  }
+
+  @DisplayName("Compiling mode: Replace a literal character with LIT <ch>.")
+  @Test
+  void compilingReplaceCharacterWithLITAndCharacter() {
+    // GIVEN
+    var number = RandomUtils.insecure().randomInt();
+    var str = "'a'\n";
+    var LITaddr = getPrimitiveAddress("LIT");
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
+    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
+    var machine = aMachine().withState(actualState).build();
+    machine.setMemoryAt(Variables.get("STATE").getAddress(), 1);
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    var HEREdereferenced = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
+    assertThat(actualState)
+        .hasVariableEqualTo(Variables.get("HERE"), HEREdereferenced)
+        .hasMemoryEqualTo(
+            aMemory()
+                .with(referenceState)
+                .with(Variables.get("HERE").getAddress(), HEREdereferenced)
+                .with(HEREdereferenced - 2, LITaddr)
+                .with(HEREdereferenced - 1, 'a')
+                .build())
+        .hasDictionaryEqualTo(referenceState)
+        .hasReturnStackEqualTo(referenceState);
+  }
+
+  @DisplayName("Immediate mode: Push the literal character onto ParameterStack.")
+  @Test
+  void immediatePushCharacterToStack() {
+    // GIVEN
+    var number = RandomUtils.insecure().randomInt();
+    var str = "'a'\n";
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
+    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
+    var machine = aMachine().withState(actualState).build();
+    machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    var HEREdereferenced = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
+    assertThat(actualState)
+        .hasVariableEqualTo(Variables.get("HERE"), HEREdereferenced)
+        .hasParameterStackEqualTo(aParameterStack().with('a').build());
   }
 }
