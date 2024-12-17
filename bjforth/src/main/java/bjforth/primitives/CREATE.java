@@ -34,13 +34,17 @@ public class CREATE implements Primitive {
       var HEREValue = (Integer) machine.getMemoryAt(HEREAddr);
       var LATESTAddr = Variables.get("LATEST").getAddress();
 
-      if (nameObj instanceof String name) {
-        machine.setMemoryAt(LATESTAddr, HEREValue);
-        var dictItem = new DictionaryItem(name, HEREValue, false, false);
-        machine.createDictionaryItem(name, dictItem);
+      var name = "";
+      if (nameObj instanceof String nameStr) {
+        name = nameStr;
+      } else if (nameObj instanceof Character nameCh) {
+        name = nameCh.toString();
       } else {
         throw new MachineException("Invalid argument");
       }
+      machine.setMemoryAt(LATESTAddr, HEREValue);
+      var dictItem = new DictionaryItem(name, HEREValue, false, false);
+      machine.createDictionaryItem(name, dictItem);
     } catch (NoSuchElementException ex) {
       throw new MachineException("ParameterStack error.");
     }
