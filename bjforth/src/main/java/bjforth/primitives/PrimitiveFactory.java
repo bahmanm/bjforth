@@ -203,6 +203,12 @@ public class PrimitiveFactory {
     return containerHIDDEN.get();
   }
 
+  private static PrimitiveContainer containerHIDE = new PrimitiveContainer(HIDE::new);
+
+  static Primitive HIDE() {
+    return containerHIDE.get();
+  }
+
   private static PrimitiveContainer containerIMMEDIATE = new PrimitiveContainer(IMMEDIATE::new);
 
   static Primitive IMMEDIATE() {
@@ -511,6 +517,7 @@ public class PrimitiveFactory {
           containerGT,
           containerHERE,
           containerHIDDEN,
+          containerHIDE,
           containerIMMEDIATE,
           containerINTERPRET,
           containerINCR,
