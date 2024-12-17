@@ -47,7 +47,7 @@ class IMMEDIATETest {
     var IMMEDIATEaddr = getPrimitiveAddress("IMMEDIATE");
     var wordName = RandomStringUtils.secure().next(5);
     var wordAddr = nextInt();
-    var latestValue = nextInt();
+    var latestValue = wordAddr;
     var isImmediate = nextBoolean();
     var dictItem = new DictionaryItem(wordName, wordAddr, isImmediate, false);
     var actualState =
