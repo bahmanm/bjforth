@@ -53,12 +53,7 @@ A bunch of notes which are most probably useless to anyone else but me.
 The list of words which are defined in the assembler file (`jonesforth.S`) but are in fact
 Forth words.
 
-- COLON @ jonesforth.S:1869
-- SEMICOLON @ jonesforth.S:1881
 - HIDE @ jonesforth.S:1949
-- TICK @ jonesforth.S:1983
-- QUIT @ jonesforth.S:2081
-
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth?ref=badge_large)

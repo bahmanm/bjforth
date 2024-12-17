@@ -389,6 +389,12 @@ public class PrimitiveFactory {
     return containerTELL.get();
   }
 
+  private static PrimitiveContainer containerTICK = new PrimitiveContainer(TICK::new);
+
+  static Primitive TICK() {
+    return containerTICK.get();
+  }
+
   private static PrimitiveContainer containerTOR = new PrimitiveContainer(TOR::new);
 
   static Primitive TOR() {
@@ -530,6 +536,7 @@ public class PrimitiveFactory {
           containerSUBSTORE,
           containerSWAP,
           containerTELL,
+          containerTICK,
           containerTOR,
           containerTOSTRING,
           containerTWODROP,
