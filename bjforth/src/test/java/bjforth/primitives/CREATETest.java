@@ -75,6 +75,43 @@ class CREATETest {
   }
 
   @Test
+  @DisplayName("Create the dictionary item when name is a character object.")
+  public void worksWithCharacter() {
+    // GIVEN
+    var CREATEaddr = getPrimitiveAddress("CREATE");
+    var nameAddr = nextInt();
+    Character name = 'a';
+    var actualState =
+        aMachineState()
+            .withInstrcutionPointer(CREATEaddr)
+            .withParameterStack(aParameterStack().with(name).build())
+            .withVariable(Variables.get("LATEST"), 0)
+            .build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
+    var HEREaddr = Variables.get("HERE").getAddress();
+    var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(actualState)
+        .hasDictionaryEqualTo(
+            aDictionary()
+                .with(referenceState)
+                .with(name.toString(), new DictionaryItem(name.toString(), HEREvalue, false, false))
+                .build())
+        .hasMemoryEqualTo(
+            aMemory()
+                .with(actualState)
+                .with(HEREaddr, HEREvalue)
+                .with(Variables.get("LATEST").getAddress(), HEREvalue)
+                .build())
+        .hasParameterStackEqualTo(aParameterStack().build());
+  }
+
+  @Test
   @DisplayName("Should throw if ParameterStack is already empty.")
   public void throwIfEmpty() {
     // GIVEN
