@@ -311,6 +311,12 @@ public class PrimitiveFactory {
     return containerOVER.get();
   }
 
+  private static PrimitiveContainer containerPRINT = new PrimitiveContainer(PRINT::new);
+
+  static Primitive PRINT() {
+    return containerPRINT.get();
+  }
+
   private static PrimitiveContainer containerQDUP = new PrimitiveContainer(QDUP::new);
 
   static Primitive QDUP() {
@@ -523,6 +529,7 @@ public class PrimitiveFactory {
           containerNROT,
           containerNUMBER,
           containerOVER,
+          containerPRINT,
           containerQDUP,
           containerQUIT,
           containerRBRAC,
