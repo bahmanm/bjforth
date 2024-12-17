@@ -136,4 +136,24 @@ class WORDTest {
     // THEN
     assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(wordStr).build());
   }
+
+  @DisplayName("Collect characters inside ' onto ParameterStack.")
+  @Test
+  void collectChars() {
+    // GIVEN
+    var str = "'a'\n";
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var WORDaddr = getPrimitiveAddress("WORD");
+    var actualState = aMachineState().withInstrcutionPointer(WORDaddr).build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with('a').build());
+  }
 }
