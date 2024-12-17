@@ -311,6 +311,18 @@ public class PrimitiveFactory {
     return containerOVER.get();
   }
 
+  private static PrimitiveContainer containerPRINT = new PrimitiveContainer(PRINT::new);
+
+  static Primitive PRINT() {
+    return containerPRINT.get();
+  }
+
+  private static PrimitiveContainer containerPRINTLN = new PrimitiveContainer(PRINTLN::new);
+
+  static Primitive PRINTLN() {
+    return containerPRINTLN.get();
+  }
+
   private static PrimitiveContainer containerQDUP = new PrimitiveContainer(QDUP::new);
 
   static Primitive QDUP() {
@@ -399,12 +411,6 @@ public class PrimitiveFactory {
 
   static Primitive TOR() {
     return containerTOR.get();
-  }
-
-  private static PrimitiveContainer containerTOSTRING = new PrimitiveContainer(TOSTRING::new);
-
-  static Primitive TOSTRING() {
-    return containerTOSTRING.get();
   }
 
   private static PrimitiveContainer containerTWODROP = new PrimitiveContainer(TWODROP::new);
@@ -523,6 +529,8 @@ public class PrimitiveFactory {
           containerNROT,
           containerNUMBER,
           containerOVER,
+          containerPRINT,
+          containerPRINTLN,
           containerQDUP,
           containerQUIT,
           containerRBRAC,
@@ -538,7 +546,6 @@ public class PrimitiveFactory {
           containerTELL,
           containerTICK,
           containerTOR,
-          containerTOSTRING,
           containerTWODROP,
           containerTWODUP,
           containerTWOSWAP,

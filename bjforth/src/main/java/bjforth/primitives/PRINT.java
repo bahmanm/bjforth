@@ -20,10 +20,9 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 
-public class TOSTRING implements Primitive {
+public class PRINT implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var obj = machine.peekIntoParameterStack();
-    System.out.println(obj.toString());
+    System.out.print(machine.peekIntoParameterStack());
   }
 }
