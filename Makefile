@@ -56,6 +56,17 @@ test : gradle( check )
 
 ####################################################################################################
 
+.PHONY : e2e-test
+
+e2e-test : bmakelib.error-if-blank( VERSION )
+e2e-test : package
+	@bjforth/src/test/e2e/e2e-test-runner.pl \
+	  bjforth/build/libs/bjForth-$(VERSION).jar \
+	  bjforth/src/test/e2e/e2e-expected-output.txt \
+	  bjforth/src/test/e2e/e2e-tests.forth
+
+####################################################################################################
+
 .PHONY : format
 
 format : gradle( spotlessApply )
@@ -79,5 +90,4 @@ clean:
 .PHONY : package
 
 package : bmakelib.error-if-blank( VERSION )
-package : test
 package : gradle( shadowJar )
