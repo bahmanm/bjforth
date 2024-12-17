@@ -18,6 +18,7 @@
  */
 package bjforth.primitives;
 
+import bjforth.machine.GracefulShutdown;
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import java.io.IOException;
@@ -38,7 +39,9 @@ class KEY implements Primitive {
   public void execute(Machine machine) {
     try {
       var ch = getReader().read();
-      if (ch == -1) throw new MachineException("End of stream");
+      if (ch == -1) {
+        throw new GracefulShutdown();
+      }
       machine.pushToParameterStack(ch);
     } catch (IOException e) {
       throw new MachineException(e);
