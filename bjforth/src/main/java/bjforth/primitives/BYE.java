@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Bahman Movaqar
+ * Copyright 2024 Bahman Movaqar
  *
  * This file is part of bjForth.
  *
@@ -18,33 +18,13 @@
  */
 package bjforth.primitives;
 
-import bjforth.machine.GracefulShutdown;
 import bjforth.machine.Machine;
-import bjforth.machine.MachineException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 
-class KEY implements Primitive {
-
-  private InputStreamReader reader = null;
-
-  private synchronized InputStreamReader getReader() {
-    if (reader == null) {
-      reader = new InputStreamReader(System.in);
-    }
-    return reader;
-  }
-
+public class BYE implements Primitive {
   @Override
   public void execute(Machine machine) {
-    try {
-      var ch = getReader().read();
-      if (ch == -1) {
-        throw new GracefulShutdown();
-      }
-      machine.pushToParameterStack(ch);
-    } catch (IOException e) {
-      throw new MachineException(e);
-    }
+    System.out.println("BYE");
+    System.out.flush();
+    System.exit(0);
   }
 }

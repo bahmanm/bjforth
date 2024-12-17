@@ -25,7 +25,7 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-import bjforth.machine.MachineException;
+import bjforth.machine.GracefulShutdown;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -84,9 +84,7 @@ class KEYTest {
     var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
-    assertThatThrownBy(machine::step)
-        .isInstanceOf(MachineException.class)
-        .hasMessage("End of stream");
+    assertThatThrownBy(machine::step).isInstanceOf(GracefulShutdown.class);
     assertThat(actualState).isEqualTo(referenceState);
   }
 }

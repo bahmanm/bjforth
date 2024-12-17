@@ -122,6 +122,11 @@ jobs:
       - checkout
 
       - run:
+          name: Run E2E tests
+          command: >-
+            make VERSION=${CIRCLE_TAG} e2e-test
+
+      - run:
           name: Build the packages
           command: >-
             make VERSION=${CIRCLE_TAG} package

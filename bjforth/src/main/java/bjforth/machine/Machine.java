@@ -18,6 +18,7 @@
  */
 package bjforth.machine;
 
+import bjforth.primitives.PrimitiveFactory;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -161,8 +162,17 @@ public class Machine {
 
   /** Machine's "main loop". */
   public void loop() {
-    while (true) {
-      step();
+    try {
+      while (true) {
+        step();
+      }
+    } catch (GracefulShutdown _ex) {
+      var BYE =
+          PrimitiveFactory.getPrimitiveContainers().stream()
+              .filter((p) -> "BYE".equals(p.get().getName()))
+              .findFirst()
+              .get();
+      BYE.get().execute(this);
     }
   }
 
