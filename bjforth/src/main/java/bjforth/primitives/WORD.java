@@ -47,7 +47,7 @@ class WORD implements Primitive {
           } else if (ch == '\'') {
             state = State.IN_CHAR;
             isChar = true;
-          } else if (ch != ' ' && ch != '\n') {
+          } else if (ch != ' ' && ch != '\t' && ch != '\n') {
             result.appendCodePoint(ch);
             state = State.IN_WORD;
           }
