@@ -61,7 +61,15 @@ public class INTERPRET implements Primitive {
           machine.pushToParameterStack(number);
         }
       } catch (MachineException __ex) { // Not a number. Exit with error.
-        throw new MachineException("Invalid word or number: <%s>".formatted(obj.toString()));
+        System.out.println(
+            "Pushing unknown word or invalid number onto stack: <%s>".formatted(obj.toString()));
+        if (STATE == 1) { // Compiling mode
+          machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+          machine.setMemoryAt(HEREvalue + 1, obj.toString());
+          machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
+        } else { // Immediate mode
+          machine.pushToParameterStack(obj.toString());
+        }
       }
     }
   }
