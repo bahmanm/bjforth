@@ -25,7 +25,6 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 
 import org.apache.commons.lang3.RandomUtils;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class COMMACOMMATest {
