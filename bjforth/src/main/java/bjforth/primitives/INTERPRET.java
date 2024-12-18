@@ -70,7 +70,7 @@ public class INTERPRET implements Primitive {
             machine.pushToParameterStack(number);
           }
         } catch (MachineException __ex) { // Not a number. Exit with error.
-          throw new MachineException("Invalid word or number.");
+          throw new MachineException("Invalid word or number: <%s>".formatted(obj.toString()));
         }
       }
     }
