@@ -187,12 +187,13 @@ class INTERPRETTest {
     assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 
-  @DisplayName("Compiling mode: Replace a literal character with LIT <ch>.")
+  @DisplayName("Compiling mode: Replace a literal object with LIT <object as string>.")
   @Test
-  void compilingReplaceCharacterWithLITAndCharacter() {
+  void compilingReplaceStringLiteralWithLITAndString() {
     // GIVEN
     var number = RandomUtils.insecure().randomInt();
-    var str = "'a'\n";
+    var randomStr = RandomStringUtils.insecure().next(10);
+    var str = "%s ".formatted(randomStr);
     var LITaddr = getPrimitiveAddress("LIT");
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
@@ -215,18 +216,19 @@ class INTERPRETTest {
                 .with(referenceState)
                 .with(Variables.get("HERE").getAddress(), HEREdereferenced)
                 .with(HEREdereferenced - 2, LITaddr)
-                .with(HEREdereferenced - 1, 'a')
+                .with(HEREdereferenced - 1, randomStr)
                 .build())
         .hasDictionaryEqualTo(referenceState)
         .hasReturnStackEqualTo(referenceState);
   }
 
-  @DisplayName("Immediate mode: Push the literal character onto ParameterStack.")
+  @DisplayName("Immediate mode: Push the literal string onto ParameterStack.")
   @Test
   void immediatePushCharacterToStack() {
     // GIVEN
     var number = RandomUtils.insecure().randomInt();
-    var str = "'a'\n";
+    var randomStr = RandomStringUtils.insecure().next(10);
+    var str = "%s\n".formatted(randomStr);
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
 
@@ -243,6 +245,6 @@ class INTERPRETTest {
     var HEREdereferenced = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
     assertThat(actualState)
         .hasVariableEqualTo(Variables.get("HERE"), HEREdereferenced)
-        .hasParameterStackEqualTo(aParameterStack().with('a').build());
+        .hasParameterStackEqualTo(aParameterStack().with(randomStr).build());
   }
 }
