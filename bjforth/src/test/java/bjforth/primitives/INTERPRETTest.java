@@ -27,7 +27,6 @@ import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.*;
 
-import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
