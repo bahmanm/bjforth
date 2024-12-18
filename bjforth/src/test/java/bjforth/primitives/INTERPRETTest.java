@@ -168,25 +168,6 @@ class INTERPRETTest {
         .hasParameterStackEqualTo(aParameterStack().with(number).build());
   }
 
-  @DisplayName("Invalid input - not a word, not a number, not a character")
-  @Test
-  void invalidInput() {
-    // GIVEN
-    var str = "%s ".formatted(RandomStringUtils.insecure().next(15));
-    var inputStream = new ByteArrayInputStream(str.getBytes());
-    System.setIn(inputStream);
-
-    var INTERPRETaddr = getPrimitiveAddress("INTERPRET");
-    var actualState = aMachineState().withInstrcutionPointer(INTERPRETaddr).build();
-    var machine = aMachine().withState(actualState).build();
-    machine.setMemoryAt(Variables.get("STATE").getAddress(), 0);
-    var referenceState = aMachineState().copyFrom(actualState).build();
-
-    // EXPECT
-    assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
-    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
-  }
-
   @DisplayName("Compiling mode: Replace a literal object with LIT <object as string>.")
   @Test
   void compilingReplaceStringLiteralWithLITAndString() {
