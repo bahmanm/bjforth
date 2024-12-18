@@ -45,40 +45,30 @@ public class INTERPRET implements Primitive {
       }
     } catch (MachineException _ex) { // Not in dictionary. Check if it's a number.
       machine.pushToParameterStack(obj);
-      if (obj instanceof Character ch) {
-        if (STATE == 1) {
-          machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
-          machine.setMemoryAt(HEREvalue + 1, ch);
-          machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
-        } else {
-          // The character is already on the stack.
+      try {
+        PrimitiveFactory.NUMBER().execute(machine);
+        var numberStatus = (Integer) machine.popFromParameterStack();
+        if (numberStatus != 0) {
+          machine.popFromParameterStack();
+          throw new MachineException("Invalid number.");
         }
-      } else {
-        try {
-          PrimitiveFactory.NUMBER().execute(machine);
-          var numberStatus = (Integer) machine.popFromParameterStack();
-          if (numberStatus != 0) {
-            machine.popFromParameterStack();
-            throw new MachineException("Invalid number.");
-          }
-          var number = (Number) machine.popFromParameterStack();
-          if (STATE == 1) { // Compiling mode
-            machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
-            machine.setMemoryAt(HEREvalue + 1, number);
-            machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
-          } else { // Immediate mode
-            machine.pushToParameterStack(number);
-          }
-        } catch (MachineException __ex) { // Not a number. Exit with error.
-          System.out.println(
-              "Pushing unknown word or invalid number onto stack: <%s>".formatted(obj.toString()));
-          if (STATE == 1) { // Compiling mode
-            machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
-            machine.setMemoryAt(HEREvalue + 1, obj.toString());
-            machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
-          } else { // Immediate mode
-            machine.pushToParameterStack(obj.toString());
-          }
+        var number = (Number) machine.popFromParameterStack();
+        if (STATE == 1) { // Compiling mode
+          machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+          machine.setMemoryAt(HEREvalue + 1, number);
+          machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
+        } else { // Immediate mode
+          machine.pushToParameterStack(number);
+        }
+      } catch (MachineException __ex) { // Not a number. Exit with error.
+        System.out.println(
+            "Pushing unknown word or invalid number onto stack: <%s>".formatted(obj.toString()));
+        if (STATE == 1) { // Compiling mode
+          machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+          machine.setMemoryAt(HEREvalue + 1, obj.toString());
+          machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
+        } else { // Immediate mode
+          machine.pushToParameterStack(obj.toString());
         }
       }
     }
