@@ -16,44 +16,53 @@ a Forth is implemented.
 - [Thoughts on JVM-based Forth Implementation (2014)](https://www.bahmanm.com/2015/01/more-thoughts-on-jvm-based-forth.html)
 - [More Thoughts on A JVM-based Forth (2015)](https://www.bahmanm.com/2015/01/more-thoughts-on-jvm-based-forth.html)
 
-Then in 2022, I sat down and read the source of [JONESFORTH](http://git.annexia.org/?p=jonesforth.git;a=summary).
-It is a rather minimal and amasingly well-documented Forth implementation! 
+Then in 2022, I sat down and read the source of [JONESFORTH](http://git.annexia.org/?p=jonesforth.git;a=summary) which is a rather minimal and amasingly well-documented Forth implementation! 
 
 After that I knew what to do!
 
+# How to run
+
+As bjForth is written with Java, all you need is JDK 21 installed.
+
+Then to launch bjForth:
+
+```
+$ java -jar bjForth-v0.0.2.jar
+
+bjForth <https://github.com/bahmanm/bjforth>
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+```
+
+Or you could include your own library:
+
+```
+$ cat my-lib.forth - | java -jar bjForth-v0.0.2.jar
+
+bjForth <https://github.com/bahmanm/bjforth>
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+```
+
+# Words 
+
+[List of all words included in the distribution](docs/Words.md)
+
 # Roadmap
-
-## v0.1.0
-
-The initial version. It should remain relatively close to JONESFORTH and deviations should be minimal
-and only when necessary.
 
 ## v1.0.0
 
-Support basic JVM interop such as below:
+- Java inter-op (instance creation and method call)
+- A set of libraries with commonly used words (`bjForth.forth`)
 
-```forth
-1 2 3 @java.util.List @.of .s
-\ java.util.List <3, 2, 1>
+## v2.0.0 (Tentative)
 
-"Bar" @my.package.Foo @.new @.greet
-\ Hello, Bar
-```
+- ANSI Forth compatibility
 
-## v2.0.0
+## v3.0.0 (Tentative)
 
-Support lambdas and class/interface creation.
+- Java inter-op (lambdas)
 
 ---
-
-#### Implementation Notes
-A bunch of notes which are most probably useless to anyone else but me.
-
-##### Non-primitive words
-The list of words which are defined in the assembler file (`jonesforth.S`) but are in fact
-Forth words.
-
-- HIDE @ jonesforth.S:1949
 
 ## License
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fbahmanm%2Fbjforth?ref=badge_large)
