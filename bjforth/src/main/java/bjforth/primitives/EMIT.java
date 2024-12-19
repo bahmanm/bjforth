@@ -38,9 +38,12 @@ class EMIT implements Primitive {
   @Override
   public void execute(Machine machine) {
     try {
-      var chObject = machine.popFromParameterStack();
-      if (chObject instanceof Integer ch) {
+      var obj = machine.popFromParameterStack();
+      if (obj instanceof Integer ch) {
         getWriter().write(ch);
+        getWriter().flush();
+      } else if (obj instanceof String str) {
+        getWriter().write(str);
         getWriter().flush();
       } else {
         throw new MachineException("Invalid codepoint");

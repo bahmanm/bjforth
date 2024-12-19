@@ -22,7 +22,6 @@ import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -31,7 +30,6 @@ import bjforth.machine.MachineException;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,7 +42,7 @@ class EMITTest {
   private PrintStream systemOut = null;
 
   @AfterEach
-  public void restoreSystemIn() {
+  public void restoreSystemOut() {
     System.setOut(originalSystemOut);
     systemOut.close();
     systemOut = null;
@@ -64,23 +62,20 @@ class EMITTest {
     System.setOut(systemOut);
   }
 
-  @DisplayName("writes the top of the parameter stack to System.out")
+  @DisplayName("writes the character at the top of the parameter stack to System.out")
   @Test
-  void worksOk() {
+  void worksOkCharacter() {
     // GIVEN
-    var str = RandomStringUtils.random(1);
+    var str = "a";
     var ch = str.codePointAt(0);
 
     var EMITaddr = getPrimitiveAddress("EMIT");
     var actualState =
         aMachineState()
             .withInstrcutionPointer(EMITaddr)
-            .withNextInstructionPointer(EMITaddr + 1)
-            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(ch).build())
             .build();
     var machine = aMachine().withState(actualState).build();
-    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
@@ -98,8 +93,6 @@ class EMITTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(EMITaddr)
-            .withNextInstructionPointer(EMITaddr + 1)
-            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().with(new Object()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
@@ -123,8 +116,6 @@ class EMITTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(EMITaddr)
-            .withNextInstructionPointer(EMITaddr + 1)
-            .withMemory(aMemory().build())
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
