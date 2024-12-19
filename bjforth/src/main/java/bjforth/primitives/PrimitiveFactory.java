@@ -35,6 +35,12 @@ public class PrimitiveFactory {
     return containerADDSTORE.get();
   }
 
+  private static PrimitiveContainer containerATAT = new PrimitiveContainer(ATAT::new);
+
+  static Primitive ATAT() {
+    return containerATAT.get();
+  }
+
   private static PrimitiveContainer containerBASE = new PrimitiveContainer(BASE::new);
 
   static Primitive BASE() {
@@ -89,6 +95,12 @@ public class PrimitiveFactory {
     return containerCOMMA.get();
   }
 
+  private static PrimitiveContainer containerCOMMACOMMA = new PrimitiveContainer(COMMACOMMA::new);
+
+  static Primitive COMMACOMMA() {
+    return containerCOMMACOMMA.get();
+  }
+
   private static PrimitiveContainer containerDECR = new PrimitiveContainer(DECR::new);
 
   static Primitive DECR() {
@@ -117,6 +129,12 @@ public class PrimitiveFactory {
 
   static Primitive DOT() {
     return containerDOT.get();
+  }
+
+  private static PrimitiveContainer containerDOTDOT = new PrimitiveContainer(DOTDOT::new);
+
+  static Primitive DOTDOT() {
+    return containerDOTDOT.get();
   }
 
   private static PrimitiveContainer containerDROP = new PrimitiveContainer(DROP::new);
@@ -495,12 +513,14 @@ public class PrimitiveFactory {
       List.of(
           containerADD,
           containerADDSTORE,
+          containerATAT,
           containerBASE,
           containerBRANCH,
           containerBYE,
           containerCFA,
           containerCHAR,
           containerCOLON,
+          containerCOMMACOMMA,
           containerCOPY,
           containerCREATE,
           containerCOMMA,
@@ -509,6 +529,7 @@ public class PrimitiveFactory {
           containerDFA,
           containerDIV,
           containerDOT,
+          containerDOTDOT,
           containerDROP,
           containerDSPFETCH,
           containerDSPSTORE,

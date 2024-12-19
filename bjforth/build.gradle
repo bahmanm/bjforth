@@ -34,6 +34,8 @@ configurations {
 }
 
 dependencies {
+  implementation 'org.apache.commons:commons-lang3:3.17.0'
+
   testLib sourceSets.testLib.output
   testLibImplementation 'org.apache.commons:commons-lang3:3.17.0'
   testLibImplementation 'org.assertj:assertj-core:3.26.3'
