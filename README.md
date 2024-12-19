@@ -20,6 +20,33 @@ Then in 2022, I sat down and read the source of [JONESFORTH](http://git.annexia.
 
 After that I knew what to do!
 
+# How to run
+
+As bjForth is written with Java, all you need is JDK 21 installed.
+
+Then to launch bjForth:
+
+```
+$ java -jar bjForth-v0.0.2.jar
+
+bjForth <https://github.com/bahmanm/bjforth>
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+```
+
+Or you could include your own library:
+
+```
+$ cat my-lib.forth - | java -jar bjForth-v0.0.2.jar
+
+bjForth <https://github.com/bahmanm/bjforth>
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+```
+
+# Words 
+
+[List of all words included in the distribution](docs/Words.md)
+
 # Roadmap
 
 ## v1.0.0
