@@ -63,4 +63,22 @@ class DOTDOUBLEQUOTETest {
     assertThat(actualState)
         .hasParameterStackEqualTo(aParameterStack().with(" \tfoo \"bar\"").build());
   }
+
+  @Test
+  void emptyString() {
+    // GIVEN
+    var DOTDOUBLEQUOTEaddr = getPrimitiveAddress(".\"");
+    var str = "\".";
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var actualState = aMachineState().withInstrcutionPointer(DOTDOUBLEQUOTEaddr).build();
+    var machine = aMachine().withState(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with("").build());
+  }
 }

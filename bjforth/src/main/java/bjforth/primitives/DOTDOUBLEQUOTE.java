@@ -51,7 +51,9 @@ public class DOTDOUBLEQUOTE implements Primitive {
         case MAYBE_END:
           if (ch == '.') {
             state = State.END;
-            result.deleteCharAt(result.length() - 1);
+            if (!result.isEmpty()) {
+              result.deleteCharAt(result.length() - 1);
+            }
           } else {
             result.append("\"");
             result.append((char) ch);
