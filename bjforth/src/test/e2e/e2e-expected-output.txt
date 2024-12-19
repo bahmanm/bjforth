@@ -2,4 +2,5 @@ bjForth <https://github.com/bahmanm/bjforth>
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 200
 100
+Hello, world
 BYE
