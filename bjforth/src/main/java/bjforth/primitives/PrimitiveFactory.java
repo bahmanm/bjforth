@@ -137,6 +137,13 @@ public class PrimitiveFactory {
     return containerDOTDOT.get();
   }
 
+  private static PrimitiveContainer containerDOTDOUBLEQUOTE =
+      new PrimitiveContainer(DOTDOUBLEQUOTE::new);
+
+  static Primitive DOTDOUBLEQUOTE() {
+    return containerDOTDOUBLEQUOTE.get();
+  }
+
   private static PrimitiveContainer containerDROP = new PrimitiveContainer(DROP::new);
 
   static Primitive DROP() {
@@ -530,6 +537,7 @@ public class PrimitiveFactory {
           containerDIV,
           containerDOT,
           containerDOTDOT,
+          containerDOTDOUBLEQUOTE,
           containerDROP,
           containerDSPFETCH,
           containerDSPSTORE,
