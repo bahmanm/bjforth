@@ -65,7 +65,7 @@ class DOTTest {
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTaddr)
-            .withParameterStack(aParameterStack().with("hi", 10, 'a').build())
+            .withParameterStack(aParameterStack().with("hi", null, 10, 'a').build())
             .build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
@@ -74,7 +74,7 @@ class DOTTest {
     machine.step();
 
     // THEN
-    var expectedStr = "java.lang.String<hi>\njava.lang.Integer<10>\njava.lang.Character<a>\n";
+    var expectedStr = "java.lang.String<hi>\nnull\njava.lang.Integer<10>\njava.lang.Character<a>\n";
     assertThat(outputStream.toString()).isEqualTo(expectedStr);
   }
 }

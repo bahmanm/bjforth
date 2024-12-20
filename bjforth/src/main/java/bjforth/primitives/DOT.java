@@ -41,7 +41,12 @@ public class DOT implements Primitive {
       while (true) {
         var obj = backupStack.pop();
         machine.pushToParameterStack(obj);
-        var str = "%s<%s>".formatted(obj.getClass().getTypeName(), obj.toString());
+        var str = "";
+        if (obj == null) {
+          str = "null";
+        } else {
+          str = "%s<%s>".formatted(obj.getClass().getTypeName(), obj.toString());
+        }
         machine.pushToParameterStack(str);
         PRINTLN().execute(machine);
         DROP().execute(machine);
