@@ -28,8 +28,8 @@ public class CFA implements Primitive {
     try {
       var addressObject = machine.popFromParameterStack();
       if (addressObject instanceof Integer address) {
-        // Simply ignore `address` as bjForth's words are not
-        // linked lists.
+        // It's a legitimate CFA - push it back.
+        machine.pushToParameterStack(address);
       } else {
         throw new MachineException("Invalid argument");
       }

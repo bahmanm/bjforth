@@ -53,7 +53,7 @@ class CFATest {
     machine.step();
 
     // THEN
-    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().build());
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(parameter).build());
   }
 
   @Test
