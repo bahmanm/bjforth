@@ -91,3 +91,7 @@ clean:
 
 package : bmakelib.error-if-blank( VERSION )
 package : gradle( shadowJar )
+package : package-path := $(ROOT)bjforth/build/libs/bjForth-$(VERSION).tar.gz
+package :
+	cp $(ROOT)bjforth/src/main/forth/*.forth $(ROOT)bjforth/build/libs
+	cd $(ROOT)/bjforth/build/libs && tar -cf bjForth-$(VERSION).tar *
