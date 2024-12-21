@@ -59,4 +59,11 @@ class Stack {
     }
     for (int i = data.size() - 1; i > pointer; i--) data.remove(i);
   }
+
+  public Object getItem(int pointer) {
+    if (pointer >= data.size() || pointer < 0) {
+      throw new MachineException("Invalid stack pointer");
+    }
+    return data.get(pointer);
+  }
 }

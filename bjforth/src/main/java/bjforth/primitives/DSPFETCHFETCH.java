@@ -20,31 +20,24 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
-import java.util.NoSuchElementException;
 
-public class CFA implements Primitive {
+public class DSPFETCHFETCH implements Primitive {
+
   @Override
   public void execute(Machine machine) {
-    try {
-      var addressObject = machine.popFromParameterStack();
-      if (addressObject instanceof Integer address) {
-        // It's a legitimate CFA - push it back.
-        machine.pushToParameterStack(address);
-      } else {
-        throw new MachineException("Invalid argument");
-      }
-    } catch (NoSuchElementException ex) {
-      throw new MachineException("ParameterStack error.");
+    var pointerObj = machine.popFromParameterStack();
+    if (pointerObj instanceof Integer pointer) {
+      var element = machine.getItemParamaterStack(pointer);
+      machine.pushToParameterStack(element);
+    } else if (pointerObj == null) {
+      throw new MachineException("Invalid stack pointer: null");
+    } else {
+      throw new MachineException("Invalid stack pointer: %s".formatted(pointerObj));
     }
   }
 
   @Override
   public String getName() {
-    return ">CFA";
-  }
-
-  @Override
-  public String getDescriptiveName() {
-    return "TCFA";
+    return "DSP@@";
   }
 }

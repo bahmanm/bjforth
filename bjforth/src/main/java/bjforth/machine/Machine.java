@@ -51,6 +51,10 @@ public class Machine {
     return state.getParameterStack().peek();
   }
 
+  public Object getItemParamaterStack(Integer pointer) {
+    return state.getParameterStack().getItem(pointer);
+  }
+
   public int getParameterStackPointer() {
     return state.getParameterStack().getPointer();
   }
@@ -134,7 +138,9 @@ public class Machine {
   public void step() {
     var IP = state.getInstructionPointer();
     var content = getMemoryAt(IP);
-    if (content instanceof NativeSubroutine nativeSubroutine) {
+    if (content == null) {
+      throw new MachineException("Don't know how to execute *(%d)=null".formatted(IP));
+    } else if (content instanceof NativeSubroutine nativeSubroutine) {
       nativeSubroutine.call(this);
     } else if (content instanceof Integer address) {
       jumpTo(address);

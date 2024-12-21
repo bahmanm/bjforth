@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Bahman Movaqar
+ * Copyright 2024 Bahman Movaqar
  *
  * This file is part of bjForth.
  *
@@ -22,57 +22,67 @@ import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
-import static bjforth.machine.MemoryBuilder.aMemory;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static org.apache.commons.lang3.RandomUtils.nextInt;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import bjforth.machine.MachineException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class CFATest {
+class DSPFETCHFETCHTest {
 
   @Test
-  @DisplayName("Safely ignore a valid memory address.")
-  public void worksOk() {
+  void worksOk() {
     // GIVEN
-    var TCFAaddr = getPrimitiveAddress(">CFA");
-    var parameter = nextInt();
+    var DSPFETCHFETCHaddr = getPrimitiveAddress("DSP@@");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(TCFAaddr)
-            .withNextInstructionPointer(TCFAaddr + 1)
-            .withMemory(aMemory().build())
-            .withParameterStack(aParameterStack().with(parameter).build())
+            .withInstrcutionPointer(DSPFETCHFETCHaddr)
+            .withParameterStack(aParameterStack().with(10, 20, 30, 40, 50, 3).build())
             .build();
     var machine = aMachine().withState(actualState).build();
-    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(parameter).build());
+    assertThat(actualState)
+        .hasParameterStackEqualTo(aParameterStack().with(10, 20, 30, 40, 50, 20).build());
   }
 
   @Test
-  @DisplayName("Should throw if ParameterStack is already empty.")
-  public void throwIfEmpty() {
+  @DisplayName("Should throw if not a number")
+  public void throwIfNotNumber() {
     // GIVEN
-    var TCFAaddr = getPrimitiveAddress(">CFA");
+    var DSPFETCHFETCHaddr = getPrimitiveAddress("DSP@@");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(TCFAaddr)
-            .withNextInstructionPointer(TCFAaddr + 1)
-            .withMemory(aMemory().build())
-            .withParameterStack(aParameterStack().build())
+            .withInstrcutionPointer(DSPFETCHFETCHaddr)
+            .withParameterStack(aParameterStack().with(10, 20, new Object()).build())
             .build();
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(10, 20).build());
+  }
+
+  @Test
+  @DisplayName("Should throw if null")
+  public void throwIfNull() {
+    // GIVEN
+    var DSPFETCHFETCHaddr = getPrimitiveAddress("DSP@@");
+    var actualState =
+        aMachineState()
+            .withInstrcutionPointer(DSPFETCHFETCHaddr)
+            .withParameterStack(aParameterStack().with(10, 20, null).build())
+            .build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // EXPECT
+    assertThrows(MachineException.class, machine::step);
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(10, 20).build());
   }
 }
