@@ -156,6 +156,13 @@ public class PrimitiveFactory {
     return containerDSPFETCH.get();
   }
 
+  private static PrimitiveContainer containerDSPFETCHFETCH =
+      new PrimitiveContainer(DSPFETCHFETCH::new);
+
+  static Primitive DSPFETCHFETCH() {
+    return containerDSPFETCHFETCH.get();
+  }
+
   private static PrimitiveContainer containerDSPSTORE = new PrimitiveContainer(DSPSTORE::new);
 
   static Primitive DSPSTORE() {
@@ -540,6 +547,7 @@ public class PrimitiveFactory {
           containerDOTDOUBLEQUOTE,
           containerDROP,
           containerDSPFETCH,
+          containerDSPFETCHFETCH,
           containerDSPSTORE,
           containerDUP,
           containerEMIT,
