@@ -21,6 +21,7 @@ package bjforth.primitives;
 import static bjforth.primitives.PrimitiveFactory.KEY;
 
 import bjforth.machine.Machine;
+import bjforth.variables.Variables;
 
 public class DOTDOUBLEQUOTE implements Primitive {
 
@@ -69,7 +70,17 @@ public class DOTDOUBLEQUOTE implements Primitive {
           break;
       }
     }
-    machine.pushToParameterStack(result.toString());
+    var STATEaddr = Variables.get("STATE").getAddress();
+    var STATEvalue = (Integer) machine.getMemoryAt(STATEaddr);
+    if (STATEvalue == 1) {
+      var HEREaddr = Variables.get("HERE").getAddress();
+      var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
+      machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+      machine.setMemoryAt(HEREvalue + 1, result.toString());
+      machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
+    } else {
+      machine.pushToParameterStack(result.toString());
+    }
   }
 
   @Override
