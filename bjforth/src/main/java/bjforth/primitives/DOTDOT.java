@@ -40,11 +40,24 @@ public class DOTDOT implements Primitive {
       argumentTypes[i] = obj.getClass();
     }
 
+    var method = MethodUtils.getAccessibleMethod(target.getClass(), methodName, argumentTypes);
+    if (method == null) {
+      method = MethodUtils.getAccessibleMethod(target.getClass(), methodName, Object[].class);
+      if (method == null) {
+        throw new MachineException(
+            "No matching method could be found: %s#%s".formatted(target.getClass(), methodName));
+      }
+    }
     try {
       var result = MethodUtils.invokeMethod(target, methodName, arguments, argumentTypes);
       machine.pushToParameterStack(result);
     } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-      throw new MachineException(e.getMessage());
+      try {
+        var result = method.invoke(target, new Object[] {arguments});
+        machine.pushToParameterStack(result);
+      } catch (IllegalAccessException | InvocationTargetException ex) {
+        throw new MachineException(e.getMessage());
+      }
     }
   }
 

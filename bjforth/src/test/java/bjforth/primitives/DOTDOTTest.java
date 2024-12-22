@@ -56,6 +56,27 @@ class DOTDOTTest {
     public void bar() {}
   }
 
+  @DisplayName("Should push the result of the method call onto ParameterStack")
+  @Test
+  void worksOkVarargs() {
+    // GIVEN
+    var DOTDOTaddr = getPrimitiveAddress("..");
+    Integer number = RandomUtils.insecure().randomInt();
+    var actualState =
+        aMachineState()
+            .withInstrcutionPointer(DOTDOTaddr)
+            .withParameterStack(aParameterStack().with(number, "%d", "formatted/1").build())
+            .build();
+    var machine = aMachine().withState(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(actualState)
+        .hasParameterStackEqualTo(aParameterStack().with(String.valueOf(number)).build());
+  }
+
   @DisplayName("Push null onto ParameterStack when method return type is void.")
   @Test
   void voidReturn() {
