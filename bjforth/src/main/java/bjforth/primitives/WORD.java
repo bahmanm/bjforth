@@ -38,26 +38,30 @@ class WORD implements Primitive {
     var result = new StringBuilder();
     while (state != State.END) {
       KEY().execute(machine);
-      var ch = (int) machine.popFromParameterStack();
+      var s = (String) machine.popFromParameterStack();
       switch (state) {
         case BEGIN:
-          if (ch == '#') {
+          if ("#".equals(s)) {
             state = State.IN_COMMENT;
-          } else if (ch != ' ' && ch != '\t' && ch != '\r' && ch != '\b' && ch != '\n') {
-            result.appendCodePoint(ch);
+          } else if (!" ".equals(s)
+              && !"\t".equals(s)
+              && !"\r".equals(s)
+              && !"\b".equals(s)
+              && !"\n".equals(s)) {
+            result.append(s);
             state = State.IN_WORD;
           }
           break;
         case IN_COMMENT:
-          if (ch == '\n') {
+          if ("\n".equals(s)) {
             state = State.BEGIN;
           }
           break;
         case IN_WORD:
-          if (ch == ' ' || ch == '\t' || ch == '\n') {
+          if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
             state = State.END;
           } else {
-            result.appendCodePoint(ch);
+            result.append(s);
           }
           break;
         default:
