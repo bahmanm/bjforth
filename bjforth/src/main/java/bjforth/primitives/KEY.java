@@ -42,7 +42,7 @@ class KEY implements Primitive {
       if (ch == -1) {
         throw new GracefulShutdown();
       }
-      machine.pushToParameterStack(ch);
+      machine.pushToParameterStack(String.valueOf((char) ch));
     } catch (IOException e) {
       throw new MachineException(e);
     }
