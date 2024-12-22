@@ -39,33 +39,33 @@ public class DOTDOUBLEQUOTE implements Primitive {
     State state = State.BEGIN;
     while (!state.equals(State.END)) {
       KEY().execute(machine);
-      var ch = (int) machine.popFromParameterStack();
+      var s = (String) machine.popFromParameterStack();
       switch (state) {
         case BEGIN:
-          if (ch == '"') {
+          if ("\"".equals(s)) {
             state = State.MAYBE_END;
           } else {
-            result.append((char) ch);
+            result.append(s);
             state = State.IN_STRING;
           }
           break;
         case MAYBE_END:
-          if (ch == '.') {
+          if (".".equals(s)) {
             state = State.END;
             if (!result.isEmpty()) {
               result.deleteCharAt(result.length() - 1);
             }
           } else {
             result.append("\"");
-            result.append((char) ch);
+            result.append(s);
             state = State.IN_STRING;
           }
           break;
         case IN_STRING:
-          if (ch == '"') {
+          if ("\"".equals(s)) {
             state = State.MAYBE_END;
           } else {
-            result.append((char) ch);
+            result.append(s);
           }
           break;
       }

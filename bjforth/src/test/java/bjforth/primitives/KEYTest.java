@@ -66,8 +66,7 @@ class KEYTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasParameterStackEqualTo(aParameterStack().with(str.codePointAt(0)).build());
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(str).build());
   }
 
   @DisplayName("throws if reaches end of input stream.")
