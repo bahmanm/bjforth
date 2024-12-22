@@ -47,6 +47,12 @@ public class PrimitiveFactory {
     return containerBASE.get();
   }
 
+  private static PrimitiveContainer containerBASESTORE = new PrimitiveContainer(BASESTORE::new);
+
+  static Primitive BASESTORE() {
+    return containerBASESTORE.get();
+  }
+
   private static PrimitiveContainer containerBRANCH = new PrimitiveContainer(BRANCH::new);
 
   static Primitive BRANCH() {
@@ -529,6 +535,7 @@ public class PrimitiveFactory {
           containerADDSTORE,
           containerATAT,
           containerBASE,
+          containerBASESTORE,
           containerBRANCH,
           containerBYE,
           containerCFA,
