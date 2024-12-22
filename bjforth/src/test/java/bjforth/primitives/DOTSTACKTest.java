@@ -60,7 +60,7 @@ class DOTSTACKTest {
 
   @Test
   void worksOk() {
-    var DOTaddr = getPrimitiveAddress(".");
+    var DOTaddr = getPrimitiveAddress(".S");
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTaddr)
