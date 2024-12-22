@@ -57,6 +57,6 @@ public class DOTSTACK implements Primitive {
 
   @Override
   public String getName() {
-    return ".";
+    return ".S";
   }
 }
