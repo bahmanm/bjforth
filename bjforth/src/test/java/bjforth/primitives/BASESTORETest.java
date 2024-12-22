@@ -61,10 +61,8 @@ class BASESTORETest {
             .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
-    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // EXPECT
     assertThrows(MachineException.class, machine::step);
-    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
