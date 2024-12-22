@@ -18,7 +18,8 @@
  */
 package bjforth.machine;
 
-import bjforth.primitives.PrimitiveFactory;
+import static bjforth.primitives.PrimitiveFactory.getPrimitiveContainers;
+
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -174,7 +175,7 @@ public class Machine {
       }
     } catch (GracefulShutdown _ex) {
       var BYE =
-          PrimitiveFactory.getPrimitiveContainers().stream()
+          getPrimitiveContainers().stream()
               .filter((p) -> "BYE".equals(p.get().getName()))
               .findFirst()
               .get();

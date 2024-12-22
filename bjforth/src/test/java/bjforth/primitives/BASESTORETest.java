@@ -19,28 +19,27 @@
 package bjforth.primitives;
 
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
-import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.apache.commons.lang3.RandomUtils;
+import bjforth.machine.MachineException;
+import bjforth.variables.Variables;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class DOTDOTTest {
+class BASESTORETest {
 
-  @DisplayName("Should push the result of the method call onto ParameterStack")
   @Test
   void worksOk() {
     // GIVEN
-    var DOTDOTaddr = getPrimitiveAddress("..");
-    Integer number = RandomUtils.insecure().randomInt();
+    var BASESTOREaddr = getPrimitiveAddress("BASE!");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(DOTDOTaddr)
-            .withParameterStack(aParameterStack().with(number, "longValue/0").build())
+            .withInstrcutionPointer(BASESTOREaddr)
+            .withParameterStack(aParameterStack().with(16).build())
             .build();
     var machine = aMachine().withState(actualState).build();
 
@@ -48,31 +47,22 @@ class DOTDOTTest {
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasParameterStackEqualTo(aParameterStack().with(number.longValue()).build());
+    assertThat(machine.getMemoryAt(Variables.get("BASE").getAddress())).isEqualTo(16);
   }
 
-  public static class Foo {
-    public void bar() {}
-  }
-
-  @DisplayName("Push null onto ParameterStack when method return type is void.")
   @Test
-  void voidReturn() {
+  @DisplayName("should throw if ParameterStack is already empty.")
+  public void throwIfEmpty() {
     // GIVEN
-    var DOTDOTaddr = getPrimitiveAddress("..");
-    var obj = new Foo();
+    var BASESTOREaddr = getPrimitiveAddress("BASE!");
     var actualState =
         aMachineState()
-            .withInstrcutionPointer(DOTDOTaddr)
-            .withParameterStack(aParameterStack().with(obj, "bar/0").build())
+            .withInstrcutionPointer(BASESTOREaddr)
+            .withParameterStack(aParameterStack().build())
             .build();
     var machine = aMachine().withState(actualState).build();
 
-    // WHEN
-    machine.step();
-
-    // THEN
-    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with((Object) null).build());
+    // EXPECT
+    assertThrows(MachineException.class, machine::step);
   }
 }
