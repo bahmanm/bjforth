@@ -26,7 +26,7 @@ import java.util.EmptyStackException;
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
-public class DOT implements Primitive {
+public class DOTSTACK implements Primitive {
   @Override
   public void execute(Machine machine) {
     var backupStack = new Stack<Object>();

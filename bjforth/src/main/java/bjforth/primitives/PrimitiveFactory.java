@@ -131,7 +131,7 @@ public class PrimitiveFactory {
     return containerDIV.get();
   }
 
-  private static PrimitiveContainer containerDOT = new PrimitiveContainer(DOT::new);
+  private static PrimitiveContainer containerDOT = new PrimitiveContainer(DOTSTACK::new);
 
   static Primitive DOT() {
     return containerDOT.get();
