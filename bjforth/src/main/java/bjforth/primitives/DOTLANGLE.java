@@ -35,6 +35,8 @@ public class DOTLANGLE implements Primitive {
     IN_METHOD_NAME,
     IN_PARAM_TYPE,
     IN_MAYBE_VARARG,
+    IN_VARARG,
+    IN_ARITY,
     END
   }
 
@@ -42,6 +44,7 @@ public class DOTLANGLE implements Primitive {
     String name = "";
     List<Class<?>> parameterTypes = new ArrayList<>();
     Boolean isVarargs = false;
+    Integer arity = 0;
   }
 
   @Override
@@ -50,6 +53,7 @@ public class DOTLANGLE implements Primitive {
     var state = State.BEGIN;
     var result = new MethodDescriptor();
     var parameterType = new StringBuilder();
+    var arity = new StringBuilder();
     while (!state.equals(State.END)) {
       KEY().execute(machine);
       var s = (String) machine.popFromParameterStack();
@@ -86,13 +90,29 @@ public class DOTLANGLE implements Primitive {
           if (".".equals(s)) {
             result.isVarargs = true;
             result.parameterTypes.add(forNameVararg(parameterType.toString()));
-            state = State.END;
+            state = State.IN_VARARG;
           } else {
             parameterType.append(".");
             parameterType.append(s);
             state = State.IN_PARAM_TYPE;
           }
           break;
+        case State.IN_VARARG:
+          if (")".equals(s)) {
+            state = State.IN_ARITY;
+          } else if (".".equals(s)) {
+            // Ingore
+          }
+          break;
+        case State.IN_ARITY:
+          if ("/".equals(s)) {
+            // Ignore
+          } else if ("\t".equals(s) || " ".equals(s) || "\n".equals(s)) {
+            result.arity = Integer.valueOf(arity.toString());
+            state = State.END;
+          } else {
+            arity.append(s);
+          }
         default:
           break;
       }

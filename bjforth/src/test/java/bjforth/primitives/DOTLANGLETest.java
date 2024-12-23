@@ -49,7 +49,7 @@ class DOTLANGLETest {
   @Test
   void worksOkFullyQualified() {
     // GIVEN
-    var str = "format(java.lang.String, java.lang.Object...)";
+    var str = "format(java.lang.String, java.lang.Object...)/2 ";
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
 
@@ -65,12 +65,13 @@ class DOTLANGLETest {
     assertThat(actualResult.name).isEqualTo("format");
     assertThat(actualResult.isVarargs).isTrue();
     assertThat(actualResult.parameterTypes).isEqualTo(List.of(String.class, Object[].class));
+    assertThat(actualResult.arity).isEqualTo(2);
   }
 
   @Test
   void worksOkUnqualified() {
     // GIVEN
-    var str = "format(List, File, String...)";
+    var str = "format(List, File, String...)/12 ";
     var inputStream = new ByteArrayInputStream(str.getBytes());
     System.setIn(inputStream);
 
@@ -87,5 +88,6 @@ class DOTLANGLETest {
     assertThat(actualResult.isVarargs).isTrue();
     assertThat(actualResult.parameterTypes)
         .isEqualTo(List.of(List.class, File.class, String[].class));
+    assertThat(actualResult.arity).isEqualTo(12);
   }
 }
