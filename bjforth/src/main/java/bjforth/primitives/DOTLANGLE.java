@@ -21,11 +21,8 @@ package bjforth.primitives;
 import static bjforth.primitives.PrimitiveFactory.KEY;
 
 import bjforth.machine.Machine;
-import bjforth.machine.MachineException;
 import bjforth.primitives.lib.ClassCache;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class DOTLANGLE implements Primitive {
