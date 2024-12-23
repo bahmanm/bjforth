@@ -41,6 +41,7 @@ public class DOTLANGLE implements Primitive {
   }
 
   static class MethodDescriptor {
+
     String name = "";
     List<Class<?>> parameterTypes = new ArrayList<>();
     Boolean isVarargs = false;
