@@ -27,7 +27,7 @@ import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Test;
 
-class COMMACOMMATest {
+class RANGLECOMMATest {
 
   @Test
   void worksOk() {

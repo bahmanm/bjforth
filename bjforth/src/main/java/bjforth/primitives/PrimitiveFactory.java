@@ -53,7 +53,7 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerCOMMA = new PrimitiveContainer(COMMA::new);
 
-  private static PrimitiveContainer containerCOMMACOMMA = new PrimitiveContainer(COMMACOMMA::new);
+  private static PrimitiveContainer containerCOMMALANGLE = new PrimitiveContainer(COMMALANGLE::new);
 
   private static PrimitiveContainer containerDECR = new PrimitiveContainer(DECR::new);
 
@@ -64,8 +64,6 @@ public class PrimitiveFactory {
   private static PrimitiveContainer containerDIV = new PrimitiveContainer(DIV::new);
 
   private static PrimitiveContainer containerDOT = new PrimitiveContainer(DOT::new);
-
-  private static PrimitiveContainer containerDOTDOT = new PrimitiveContainer(RANGLEDOT::new);
 
   private static PrimitiveContainer containerDOTDOUBLEQUOTE =
       new PrimitiveContainer(DOTDOUBLEQUOTE::new);
@@ -187,6 +185,10 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerQUIT = new PrimitiveContainer(QUIT::new);
 
+  private static PrimitiveContainer containerRANGLECOMMA = new PrimitiveContainer(RANGLECOMMA::new);
+
+  private static PrimitiveContainer containerRANGLEDOT = new PrimitiveContainer(RANGLEDOT::new);
+
   private static PrimitiveContainer containerRBRAC = new PrimitiveContainer(RBRAC::new);
 
   static Primitive RBRAC() {
@@ -255,16 +257,17 @@ public class PrimitiveFactory {
           containerCFA,
           containerCHAR,
           containerCOLON,
-          containerCOMMACOMMA,
+          containerRANGLECOMMA,
           containerCOPY,
           containerCREATE,
           containerCOMMA,
+          containerCOMMALANGLE,
           containerDECR,
           containerDECR4,
           containerDFA,
           containerDIV,
           containerDOT,
-          containerDOTDOT,
+          containerRANGLEDOT,
           containerDOTDOUBLEQUOTE,
           containerDOTLANGLE,
           containerDROP,

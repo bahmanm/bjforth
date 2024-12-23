@@ -23,7 +23,7 @@ import bjforth.machine.MachineException;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
-public class COMMACOMMA implements Primitive {
+public class RANGLECOMMA implements Primitive {
   @Override
   public void execute(Machine machine) {
     var type = (String) machine.popFromParameterStack();
