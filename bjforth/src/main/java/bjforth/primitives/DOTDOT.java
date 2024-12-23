@@ -20,44 +20,40 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
-import java.lang.reflect.InvocationTargetException;
+import bjforth.primitives.DOTLANGLE.MethodDescriptor;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 public class DOTDOT implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var methodDescriptor = (String) machine.popFromParameterStack();
+    var methodDescriptor = (MethodDescriptor) machine.popFromParameterStack();
     var target = machine.popFromParameterStack();
-
-    var methodDescriptorSections = methodDescriptor.split("/");
-    var methodName = methodDescriptorSections[0];
-    var methodArity = Integer.valueOf(methodDescriptorSections[1]);
+    var methodArity = methodDescriptor.arity;
     var arguments = new Object[methodArity];
-    var argumentTypes = new Class[methodArity];
     for (var i = 0; i < methodArity; i++) {
       var obj = machine.popFromParameterStack();
       arguments[i] = obj;
-      argumentTypes[i] = obj.getClass();
     }
 
-    var method = MethodUtils.getAccessibleMethod(target.getClass(), methodName, argumentTypes);
+    var paramTypes = new Class<?>[methodDescriptor.parameterTypes.size()];
+    methodDescriptor.parameterTypes.toArray(paramTypes);
+    var method =
+        MethodUtils.getAccessibleMethod(target.getClass(), methodDescriptor.name, paramTypes);
     if (method == null) {
-      method = MethodUtils.getAccessibleMethod(target.getClass(), methodName, Object[].class);
-      if (method == null) {
-        throw new MachineException(
-            "No matching method could be found: %s#%s".formatted(target.getClass(), methodName));
-      }
+      throw new MachineException(
+          "No such method found: %s/%d".formatted(methodDescriptor.name, methodDescriptor.arity));
     }
+
     try {
-      var result = MethodUtils.invokeMethod(target, methodName, arguments, argumentTypes);
-      machine.pushToParameterStack(result);
-    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-      try {
-        var result = method.invoke(target, new Object[] {arguments});
-        machine.pushToParameterStack(result);
-      } catch (IllegalAccessException | InvocationTargetException ex) {
-        throw new MachineException(e.getMessage());
+      Object result = null;
+      if (arguments.length != 0) {
+        result = method.invoke(target, (Object) arguments);
+      } else {
+        result = method.invoke(target);
       }
+      machine.pushToParameterStack(result);
+    } catch (Exception e) {
+      throw new MachineException(e.toString());
     }
   }
 

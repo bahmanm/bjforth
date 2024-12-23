@@ -23,8 +23,9 @@ import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
-import static org.junit.jupiter.api.Assertions.*;
 
+import bjforth.primitives.DOTLANGLE.MethodDescriptor;
+import java.util.List;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,10 +38,14 @@ class DOTDOTTest {
     // GIVEN
     var DOTDOTaddr = getPrimitiveAddress("..");
     Integer number = RandomUtils.insecure().randomInt();
+    var methodDescriptor = new MethodDescriptor();
+    methodDescriptor.parameterTypes = List.of();
+    methodDescriptor.arity = 0;
+    methodDescriptor.name = "longValue";
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTDOTaddr)
-            .withParameterStack(aParameterStack().with(number, "longValue/0").build())
+            .withParameterStack(aParameterStack().with(number, methodDescriptor).build())
             .build();
     var machine = aMachine().withState(actualState).build();
 
@@ -52,20 +57,20 @@ class DOTDOTTest {
         .hasParameterStackEqualTo(aParameterStack().with(number.longValue()).build());
   }
 
-  public static class Foo {
-    public void bar() {}
-  }
-
   @DisplayName("Should push the result of the method call onto ParameterStack")
   @Test
   void worksOkVarargs() {
     // GIVEN
     var DOTDOTaddr = getPrimitiveAddress("..");
     Integer number = RandomUtils.insecure().randomInt();
+    var methodDescriptor = new MethodDescriptor();
+    methodDescriptor.parameterTypes = List.of(Object[].class);
+    methodDescriptor.arity = 1;
+    methodDescriptor.name = "formatted";
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTDOTaddr)
-            .withParameterStack(aParameterStack().with(number, "%d", "formatted/1").build())
+            .withParameterStack(aParameterStack().with(number, "%d", methodDescriptor).build())
             .build();
     var machine = aMachine().withState(actualState).build();
 
@@ -77,16 +82,24 @@ class DOTDOTTest {
         .hasParameterStackEqualTo(aParameterStack().with(String.valueOf(number)).build());
   }
 
+  public static class Foo {
+    public void bar() {}
+  }
+
   @DisplayName("Push null onto ParameterStack when method return type is void.")
   @Test
   void voidReturn() {
     // GIVEN
     var DOTDOTaddr = getPrimitiveAddress("..");
     var obj = new Foo();
+    var methodDescriptor = new MethodDescriptor();
+    methodDescriptor.parameterTypes = List.of();
+    methodDescriptor.arity = 0;
+    methodDescriptor.name = "bar";
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTDOTaddr)
-            .withParameterStack(aParameterStack().with(obj, "bar/0").build())
+            .withParameterStack(aParameterStack().with(obj, methodDescriptor).build())
             .build();
     var machine = aMachine().withState(actualState).build();
 
