@@ -22,13 +22,13 @@ import static bjforth.primitives.PrimitiveFactory.KEY;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
+import bjforth.primitives.lib.ClassCache;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class DOTLANGLE implements Primitive {
-
-  private HashMap<String, Class<?>> clazzCache = new HashMap<>();
 
   private static enum State {
     BEGIN,
@@ -79,7 +79,7 @@ public class DOTLANGLE implements Primitive {
           } else if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
             // Ignore whitespace
           } else if (",".equals(s)) {
-            result.parameterTypes.add(forName(parameterType.toString()));
+            result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
             parameterType = new StringBuilder();
           } else if (".".equals(s)) {
             state = State.IN_MAYBE_VARARG;
@@ -90,7 +90,7 @@ public class DOTLANGLE implements Primitive {
         case State.IN_MAYBE_VARARG:
           if (".".equals(s)) {
             result.isVarargs = true;
-            result.parameterTypes.add(forNameVararg(parameterType.toString()));
+            result.parameterTypes.add(ClassCache.forNameVararg(parameterType.toString()));
             state = State.IN_VARARG;
           } else {
             parameterType.append(".");
@@ -124,119 +124,5 @@ public class DOTLANGLE implements Primitive {
   @Override
   public String getName() {
     return ".<";
-  }
-
-  /**
-   * Tries to load the class from cache if exists.
-   *
-   * <p>If the type name contains '.', tries to look for the type name verbatim.
-   *
-   * <p>Otherwise looks in 'java.lang', 'java.util' and 'java.io' in order.
-   *
-   * <p>Throws if the type cannot be found.
-   *
-   * @throws MachineException
-   */
-  Class<?> forName(String typeName) {
-    if (typeName.contains(".")) {
-      try {
-        if (clazzCache.containsKey(typeName)) {
-          return clazzCache.get(typeName);
-        } else {
-          var clazz = Class.forName(typeName);
-          clazzCache.put(typeName, clazz);
-          return clazz;
-        }
-      } catch (ClassNotFoundException e) {
-        throw new MachineException(e.getMessage());
-      }
-    } else {
-      try {
-        var type = "java.lang.%s".formatted(typeName);
-        if (clazzCache.containsKey(type)) {
-          return clazzCache.get(type);
-        } else {
-          var clazz = Class.forName(type);
-          clazzCache.put(type, clazz);
-          return clazz;
-        }
-      } catch (ClassNotFoundException _e) {
-        try {
-          var type = "java.util.%s".formatted(typeName);
-          if (clazzCache.containsKey(type)) {
-            return clazzCache.get(type);
-          } else {
-            var clazz = Class.forName(type);
-            clazzCache.put(type, clazz);
-            return clazz;
-          }
-        } catch (ClassNotFoundException _ex) {
-          try {
-            var type = "java.io.%s".formatted(typeName);
-            if (clazzCache.containsKey(type)) {
-              return clazzCache.get(type);
-            } else {
-              var clazz = Class.forName(type);
-              clazzCache.put(type, clazz);
-              return clazz;
-            }
-          } catch (ClassNotFoundException e) {
-            throw new MachineException(e.getMessage());
-          }
-        }
-      }
-    }
-  }
-
-  Class<?> forNameVararg(String typeName) {
-    if (typeName.contains(".")) {
-      try {
-        var typeNameVararg = "[L%s;".formatted(typeName);
-        if (clazzCache.containsKey(typeNameVararg)) {
-          return clazzCache.get(typeNameVararg);
-        } else {
-          var clazz = Class.forName(typeNameVararg);
-          clazzCache.put(typeNameVararg, clazz);
-          return clazz;
-        }
-      } catch (ClassNotFoundException e) {
-        throw new MachineException(e.getMessage());
-      }
-    } else {
-      try {
-        var typeNameVararg = "[Ljava.lang.%s;".formatted(typeName);
-        if (clazzCache.containsKey(typeNameVararg)) {
-          return clazzCache.get(typeNameVararg);
-        } else {
-          var clazz = Class.forName(typeNameVararg);
-          clazzCache.put(typeNameVararg, clazz);
-          return clazz;
-        }
-      } catch (ClassNotFoundException _e) {
-        try {
-          var typeNameVararg = "[Ljava.util.%s;".formatted(typeName);
-          if (clazzCache.containsKey(typeNameVararg)) {
-            return clazzCache.get(typeNameVararg);
-          } else {
-            var clazz = Class.forName(typeNameVararg);
-            clazzCache.put(typeNameVararg, clazz);
-            return clazz;
-          }
-        } catch (ClassNotFoundException _ex) {
-          try {
-            var typeNameVararg = "[Ljava.io.%s;".formatted(typeName);
-            if (clazzCache.containsKey(typeNameVararg)) {
-              return clazzCache.get(typeNameVararg);
-            } else {
-              var clazz = Class.forName(typeNameVararg);
-              clazzCache.put(typeNameVararg, clazz);
-              return clazz;
-            }
-          } catch (ClassNotFoundException e) {
-            throw new MachineException(e.getMessage());
-          }
-        }
-      }
-    }
   }
 }
