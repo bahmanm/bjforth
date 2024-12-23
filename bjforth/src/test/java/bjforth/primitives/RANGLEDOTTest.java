@@ -30,13 +30,13 @@ import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class DOTDOTTest {
+class RANGLEDOTTest {
 
   @DisplayName("Should push the result of the method call onto ParameterStack")
   @Test
   void worksOk() {
     // GIVEN
-    var DOTDOTaddr = getPrimitiveAddress("..");
+    var DOTDOTaddr = getPrimitiveAddress(">.");
     Integer number = RandomUtils.insecure().randomInt();
     var methodDescriptor = new MethodDescriptor();
     methodDescriptor.parameterTypes = List.of();
@@ -61,7 +61,7 @@ class DOTDOTTest {
   @Test
   void worksOkVarargs() {
     // GIVEN
-    var DOTDOTaddr = getPrimitiveAddress("..");
+    var DOTDOTaddr = getPrimitiveAddress(">.");
     Integer number = RandomUtils.insecure().randomInt();
     var methodDescriptor = new MethodDescriptor();
     methodDescriptor.parameterTypes = List.of(Object[].class);
@@ -90,7 +90,7 @@ class DOTDOTTest {
   @Test
   void voidReturn() {
     // GIVEN
-    var DOTDOTaddr = getPrimitiveAddress("..");
+    var DOTDOTaddr = getPrimitiveAddress(">.");
     var obj = new Foo();
     var methodDescriptor = new MethodDescriptor();
     methodDescriptor.parameterTypes = List.of();

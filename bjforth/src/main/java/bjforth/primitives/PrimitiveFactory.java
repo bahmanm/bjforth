@@ -65,7 +65,7 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerDOT = new PrimitiveContainer(DOT::new);
 
-  private static PrimitiveContainer containerDOTDOT = new PrimitiveContainer(DOTDOT::new);
+  private static PrimitiveContainer containerDOTDOT = new PrimitiveContainer(RANGLEDOT::new);
 
   private static PrimitiveContainer containerDOTDOUBLEQUOTE =
       new PrimitiveContainer(DOTDOUBLEQUOTE::new);

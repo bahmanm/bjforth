@@ -23,7 +23,7 @@ import bjforth.machine.MachineException;
 import bjforth.primitives.DOTLANGLE.MethodDescriptor;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
-public class DOTDOT implements Primitive {
+public class RANGLEDOT implements Primitive {
   @Override
   public void execute(Machine machine) {
     var methodDescriptor = (MethodDescriptor) machine.popFromParameterStack();
@@ -59,6 +59,6 @@ public class DOTDOT implements Primitive {
 
   @Override
   public String getName() {
-    return "..";
+    return ">.";
   }
 }
