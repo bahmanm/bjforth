@@ -29,8 +29,6 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerATLANGLE = new PrimitiveContainer(ATLANGLE::new);
 
-  private static PrimitiveContainer containerATRANGLE = new PrimitiveContainer(ATRANGLE::new);
-
   private static PrimitiveContainer containerBASE = new PrimitiveContainer(BASE::new);
 
   private static PrimitiveContainer containerBASESTORE = new PrimitiveContainer(BASESTORE::new);
@@ -187,6 +185,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerQUIT = new PrimitiveContainer(QUIT::new);
 
+  private static PrimitiveContainer containerRANGLEAT = new PrimitiveContainer(RANGLEAT::new);
+
   private static PrimitiveContainer containerRANGLECOMMA = new PrimitiveContainer(RANGLECOMMA::new);
 
   private static PrimitiveContainer containerRANGLEDOT = new PrimitiveContainer(RANGLEDOT::new);
@@ -252,7 +252,6 @@ public class PrimitiveFactory {
           containerADD,
           containerADDSTORE,
           containerATLANGLE,
-          containerATRANGLE,
           containerBASE,
           containerBASESTORE,
           containerBRANCH,
@@ -260,7 +259,6 @@ public class PrimitiveFactory {
           containerCFA,
           containerCHAR,
           containerCOLON,
-          containerRANGLECOMMA,
           containerCOPY,
           containerCREATE,
           containerCOMMA,
@@ -270,7 +268,6 @@ public class PrimitiveFactory {
           containerDFA,
           containerDIV,
           containerDOT,
-          containerRANGLEDOT,
           containerDOTDOUBLEQUOTE,
           containerDOTLANGLE,
           containerDROP,
@@ -312,6 +309,9 @@ public class PrimitiveFactory {
           containerPRINTLN,
           containerQDUP,
           containerQUIT,
+          containerRANGLEAT,
+          containerRANGLECOMMA,
+          containerRANGLEDOT,
           containerRBRAC,
           containerRDROP,
           containerROT,
