@@ -115,7 +115,7 @@ public class COMMALANGLE implements Primitive {
           break;
         case State.IN_VARARG:
           result.varargFromArgumentNo =
-              result.parameterTypes.size() == 0 ? 0 : result.parameterTypes.size() - 1;
+              result.parameterTypes.isEmpty() ? 0 : result.parameterTypes.size() - 1;
           if (")".equals(s)) {
             state = State.IN_ARITY;
           } else if (".".equals(s)) {
