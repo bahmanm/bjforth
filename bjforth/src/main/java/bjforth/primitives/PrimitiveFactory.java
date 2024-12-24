@@ -63,12 +63,12 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerDIV = new PrimitiveContainer(DIV::new);
 
-  private static PrimitiveContainer containerDOT = new PrimitiveContainer(DOT::new);
-
   private static PrimitiveContainer containerDOTDOUBLEQUOTE =
       new PrimitiveContainer(DOTDOUBLEQUOTE::new);
 
   private static PrimitiveContainer containerDOTLANGLE = new PrimitiveContainer(DOTLANGLE::new);
+
+  private static PrimitiveContainer containerDOTSTACK = new PrimitiveContainer(DOTSTACK::new);
 
   private static PrimitiveContainer containerDROP = new PrimitiveContainer(DROP::new);
 
@@ -267,9 +267,9 @@ public class PrimitiveFactory {
           containerDECR4,
           containerDFA,
           containerDIV,
-          containerDOT,
           containerDOTDOUBLEQUOTE,
           containerDOTLANGLE,
+          containerDOTSTACK,
           containerDROP,
           containerDSPFETCH,
           containerDSPFETCHFETCH,
