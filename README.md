@@ -44,9 +44,11 @@ bjForth <https://github.com/bahmanm/bjforth>
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
 ```
 
-# Words 
+# Documentation 
 
-[List of all words included in the distribution](docs/Words.md)
+* [List of all words included in the distribution](docs/Words.md)
+* [Java inter-op](docs/Java%20Inter-op.md)
+
 
 # Roadmap
 
