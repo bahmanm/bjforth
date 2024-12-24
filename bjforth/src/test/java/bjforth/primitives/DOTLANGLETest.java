@@ -63,7 +63,7 @@ class DOTLANGLETest {
     // THEN
     var actualResult = (MethodDescriptor) machine.popFromParameterStack();
     assertThat(actualResult.name).isEqualTo("format");
-    assertThat(actualResult.isVarargs).isTrue();
+    assertThat(actualResult.varargFromArgumentNo).isEqualTo(1);
     assertThat(actualResult.parameterTypes).isEqualTo(List.of(String.class, Object[].class));
     assertThat(actualResult.arity).isEqualTo(2);
   }
@@ -85,7 +85,7 @@ class DOTLANGLETest {
     // THEN
     var actualResult = (MethodDescriptor) machine.popFromParameterStack();
     assertThat(actualResult.name).isEqualTo("format");
-    assertThat(actualResult.isVarargs).isTrue();
+    assertThat(actualResult.varargFromArgumentNo).isEqualTo(2);
     assertThat(actualResult.parameterTypes)
         .isEqualTo(List.of(List.class, File.class, String[].class));
     assertThat(actualResult.arity).isEqualTo(12);

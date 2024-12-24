@@ -21,6 +21,7 @@ package bjforth.primitives;
 import static bjforth.primitives.PrimitiveFactory.KEY;
 
 import bjforth.machine.Machine;
+import bjforth.machine.MachineException;
 import bjforth.primitives.lib.ClassCache;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,8 @@ public class DOTLANGLE implements Primitive {
 
     String name = "";
     List<Class<?>> parameterTypes = new ArrayList<>();
-    Boolean isVarargs = false;
     Integer arity = 0;
+    Integer varargFromArgumentNo = -1;
   }
 
   @Override
@@ -86,7 +87,6 @@ public class DOTLANGLE implements Primitive {
           break;
         case State.IN_MAYBE_VARARG:
           if (".".equals(s)) {
-            result.isVarargs = true;
             result.parameterTypes.add(ClassCache.forNameVararg(parameterType.toString()));
             state = State.IN_VARARG;
           } else {
@@ -96,6 +96,8 @@ public class DOTLANGLE implements Primitive {
           }
           break;
         case State.IN_VARARG:
+          result.varargFromArgumentNo =
+              result.parameterTypes.isEmpty() ? 0 : result.parameterTypes.size() - 1;
           if (")".equals(s)) {
             state = State.IN_ARITY;
           } else if (".".equals(s)) {
@@ -106,7 +108,11 @@ public class DOTLANGLE implements Primitive {
           if ("/".equals(s)) {
             // Ignore
           } else if ("\t".equals(s) || " ".equals(s) || "\n".equals(s)) {
-            result.arity = Integer.valueOf(arity.toString());
+            try {
+              result.arity = Integer.valueOf(arity.toString());
+            } catch (NumberFormatException e) {
+              throw new MachineException("Invalid method arity: '%s'".formatted(arity.toString()));
+            }
             state = State.END;
           } else {
             arity.append(s);
