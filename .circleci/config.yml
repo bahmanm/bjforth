@@ -43,7 +43,7 @@ jobs:
       - run:
           name: Run the tests
           command: >-
-            make test
+            make VERSION=vpr-pipeline test e2e-test
 
       - store_artifacts:
           path: bjforth/build/reports
