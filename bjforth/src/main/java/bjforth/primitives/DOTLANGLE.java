@@ -71,8 +71,8 @@ public class DOTLANGLE implements Primitive {
           }
           break;
         case State.IN_PARAM_TYPE:
-          if ("(".equals(s)) {
-            state = State.END;
+          if (")".equals(s)) {
+            state = State.IN_ARITY;
           } else if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
             // Ignore whitespace
           } else if (",".equals(s)) {
@@ -111,6 +111,7 @@ public class DOTLANGLE implements Primitive {
           } else {
             arity.append(s);
           }
+          break;
         default:
           break;
       }
