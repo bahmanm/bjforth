@@ -209,6 +209,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerSTORE = new PrimitiveContainer(STORE::new);
 
+  private static PrimitiveContainer containerSTOREBASE = new PrimitiveContainer(STOREBASE::new);
+
   private static PrimitiveContainer containerSUB = new PrimitiveContainer(SUB::new);
 
   private static PrimitiveContainer containerSUBSTORE = new PrimitiveContainer(SUBSTORE::new);
@@ -319,6 +321,7 @@ public class PrimitiveFactory {
           containerRSPSTORE,
           containerSEMICOLON,
           containerSTORE,
+          containerSTOREBASE,
           containerSUB,
           containerSUBSTORE,
           containerSWAP,
