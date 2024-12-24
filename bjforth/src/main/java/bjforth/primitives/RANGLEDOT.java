@@ -21,6 +21,7 @@ package bjforth.primitives;
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import bjforth.primitives.DOTLANGLE.MethodDescriptor;
+import java.lang.reflect.Array;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 public class RANGLEDOT implements Primitive {
@@ -44,17 +45,99 @@ public class RANGLEDOT implements Primitive {
           "No such method found: %s/%d".formatted(methodDescriptor.name, methodDescriptor.arity));
     }
 
+    Object result = null;
     try {
-      Object result = null;
-      if (arguments.length != 0) {
-        result = method.invoke(target, (Object) arguments);
+      if (methodDescriptor.varargFromArgumentNo != -1) {
+        var varargCount = methodDescriptor.arity - methodDescriptor.varargFromArgumentNo;
+        var varargs =
+            Array.newInstance(
+                methodDescriptor
+                    .parameterTypes
+                    .get(methodDescriptor.varargFromArgumentNo)
+                    .getComponentType(),
+                varargCount);
+        for (var i = 0; i < varargCount; i++) {
+          Array.set(varargs, i, arguments[i + methodDescriptor.varargFromArgumentNo]);
+        }
+        result =
+            switch (methodDescriptor.varargFromArgumentNo) {
+              case 0 -> method.invoke(target, varargs);
+              case 1 -> method.invoke(target, arguments[0], varargs);
+              case 2 -> method.invoke(target, arguments[0], arguments[1], varargs);
+              case 3 -> method.invoke(target, arguments[0], arguments[1], arguments[2], varargs);
+              case 4 ->
+                  method.invoke(
+                      target, arguments[0], arguments[1], arguments[2], arguments[3], varargs);
+              case 5 ->
+                  method.invoke(
+                      target,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      varargs);
+              case 6 ->
+                  method.invoke(
+                      target,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5],
+                      varargs);
+              case 7 ->
+                  method.invoke(
+                      target,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5],
+                      arguments[6],
+                      varargs);
+              default -> null;
+            };
       } else {
-        result = method.invoke(target);
+        result =
+            switch (methodDescriptor.arity) {
+              case 0 -> method.invoke(target);
+              case 1 -> method.invoke(target, arguments[0]);
+              case 2 -> method.invoke(target, arguments[0], arguments[1]);
+              case 3 -> method.invoke(target, arguments[0], arguments[1], arguments[2]);
+              case 4 ->
+                  method.invoke(target, arguments[0], arguments[1], arguments[2], arguments[3]);
+              case 5 ->
+                  method.invoke(
+                      target, arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+              case 6 ->
+                  method.invoke(
+                      target,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5]);
+              case 7 ->
+                  method.invoke(
+                      target,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5],
+                      arguments[6]);
+              default -> null;
+            };
       }
-      machine.pushToParameterStack(result);
     } catch (Exception e) {
-      throw new MachineException(e.toString());
+      throw new MachineException(e.getMessage());
     }
+    machine.pushToParameterStack(result);
   }
 
   @Override

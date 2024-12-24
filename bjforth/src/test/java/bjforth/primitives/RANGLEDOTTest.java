@@ -42,6 +42,7 @@ class RANGLEDOTTest {
     methodDescriptor.parameterTypes = List.of();
     methodDescriptor.arity = 0;
     methodDescriptor.name = "longValue";
+    methodDescriptor.varargFromArgumentNo = -1;
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTDOTaddr)
@@ -57,7 +58,7 @@ class RANGLEDOTTest {
         .hasParameterStackEqualTo(aParameterStack().with(number.longValue()).build());
   }
 
-  @DisplayName("Should push the result of the method call onto ParameterStack")
+  @DisplayName("Should push the result of the variadic method call onto ParameterStack")
   @Test
   void worksOkVarargs() {
     // GIVEN
@@ -67,6 +68,7 @@ class RANGLEDOTTest {
     methodDescriptor.parameterTypes = List.of(Object[].class);
     methodDescriptor.arity = 1;
     methodDescriptor.name = "formatted";
+    methodDescriptor.varargFromArgumentNo = 0;
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTDOTaddr)
@@ -96,6 +98,7 @@ class RANGLEDOTTest {
     methodDescriptor.parameterTypes = List.of();
     methodDescriptor.arity = 0;
     methodDescriptor.name = "bar";
+    methodDescriptor.varargFromArgumentNo = -1;
     var actualState =
         aMachineState()
             .withInstrcutionPointer(DOTDOTaddr)
