@@ -20,40 +20,128 @@ package bjforth.primitives;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
-import java.lang.reflect.InvocationTargetException;
+import bjforth.primitives.COMMALANGLE.MethodDescriptor;
+import java.lang.reflect.Array;
 import org.apache.commons.lang3.reflect.MethodUtils;
 
 public class RANGLECOMMA implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var type = (String) machine.popFromParameterStack();
-    var methodDescriptor = (String) machine.popFromParameterStack();
+    var methodDescriptor = (MethodDescriptor) machine.popFromParameterStack();
 
-    var methodDescriptorSections = methodDescriptor.split("/");
-    var methodName = methodDescriptorSections[0];
-    var methodArity = Integer.valueOf(methodDescriptorSections[1]);
+    var methodArity = methodDescriptor.arity;
     var arguments = new Object[methodArity];
-    var argumentTypes = new Class[methodArity];
     for (var i = 0; i < methodArity; i++) {
       var obj = machine.popFromParameterStack();
       arguments[i] = obj;
-      argumentTypes[i] = obj.getClass();
     }
 
-    try {
-      var clazz = Class.forName(type);
-      var result = MethodUtils.invokeStaticMethod(clazz, methodName, arguments, argumentTypes);
-      machine.pushToParameterStack(result);
-    } catch (NoSuchMethodException
-        | IllegalAccessException
-        | InvocationTargetException
-        | ClassNotFoundException e) {
-      throw new MachineException(e.getMessage());
+    var paramTypes = new Class<?>[methodDescriptor.parameterTypes.size()];
+    methodDescriptor.parameterTypes.toArray(paramTypes);
+    var method =
+        MethodUtils.getMatchingAccessibleMethod(
+            methodDescriptor.target, methodDescriptor.name, paramTypes);
+    if (method == null) {
+      throw new MachineException(
+          "No such method found: %s/%d".formatted(methodDescriptor.name, methodDescriptor.arity));
     }
+
+    Object result = null;
+    try {
+      if (methodDescriptor.varargFromArgumentNo != -1) {
+        var varargCount = methodDescriptor.arity - methodDescriptor.varargFromArgumentNo;
+        var varargs =
+            Array.newInstance(
+                methodDescriptor
+                    .parameterTypes
+                    .get(methodDescriptor.varargFromArgumentNo)
+                    .getComponentType(),
+                varargCount);
+        for (var i = 0; i < varargCount; i++) {
+          Array.set(varargs, i, arguments[i + methodDescriptor.varargFromArgumentNo]);
+        }
+        result =
+            switch (methodDescriptor.varargFromArgumentNo) {
+              case 0 -> method.invoke(null, varargs);
+              case 1 -> method.invoke(null, arguments[0], varargs);
+              case 2 -> method.invoke(null, arguments[0], arguments[1], varargs);
+              case 3 -> method.invoke(null, arguments[0], arguments[1], arguments[2], varargs);
+              case 4 ->
+                  method.invoke(
+                      null, arguments[0], arguments[1], arguments[2], arguments[3], varargs);
+              case 5 ->
+                  method.invoke(
+                      null,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      varargs);
+              case 6 ->
+                  method.invoke(
+                      null,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5],
+                      varargs);
+              case 7 ->
+                  method.invoke(
+                      null,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5],
+                      arguments[6],
+                      varargs);
+              default -> null;
+            };
+      } else {
+        result =
+            switch (methodDescriptor.arity) {
+              case 0 -> method.invoke(null);
+              case 1 -> method.invoke(null, arguments[0]);
+              case 2 -> method.invoke(null, arguments[0], arguments[1]);
+              case 3 -> method.invoke(null, arguments[0], arguments[1], arguments[2]);
+              case 4 -> method.invoke(null, arguments[0], arguments[1], arguments[2], arguments[3]);
+              case 5 ->
+                  method.invoke(
+                      null, arguments[0], arguments[1], arguments[2], arguments[3], arguments[4]);
+              case 6 ->
+                  method.invoke(
+                      null,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5]);
+              case 7 ->
+                  method.invoke(
+                      null,
+                      arguments[0],
+                      arguments[1],
+                      arguments[2],
+                      arguments[3],
+                      arguments[4],
+                      arguments[5],
+                      arguments[6]);
+              default -> null;
+            };
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    machine.pushToParameterStack(result);
   }
 
   @Override
   public String getName() {
-    return ",,";
+    return ">,";
   }
 }
