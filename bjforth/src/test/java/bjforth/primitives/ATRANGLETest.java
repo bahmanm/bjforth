@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
-class ATATTest {
+class ATRANGLETest {
 
   @Test
   void worksOk() {

@@ -23,7 +23,7 @@ import bjforth.machine.MachineException;
 import java.lang.reflect.InvocationTargetException;
 import org.apache.commons.lang3.reflect.ConstructorUtils;
 
-public class ATAT implements Primitive {
+public class ATRANGLE implements Primitive {
 
   @Override
   public void execute(Machine machine) {
@@ -60,6 +60,6 @@ public class ATAT implements Primitive {
 
   @Override
   public String getName() {
-    return "@@";
+    return "@>";
   }
 }
