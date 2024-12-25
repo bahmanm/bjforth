@@ -20,6 +20,7 @@ package bjforth.machine;
 
 import static bjforth.primitives.PrimitiveFactory.getPrimitiveContainers;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.IntStream;
 
@@ -82,6 +83,10 @@ public class Machine {
 
   public Optional<DictionaryItem> getDictionaryItem(String name) {
     return state.getDictionary().get(name);
+  }
+
+  public Optional<List<DictionaryItem>> getDictionaryItems(String name) {
+    return state.getDictionary().getAllForName(name);
   }
 
   public Optional<DictionaryItem> getDictionaryItem(Integer address) {

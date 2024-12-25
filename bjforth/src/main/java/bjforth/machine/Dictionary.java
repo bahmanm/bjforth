@@ -43,7 +43,7 @@ class Dictionary {
     } else {
       currentValue = new ArrayList<>();
     }
-    currentValue.add(item);
+    currentValue.addFirst(item);
     items.put(nameUpper, currentValue);
     reverseLookup.putIfAbsent(item.getAddress(), item.getName());
   }
@@ -54,6 +54,19 @@ class Dictionary {
   }
 
   public Optional<DictionaryItem> get(Integer address) {
-    return Optional.ofNullable(reverseLookup.get(address)).flatMap(this::get);
+    return Optional.ofNullable(reverseLookup.get(address))
+        .flatMap(
+            name -> {
+              return Optional.ofNullable(items.get(name.toUpperCase()))
+                  .flatMap(
+                      dictItems ->
+                          dictItems.stream()
+                              .filter(item -> item.getAddress().equals(address))
+                              .findFirst());
+            });
+  }
+
+  public Optional<List<DictionaryItem>> getAllForName(String name) {
+    return Optional.ofNullable(items.get(name.toUpperCase()));
   }
 }
