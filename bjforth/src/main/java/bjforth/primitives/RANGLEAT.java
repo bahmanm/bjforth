@@ -95,7 +95,8 @@ public class RANGLEAT implements Primitive {
                       arguments[5],
                       arguments[6],
                       varargs);
-              default -> throw new MachineException(
+              default ->
+                  throw new MachineException(
                       "Failed to invoke the constructor: %s".formatted(ctor));
             };
       } else {
@@ -126,7 +127,8 @@ public class RANGLEAT implements Primitive {
                       arguments[4],
                       arguments[5],
                       arguments[6]);
-              default -> throw new MachineException(
+              default ->
+                  throw new MachineException(
                       "Failed to invoke the constructor: %s".formatted(ctor));
             };
       }
