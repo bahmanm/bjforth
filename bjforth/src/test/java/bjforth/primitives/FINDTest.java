@@ -83,13 +83,14 @@ class FINDTest {
     var machine = aMachine().withState(actualState).build();
     var referenceState = aMachineState().copyFrom(actualState).build();
 
-    // WHEN
-    machine.step();
-
-    // THEN
+    // EXPECT
+    assertThatThrownBy(machine::step).isInstanceOf(MachineException.class);
     assertThat(actualState)
-        .hasParameterStackEqualTo(aParameterStack().build())
-        .hasReturnStackEqualTo(referenceState);
+        .isEqualTo(
+            aMachineState()
+                .copyFrom(referenceState)
+                .withParameterStack(aParameterStack().build())
+                .build());
   }
 
   @Test
