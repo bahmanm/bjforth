@@ -29,17 +29,24 @@ class FIND implements Primitive {
     try {
       var wordNameObject = machine.popFromParameterStack();
       if (wordNameObject instanceof String wordName) {
-        var maybeDictionaryItem = machine.getDictionaryItem(wordName);
-        maybeDictionaryItem.ifPresentOrElse(
-            (dictionaryItem) -> {
-              if (!dictionaryItem.getIsHidden()) {
-                var dictionaryItemAddress = dictionaryItem.getAddress();
-                machine.pushToParameterStack(dictionaryItemAddress);
-              }
-            },
-            () -> {
-              throw new MachineException("No such DictionaryItem");
-            });
+        var maybeDictItems = machine.getDictionaryItems(wordName);
+        if (maybeDictItems.isPresent()) {
+          var maybeDictItem =
+              maybeDictItems.get().stream().filter(dictItem -> !dictItem.getIsHidden()).findFirst();
+          maybeDictItem.ifPresentOrElse(
+              (dictionaryItem) -> {
+                if (!dictionaryItem.getIsHidden()) {
+                  var dictionaryItemAddress = dictionaryItem.getAddress();
+                  machine.pushToParameterStack(dictionaryItemAddress);
+                }
+              },
+              () -> {
+                throw new MachineException("No such DictionaryItem: %s".formatted(wordName));
+              });
+        } else {
+          throw new MachineException(
+              "No such DictionaryItem: %s".formatted(wordNameObject.toString()));
+        }
       } else {
         throw new MachineException("Invalid argument");
       }

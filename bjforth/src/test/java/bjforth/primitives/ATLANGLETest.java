@@ -24,6 +24,7 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import bjforth.primitives.ATLANGLE.MethodDescriptor;
+import bjforth.variables.Variables;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -56,16 +57,21 @@ class ATLANGLETest {
     var ATLANGLEaddr = getPrimitiveAddress("@<");
     var actualState = aMachineState().withInstrcutionPointer(ATLANGLEaddr).build();
     var machine = aMachine().withState(actualState).build();
+    var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
 
     // WHEN
     machine.step();
 
     // THEN
-    var actualResult = (MethodDescriptor) machine.popFromParameterStack();
+    assertThat(machine.getMemoryAt(HEREvalue)).isEqualTo(getPrimitiveAddress("LIT"));
+
+    var actualResult = (MethodDescriptor) machine.getMemoryAt(HEREvalue + 1);
     assertThat(actualResult.clazz).isEqualTo(String.class);
     assertThat(actualResult.arity).isEqualTo(1);
     assertThat(actualResult.parameterTypes).isEqualTo(List.of(String.class));
     assertThat(actualResult.varargFromArgumentNo).isEqualTo(-1);
+
+    assertThat(machine.getMemoryAt(Variables.get("HERE").getAddress())).isEqualTo(HEREvalue + 2);
   }
 
   @Test
@@ -78,16 +84,21 @@ class ATLANGLETest {
     var ATLANGLEaddr = getPrimitiveAddress("@<");
     var actualState = aMachineState().withInstrcutionPointer(ATLANGLEaddr).build();
     var machine = aMachine().withState(actualState).build();
+    var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
 
     // WHEN
     machine.step();
 
     // THEN
-    var actualResult = (MethodDescriptor) machine.popFromParameterStack();
+    assertThat(machine.getMemoryAt(HEREvalue)).isEqualTo(getPrimitiveAddress("LIT"));
+
+    var actualResult = (MethodDescriptor) machine.getMemoryAt(HEREvalue + 1);
     assertThat(actualResult.clazz).isEqualTo(String.class);
     assertThat(actualResult.arity).isEqualTo(24);
     assertThat(actualResult.parameterTypes)
         .isEqualTo(List.of(File.class, String.class, Object[].class));
     assertThat(actualResult.varargFromArgumentNo).isEqualTo(2);
+
+    assertThat(machine.getMemoryAt(Variables.get("HERE").getAddress())).isEqualTo(HEREvalue + 2);
   }
 }
