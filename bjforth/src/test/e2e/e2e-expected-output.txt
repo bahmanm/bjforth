@@ -4,6 +4,7 @@ bjForth <https://github.com/bahmanm/bjforth>
 100
 Hello, world
 Hello, world
+Hello, world
 12
 Hello, world
 24
