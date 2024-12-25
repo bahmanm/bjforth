@@ -65,7 +65,7 @@ public class INTERPRET implements Primitive {
             "Pushing unknown word or invalid number onto stack: <%s>".formatted(obj.toString()));
         if (STATE == 1) { // Compiling mode
           machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
-          machine.setMemoryAt(HEREvalue + 1, obj.toString());
+          machine.setMemoryAt(HEREvalue + 1, obj);
           machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
         } else { // Immediate mode
           machine.pushToParameterStack(obj.toString());
