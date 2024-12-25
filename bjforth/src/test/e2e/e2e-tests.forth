@@ -20,19 +20,37 @@ PRINT-ME
 ###################################################################################################
 
 # Integer.valueOf("12")
-." 12 ". ,< Integer/valueOf(String)/1 >, PRINTLN
+: INTEGER-VALUE-OF
+  ,< Integer/valueOf(String)/1 >, 
+  PRINTLN
+;
+." 12 ". INTEGER-VALUE-OF 
 
 # String.join(", ", "Hello", "world")
-." world ". ." Hello ". ." ,  ". ,< String/join(CharSequence, CharSequence...)/3 >, PRINTLN 
+: STRING-JOIN 
+  ,< String/join(CharSequence, CharSequence...)/3 >, 
+  PRINTLN
+;
+." world ". ." Hello ". ." ,  ". STRING-JOIN  
 
 ###################################################################################################
 # Java inter-op - Instance methods
 ###################################################################################################
 
-24 .< longValue()/0 >. PRINTLN
+: LONG-VALUE
+  .< longValue()/0 >.
+  PRINTLN
+;
+
+24 LONG-VALUE
 
 ###################################################################################################
 # Java inter-op - Constructor
 ###################################################################################################
 
-." Hello, world ". @< String(String)/1 >@ PRINTLN
+: NEW-STRING
+  @< String(String)/1 >@
+  PRINTLN
+;
+
+." Hello, world ". NEW-STRING 

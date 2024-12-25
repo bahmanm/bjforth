@@ -24,6 +24,7 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import bjforth.primitives.COMMALANGLE.MethodDescriptor;
+import bjforth.variables.Variables;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
@@ -56,16 +57,21 @@ class COMMALANGLETest {
     var COMMALANGLEaddr = getPrimitiveAddress(",<");
     var actualState = aMachineState().withInstrcutionPointer(COMMALANGLEaddr).build();
     var machine = aMachine().withState(actualState).build();
+    var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
 
     // WHEN
     machine.step();
 
     // THEN
-    var actualResult = (MethodDescriptor) machine.popFromParameterStack();
+    assertThat(machine.getMemoryAt(HEREvalue)).isEqualTo(getPrimitiveAddress("LIT"));
+
+    var actualResult = (MethodDescriptor) machine.getMemoryAt(HEREvalue + 1);
     assertThat(actualResult.target).isEqualTo(String.class);
     assertThat(actualResult.arity).isEqualTo(3);
     assertThat(actualResult.parameterTypes).isEqualTo(List.of(String.class, Object[].class));
     assertThat(actualResult.name).isEqualTo("format");
+
+    assertThat(machine.getMemoryAt(Variables.get("HERE").getAddress())).isEqualTo(HEREvalue + 2);
   }
 
   @Test
@@ -78,16 +84,21 @@ class COMMALANGLETest {
     var COMMALANGLEaddr = getPrimitiveAddress(",<");
     var actualState = aMachineState().withInstrcutionPointer(COMMALANGLEaddr).build();
     var machine = aMachine().withState(actualState).build();
+    var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
 
     // WHEN
     machine.step();
 
     // THEN
-    var actualResult = (MethodDescriptor) machine.popFromParameterStack();
+    assertThat(machine.getMemoryAt(HEREvalue)).isEqualTo(getPrimitiveAddress("LIT"));
+
+    var actualResult = (MethodDescriptor) machine.getMemoryAt(HEREvalue + 1);
     assertThat(actualResult.target).isEqualTo(String.class);
     assertThat(actualResult.arity).isEqualTo(24);
     assertThat(actualResult.parameterTypes)
         .isEqualTo(List.of(File.class, String.class, Object[].class));
     assertThat(actualResult.name).isEqualTo("format");
+
+    assertThat(machine.getMemoryAt(Variables.get("HERE").getAddress())).isEqualTo(HEREvalue + 2);
   }
 }
