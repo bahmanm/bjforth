@@ -23,6 +23,7 @@ import static bjforth.primitives.PrimitiveFactory.KEY;
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
 import bjforth.primitives.lib.ClassCache;
+import bjforth.variables.Variables;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,11 +123,21 @@ public class DOTLANGLE implements Primitive {
           break;
       }
     }
-    machine.pushToParameterStack(result);
+
+    var HEREaddr = Variables.get("HERE").getAddress();
+    var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
+    machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+    machine.setMemoryAt(HEREvalue + 1, result);
+    machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
   }
 
   @Override
   public String getName() {
     return ".<";
+  }
+
+  @Override
+  public Boolean isImmediate() {
+    return true;
   }
 }
