@@ -43,7 +43,7 @@ class Dictionary {
     } else {
       currentValue = new ArrayList<>();
     }
-    currentValue.add(item);
+    currentValue.addFirst(item);
     items.put(nameUpper, currentValue);
     reverseLookup.putIfAbsent(item.getAddress(), item.getName());
   }
@@ -67,6 +67,6 @@ class Dictionary {
   }
 
   public Optional<List<DictionaryItem>> getAllForName(String name) {
-    return Optional.ofNullable(items.get(name));
+    return Optional.ofNullable(items.get(name.toUpperCase()));
   }
 }
