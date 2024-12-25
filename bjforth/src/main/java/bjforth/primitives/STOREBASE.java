@@ -19,14 +19,20 @@
 package bjforth.primitives;
 
 import bjforth.machine.Machine;
+import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
+import java.util.NoSuchElementException;
 
 public class STOREBASE implements Primitive {
   @Override
   public void execute(Machine machine) {
-    var BASEaddr = Variables.get("BASE").getAddress();
-    var newValue = (Integer) machine.popFromParameterStack();
-    machine.setMemoryAt(BASEaddr, newValue);
+    try {
+      var BASEaddr = Variables.get("BASE").getAddress();
+      var newValue = (Integer) machine.popFromParameterStack();
+      machine.setMemoryAt(BASEaddr, newValue);
+    } catch (NoSuchElementException e) {
+      throw new MachineException("ParameterStack error.");
+    }
   }
 
   @Override

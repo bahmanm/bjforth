@@ -23,7 +23,9 @@ import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import bjforth.machine.MachineException;
 import bjforth.variables.Variables;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.Test;
@@ -49,5 +51,22 @@ class STOREBASETest {
     assertThat(actualState)
         .hasVariableEqualTo(Variables.get("BASE"), newValue)
         .hasParameterStackEqualTo(aParameterStack().build());
+  }
+
+  @Test
+  public void throwIfEmpty() {
+    // GIVEN
+    var STOREBASEaddr = getPrimitiveAddress("!BASE");
+    var actualState =
+        aMachineState()
+            .withInstrcutionPointer(STOREBASEaddr)
+            .withParameterStack(aParameterStack().build())
+            .build();
+    var machine = aMachine().withState(actualState).build();
+    var referenceState = aMachineState().copyFrom(actualState).build();
+
+    // EXPECT
+    assertThrows(MachineException.class, machine::step);
+    assertThat(actualState).isEqualTo(aMachineState().copyFrom(referenceState).build());
   }
 }
