@@ -176,32 +176,54 @@
 
 ###################################################################################################
 
-: U. ( x -- )
-  ,< String/valueOf(Integer)/1 >,
-  PRINT
+: U. ( number -- string )
+  BASE SWAP
+  ,< Integer/toString(Integer, Integer)/2 >,
 ;
 
 ###################################################################################################
 
-: U.R # ( x width -- )
+: N->STRING-DECIMAL ( n -- string )
+  .< toString()/0 >.
+;
+
+###################################################################################################
+
+: PADDED-FORMAT-STR ( padding -- format-string )
+  N->STRING-DECIMAL    
+  ." s ". 
+  SWAP
+  ." % ". 
+  ." ". 
+  ,< String/join(CharSequence, CharSequence...)/4 >,          
+;
+
+###################################################################################################
+
+: STR-REPLACE ( replacement target s -- s )
+  .< replaceAll(String, String)/2 >.
+;
+
+###################################################################################################
+
+: NUMBER->STR # ( x width -- )
   DUP
   0<> IF
-    BASE SWAP
-    ,< Integer/toString(Integer, Integer)/2 >, 
-     ." d ". 
-     ." %0 ". 
-     ROT
-     ,< String/join(CharSequence, CharSequence...)/3 >,   
-     .< formatted(Object...)/1 >.
+    SWAP 
+    U.
+    SWAP
+    PADDED-FORMAT-STR
+    .< formatted(Object...)/1 >.    
+    ." 0 ".
+    BL
+    ROT
+    STR-REPLACE
   ELSE
-    ,< String/valueOf(Integer)/1 >, 
+    DROP
+    U. 
   THEN   
-  PRINT
+  PRINT SPACE
 ;
 
 ###################################################################################################
 
-: . 
-  0 
-  U.R SPACE 
-;
