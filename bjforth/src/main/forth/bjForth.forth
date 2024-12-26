@@ -1,12 +1,4 @@
 ###################################################################################################
-### Takes whatever is on the stack and compiles LIT <foo>
-### ( a - )
-: LITERAL IMMEDIATE
-  ' LIT ,           # compile LIT
-  ,                 # compile the literal itself (from the stack)
-;
-
-###################################################################################################
 : \n
  ." 
  ".
@@ -175,22 +167,18 @@
 ;
 
 ###################################################################################################
-
-: U. ( number -- string )
-  BASE SWAP
-  ,< Integer/toString(Integer, Integer)/2 >,
-;
-
+# STR-PADDED-FORMAT ( padding -- format-string )
+#
+# Produces a format string which left pads a string to `padding`.
+#
+# ```forth
+# 10 STR-PADDED-FORMAT PRINT
+# %10s
+# ```
 ###################################################################################################
 
-: N->STRING-DECIMAL ( n -- string )
-  .< toString()/0 >.
-;
-
-###################################################################################################
-
-: PADDED-FORMAT-STR ( padding -- format-string )
-  N->STRING-DECIMAL    
+: STR-PADDED-FORMAT ( padding -- format-string )
+  .< toString()/0 >.    
   ." s ". 
   SWAP
   ." % ". 
@@ -199,20 +187,44 @@
 ;
 
 ###################################################################################################
+# STR-REPLACE ( replacement target s -- s )
+#
+# Replaces all occurrences of `target` in `s` with `replacement`.
+#
+# ```forth
+# ." BOO ". ." ll ". ." Hello ". STR-REPLACE PRINT
+# HeBOOo
+###################################################################################################
+
 
 : STR-REPLACE ( replacement target s -- s )
   .< replaceAll(String, String)/2 >.
 ;
 
 ###################################################################################################
+# NUM->STR ( x width -- )
+# 
+# Prints a given number to string representation in the same base as `BASE`.
+# The result is padded with zeros to the width specified.
+# 
+# ```forth
+# 224 4 HEX NUM->STR
+# 00e0 
+# ```
+###################################################################################################
 
-: NUM->STR # ( x width -- )
+: NUM->STR ( number -- string )
+  BASE SWAP
+  ,< Integer/toString(Integer, Integer)/2 >,
+;
+
+: NUM->STR ( x width -- )
   DUP
   0<> IF
     SWAP 
-    U.
+    NUM->STR
     SWAP
-    PADDED-FORMAT-STR
+    STR-PADDED-FORMAT
     .< formatted(Object...)/1 >.    
     ." 0 ".
     BL
@@ -220,11 +232,20 @@
     STR-REPLACE
   ELSE
     DROP
-    U. 
+    NUM->STR
   THEN   
   PRINT SPACE
 ;
 
+###################################################################################################
+# . ( x -- )
+#
+# Prints a given number to string representation in the same base as `BASE`.
+#
+# ```forth
+# DECIMAL 220 HEX .
+# dc 
+# ```
 ###################################################################################################
 
 : . ( x -- )
