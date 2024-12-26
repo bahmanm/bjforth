@@ -10,3 +10,5 @@ Hello, world
 24
 Hello, world
 BYE
+25 
+00000025
