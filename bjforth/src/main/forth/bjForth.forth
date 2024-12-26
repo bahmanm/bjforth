@@ -185,7 +185,7 @@
 
 : U.R # ( x width -- )
   DUP
-  <> IF
+  0<> IF
     ,< String/valueOf(Integer)/1 >, 
      ." d ". 
      ." %0 ". 
