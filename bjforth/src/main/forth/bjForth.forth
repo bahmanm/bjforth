@@ -445,3 +445,67 @@
   0 
   NUM->STR 
 ;
+
+###################################################################################################
+# FILE-OPEN ( s -- BufferedReader )
+#
+# ```forth
+# ." /home/bahman/.bashrc ". FILE-OPEN 
+# .S
+# java.io.BufferedReader<java.io.BufferedReader@2ac1fdc4>
+# ```
+###################################################################################################
+
+: FILE-OPEN ( s -- BufferedReader )
+  @< FileReader(String)/1 >@
+  @< BufferedReader(Reader)/1 >@
+;
+
+################################################################################################### 
+# FILE-READ-LINE ( BufferedReader -- s )
+#
+# Reads a single line from a file.
+#
+# ```forth
+# FILE-READ-LINE
+# .S
+# java.lang.String<# -*- mode: sh-mode; sh-basic-offset: 2; -*->
+# ```
+################################################################################################### 
+
+: FILE-READ-LINE ( BufferedReader -- s )
+  .< readLine()/0 >.
+; 
+
+################################################################################################### 
+# FILE-PRINT ( BufferedReader -- )
+#
+# Prints the contents of a file to stdout.
+################################################################################################### 
+ 
+: FILE-PRINT ( BufferedReader -- )
+  BEGIN
+    DUP
+    .< readLine()/0 >.
+    DUP
+    ?NULL IF
+      DROP
+      EXIT
+    ELSE
+      PRINTLN
+      DROP
+    THEN
+  AGAIN
+;
+
+###################################################################################################
+# FILE-CLOSE ( BufferedReader -- )
+#
+# Closes the file handle.
+###################################################################################################
+
+: FILE-CLOSE ( BufferedReader -- )
+  .< close()/0 >.  
+  DROP
+;
+
