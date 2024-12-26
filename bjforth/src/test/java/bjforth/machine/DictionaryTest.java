@@ -72,4 +72,21 @@ class DictionaryTest {
         .isPresent()
         .hasValueSatisfying(v -> List.of(dictItem).equals(v));
   }
+
+  @DisplayName("#put should add the item to the tip of the list")
+  @Test
+  void putAddFirst() {
+    // GIVEN
+    var dict = new Dictionary();
+    var name = RandomStringUtils.insecure().next(20);
+    var dictItem1 = new DictionaryItem(name, 0, false, false);
+    dict.put(name, dictItem1);
+    var dictItem2 = new DictionaryItem(name, 1, false, false);
+    dict.put(name, dictItem2);
+
+    // EXPECT
+    assertThat(dict.getAllForName(name))
+        .isPresent()
+        .hasValueSatisfying(v -> List.of(dictItem2, dictItem1).equals(v));
+  }
 }
