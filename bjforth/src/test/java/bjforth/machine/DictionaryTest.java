@@ -21,15 +21,16 @@ package bjforth.machine;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 class DictionaryTest {
 
-  @DisplayName("#get() should do a case-insensitive search")
+  @DisplayName("#get(String) should do a case-insensitive search")
   @Test
-  void getCaseInsensitive() {
+  void getByNameCaseInsensitive() {
     // GIVEN
     var dict = new Dictionary();
     var name = RandomStringUtils.insecure().next(20);
@@ -39,5 +40,36 @@ class DictionaryTest {
     // EXPECT
     assertThat(dict.get(name.toLowerCase())).isPresent().hasValueSatisfying(dictItem::equals);
     assertThat(dict.get(name.toUpperCase())).isPresent().hasValueSatisfying(dictItem::equals);
+  }
+
+  @DisplayName("#get(Integer) should do a case-insensitive search")
+  @Test
+  void getByAddressCaseInsensitive() {
+    // GIVEN
+    var dict = new Dictionary();
+    var name = RandomStringUtils.insecure().next(20);
+    var dictItem = new DictionaryItem(name, 0, false, false);
+    dict.put(name, dictItem);
+
+    // EXPECT
+    assertThat(dict.get(0)).isPresent().hasValueSatisfying(dictItem::equals);
+  }
+
+  @DisplayName("#getAllForName(String) should do a case-insensitive search")
+  @Test
+  void getAllForNameCaseInsensitive() {
+    // GIVEN
+    var dict = new Dictionary();
+    var name = RandomStringUtils.insecure().next(20);
+    var dictItem = new DictionaryItem(name, 0, false, false);
+    dict.put(name, dictItem);
+
+    // EXPECT
+    assertThat(dict.getAllForName(name.toLowerCase()))
+        .isPresent()
+        .hasValueSatisfying(v -> List.of(dictItem).equals(v));
+    assertThat(dict.getAllForName(name.toUpperCase()))
+        .isPresent()
+        .hasValueSatisfying(v -> List.of(dictItem).equals(v));
   }
 }
