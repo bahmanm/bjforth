@@ -63,7 +63,8 @@ e2e-test : package
 	@bjforth/src/test/e2e/e2e-test-runner.pl \
 	  bjforth/build/libs/bjForth-$(VERSION).jar \
 	  bjforth/src/test/e2e/e2e-expected-output.txt \
-	  bjforth/src/test/e2e/e2e-tests.forth
+	  bjforth/src/test/e2e/e2e-tests.forth \
+	  bjforth/src/main/forth/bjForth.forth
 
 ####################################################################################################
 
