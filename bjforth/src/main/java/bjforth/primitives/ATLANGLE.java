@@ -88,7 +88,9 @@ public class ATLANGLE implements Primitive {
           } else if (".".equals(s)) {
             state = State.IN_MAYBE_VARARG;
           } else if (")".equals(s)) {
-            result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
+            if (!parameterType.isEmpty()) {
+              result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
+            }
             state = State.IN_ARITY;
           } else {
             parameterType.append(s);
