@@ -96,3 +96,10 @@ package : package-path := $(ROOT)bjforth/build/libs/bjForth-$(VERSION).tar.gz
 package :
 	cp $(ROOT)bjforth/src/main/forth/*.forth $(ROOT)bjforth/build/libs
 	cd $(ROOT)/bjforth/build/libs && tar -cf bjForth-$(VERSION).tar *
+
+####################################################################################################
+
+.PHONY : docs
+
+docs :
+	$(ROOT)docs/extract.pl $(ROOT)bjforth/src/main/forth/bjForth.forth $(ROOT)docs/bjForth.forth.md
