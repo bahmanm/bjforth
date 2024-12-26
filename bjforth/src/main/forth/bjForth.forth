@@ -183,13 +183,19 @@
 
 ###################################################################################################
 
-: U.R ( x width -- )
-  ,< String/valueOf(Integer)/1 >, 
-   ." d ". 
-   ." %0 ". 
-   ROT 
-   ,< String/join(CharSequence, CharSequence...)/3 >,   
-   .< formatted(Object...)/1 >.
+: U.R # ( x width -- )
+  DUP
+  <> IF
+    ,< String/valueOf(Integer)/1 >, 
+     ." d ". 
+     ." %0 ". 
+     ROT
+     ,< String/join(CharSequence, CharSequence...)/3 >,   
+     .< formatted(Object...)/1 >.
+  ELSE
+    ,< String/valueOf(Integer)/1 >, 
+  THEN   
+  PRINT
 ;
 
 ###################################################################################################
