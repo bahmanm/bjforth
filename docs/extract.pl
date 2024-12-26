@@ -22,7 +22,9 @@ my $outputFile = shift or die("Path to the output file not provided.");
 open(my $fh, "/home/bahman/workspace/forth/bjforth/bjforth/src/main/forth/bjForth.forth" ) or die("open(): $!\n");
 
 my $result = "";
-my $toc = "# Words defined in the `bjForth.forth` library\n### Table of contents\n";
+my $toc = "# Words defined in the `bjForth.forth` library\n";
+$toc .= "_Automatically generated from the source._\n\n";
+$toc .= "### Table of contents\n";
 my $in_docs = false;
 my $in_docs_first_line = true;
 while (my $line = <$fh>) {

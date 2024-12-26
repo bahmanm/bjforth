@@ -1,4 +1,6 @@
-# Words defined in the bjForth.forth library
+# Words defined in the `bjForth.forth` library
+_Automatically generated from the source._
+
 ### Table of contents
 
   * `\n ( -- s )`
