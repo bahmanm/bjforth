@@ -74,6 +74,9 @@ public class DOTLANGLE implements Primitive {
           break;
         case State.IN_PARAM_TYPE:
           if (")".equals(s)) {
+            if (!parameterType.isEmpty()) {
+              result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
+            }
             state = State.IN_ARITY;
           } else if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
             // Ignore whitespace

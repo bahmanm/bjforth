@@ -99,7 +99,9 @@ public class RANGLECOMMA implements Primitive {
                       arguments[5],
                       arguments[6],
                       varargs);
-              default -> null;
+              default ->
+                  throw new MachineException(
+                      "Failed to invoke the static method: %s".formatted(method));
             };
       } else {
         result =
@@ -131,7 +133,9 @@ public class RANGLECOMMA implements Primitive {
                       arguments[4],
                       arguments[5],
                       arguments[6]);
-              default -> null;
+              default ->
+                  throw new MachineException(
+                      "Failed to invoke the static method: %s".formatted(method));
             };
       }
     } catch (Exception e) {
