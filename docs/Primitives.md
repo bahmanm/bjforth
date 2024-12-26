@@ -67,6 +67,7 @@ In the following table, which lists all the primitives
 | `<>`        | `x y     - z`       | NEQU           |                                                  |
 | `-ROT`      | `a b c   - c b a`   | NROT           |                                                  |
 | `NUMBER`    | `        - x`       |                |                                                  |
+| `NULL`      | `        - null`    |                |                                                  |
 | `OVER`      | `a b     - a b a`   |                |                                                  |
 | `PRINT`     | `a       - a`       |                |                                                  |
 | `PRINTLN`   | `a       - a`       |                |                                                  |

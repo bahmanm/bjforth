@@ -171,6 +171,8 @@ public class PrimitiveFactory {
     return containerNUMBER.get();
   }
 
+  private static PrimitiveContainer containerNULL = new PrimitiveContainer(NULL::new);
+
   private static PrimitiveContainer containerOVER = new PrimitiveContainer(OVER::new);
 
   private static PrimitiveContainer containerPRINT = new PrimitiveContainer(PRINT::new);
@@ -308,6 +310,7 @@ public class PrimitiveFactory {
           containerNEQU,
           containerNROT,
           containerNUMBER,
+          containerNULL,
           containerOVER,
           containerPRINT,
           containerPRINTLN,
