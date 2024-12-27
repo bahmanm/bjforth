@@ -8,4 +8,4 @@ Hello, world
 Hello, world
 24
 Hello, world
-00000019 220 10 👋 BYE
+00000019 220 👋 BYE
