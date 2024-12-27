@@ -16,18 +16,21 @@
  * You should have received a copy of the GNU General Public License
  * along with bjForth. If not, see <https://www.gnu.org/licenses/>.
  */
-package bjforth.primitives;
+package bjforth.config;
 
-import static bjforth.config.Constants.BACKGROUND_COLOR;
-import static bjforth.config.Constants.FOREGROUND_COLOR;
-import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.BACK_COLOR;
+import static com.diogonunes.jcolor.Attribute.TEXT_COLOR;
 
-import bjforth.machine.Machine;
+import com.diogonunes.jcolor.Attribute;
 
-public class PRINT implements Primitive {
-  @Override
-  public void execute(Machine machine) {
-    System.out.print(
-        colorize(machine.popFromParameterStack().toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
-  }
+public class Constants {
+
+  public static final String HELLO_EMOJI = "\uD83D\uDC4B";
+  public static final String BYE_EMOJI = "\uD83D\uDC4B";
+  public static final String ERROR_EMOJI = "⛔";
+  public static final String WARN_EMOJI = "⚠\uFE0F";
+  public static final String INFO_EMOJI = "\uD83D\uDCA1";
+
+  public static final Attribute BACKGROUND_COLOR = BACK_COLOR(254);
+  public static final Attribute FOREGROUND_COLOR = TEXT_COLOR(235);
 }

@@ -6,6 +6,7 @@ use diagnostics ;
 use utf8 ;
 use feature ':5.38' ;
 use experimental qw(try) ;
+use Term::ANSIColor qw(colorstrip);
 
 ###################################################################################################
 
@@ -21,9 +22,10 @@ close($fh);
 ### End of stream should mean a graceful exit
 
 my $actualOutput = qx/cat ${libraryFile} ${testCodeFile} | java -jar ${jarFile} 2>&1/;
+my $colourStrippedActualOutput = colorstrip($actualOutput); 
 
-if ($actualOutput eq $expectedOutput) {
+if ($colourStrippedActualOutput eq $expectedOutput) {
   exit 0;
 } else {
-  die("E2E tests failed.\nActual output is\n\n${actualOutput}");
+  die("E2E tests failed.\nActual output is\n\n${colourStrippedActualOutput}");
 }

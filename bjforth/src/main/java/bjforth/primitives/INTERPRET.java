@@ -18,8 +18,10 @@
  */
 package bjforth.primitives;
 
+import static bjforth.config.Constants.*;
 import static bjforth.primitives.PrimitiveFactory.FIND;
 import static bjforth.primitives.PrimitiveFactory.WORD;
+import static com.diogonunes.jcolor.Ansi.colorize;
 
 import bjforth.machine.Machine;
 import bjforth.machine.MachineException;
@@ -61,8 +63,12 @@ public class INTERPRET implements Primitive {
           machine.pushToParameterStack(number);
         }
       } catch (MachineException __ex) { // Not a number. Exit with error.
-        System.out.println(
-            "Pushing unknown word or invalid number onto stack: <%s>".formatted(obj.toString()));
+        System.out.print(
+            colorize(
+                "%s Pushing unknown word or invalid number onto stack: <%s>"
+                    .formatted(WARN_EMOJI, obj.toString()),
+                FOREGROUND_COLOR,
+                BACKGROUND_COLOR));
         if (STATE == 1) { // Compiling mode
           machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
           machine.setMemoryAt(HEREvalue + 1, obj);

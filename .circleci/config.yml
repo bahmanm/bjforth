@@ -22,6 +22,7 @@ jobs:
             zypper --non-interactive refresh
             && zypper --non-interactive install java-21-openjdk-devel
             && { source /etc/profile || true; }
+            && cpan install Term::ANSIColor
 
       - checkout
 

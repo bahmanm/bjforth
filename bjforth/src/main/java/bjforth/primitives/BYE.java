@@ -18,12 +18,16 @@
  */
 package bjforth.primitives;
 
+import static bjforth.config.Constants.*;
+import static com.diogonunes.jcolor.Ansi.colorize;
+import static com.diogonunes.jcolor.Attribute.*;
+
 import bjforth.machine.Machine;
 
 public class BYE implements Primitive {
   @Override
   public void execute(Machine machine) {
-    System.out.println("BYE");
+    System.out.println(colorize("%s BYE".formatted(BYE_EMOJI), FOREGROUND_COLOR, BACKGROUND_COLOR));
     System.out.flush();
     System.exit(0);
   }

@@ -18,12 +18,17 @@
  */
 package bjforth.primitives;
 
+import static bjforth.config.Constants.BACKGROUND_COLOR;
+import static bjforth.config.Constants.FOREGROUND_COLOR;
+import static com.diogonunes.jcolor.Ansi.colorize;
+
 import bjforth.machine.Machine;
 
 public class PRINTLN implements Primitive {
 
   @Override
   public void execute(Machine machine) {
-    System.out.println(machine.peekIntoParameterStack());
+    System.out.println(
+        colorize(machine.popFromParameterStack().toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
   }
 }
