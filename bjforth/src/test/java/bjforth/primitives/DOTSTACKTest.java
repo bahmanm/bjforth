@@ -18,10 +18,13 @@
  */
 package bjforth.primitives;
 
+import static bjforth.config.Constants.BACKGROUND_COLOR;
+import static bjforth.config.Constants.FOREGROUND_COLOR;
 import static bjforth.machine.BootstrapUtils.getPrimitiveAddress;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
+import static com.diogonunes.jcolor.Ansi.colorize;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.io.ByteArrayOutputStream;
@@ -73,7 +76,15 @@ class DOTSTACKTest {
     machine.step();
 
     // THEN
-    var expectedStr = "java.lang.String<hi>\nnull\njava.lang.Integer<10>\njava.lang.Character<a>\n";
-    assertThat(outputStream.toString()).isEqualTo(expectedStr);
+    var expectedStr = new StringBuilder();
+    expectedStr.append(colorize("java.lang.String<hi>", FOREGROUND_COLOR, BACKGROUND_COLOR));
+    expectedStr.append("\n");
+    expectedStr.append(colorize("null", FOREGROUND_COLOR, BACKGROUND_COLOR));
+    expectedStr.append("\n");
+    expectedStr.append(colorize("java.lang.Integer<10>", FOREGROUND_COLOR, BACKGROUND_COLOR));
+    expectedStr.append("\n");
+    expectedStr.append(colorize("java.lang.Character<a>", FOREGROUND_COLOR, BACKGROUND_COLOR));
+    expectedStr.append("\n");
+    assertThat(outputStream.toString()).isEqualTo(expectedStr.toString());
   }
 }
