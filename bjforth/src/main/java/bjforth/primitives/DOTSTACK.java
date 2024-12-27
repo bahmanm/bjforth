@@ -18,8 +18,9 @@
  */
 package bjforth.primitives;
 
-import static bjforth.primitives.PrimitiveFactory.DROP;
-import static bjforth.primitives.PrimitiveFactory.PRINTLN;
+import static bjforth.config.Constants.BACKGROUND_COLOR;
+import static bjforth.config.Constants.FOREGROUND_COLOR;
+import static com.diogonunes.jcolor.Ansi.colorize;
 
 import bjforth.machine.Machine;
 import java.util.EmptyStackException;
@@ -47,9 +48,7 @@ public class DOTSTACK implements Primitive {
         } else {
           str = "%s: %s".formatted(obj.getClass().getTypeName(), obj.toString());
         }
-        machine.pushToParameterStack(str);
-        PRINTLN().execute(machine);
-        DROP().execute(machine);
+        System.out.println(colorize(str, FOREGROUND_COLOR, BACKGROUND_COLOR));
       }
     } catch (EmptyStackException _ex) {
     }
