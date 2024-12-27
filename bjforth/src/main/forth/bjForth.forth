@@ -616,3 +616,24 @@
     FALSE
   THEN
 ;
+
+###################################################################################################
+# x CONSTANT name ( x -- )
+#
+# Creates a constant named `name` with the value at the top of stack.
+#
+# ```forth
+# 10 CONSTANT FOO
+# FOO .
+# 10
+# ```
+###################################################################################################
+
+: CONSTANT
+  WORD
+  CREATE
+  ." DOCOL ". ,
+  ' LIT ,
+  ,
+  ' EXIT ,
+;
