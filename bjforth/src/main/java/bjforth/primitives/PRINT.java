@@ -28,7 +28,6 @@ public class PRINT implements Primitive {
   @Override
   public void execute(Machine machine) {
     System.out.print(
-        colorize(machine.peekIntoParameterStack().toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
-    System.out.print(" ");
+        colorize(machine.popFromParameterStack().toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
   }
 }
