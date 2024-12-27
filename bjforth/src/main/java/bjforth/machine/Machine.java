@@ -18,7 +18,9 @@
  */
 package bjforth.machine;
 
+import static bjforth.config.Constants.*;
 import static bjforth.primitives.PrimitiveFactory.getPrimitiveContainers;
+import static com.diogonunes.jcolor.Ansi.colorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -176,7 +178,22 @@ public class Machine {
   public void loop() {
     try {
       while (true) {
-        step();
+        try {
+          step();
+        } catch (MachineException e) {
+          System.out.print(
+              colorize(
+                  "%s %s".formatted(ERROR_EMOJI, e.getMessage()),
+                  FOREGROUND_COLOR,
+                  BACKGROUND_COLOR));
+          System.out.print(" ");
+          var QUIT =
+              getPrimitiveContainers().stream()
+                  .filter((p) -> "QUIT".equals(p.get().getName()))
+                  .findFirst()
+                  .get();
+          QUIT.get().execute(this);
+        }
       }
     } catch (GracefulShutdown _ex) {
       var BYE =
@@ -189,8 +206,11 @@ public class Machine {
   }
 
   public static void main(String[] args) {
-    System.out.println("bjForth <https://github.com/bahmanm/bjforth>");
-    System.out.println("⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯");
+    System.out.println(
+        colorize(
+            "%s bjForth <https://github.com/bahmanm/bjforth>".formatted(HELLO_EMOJI),
+            FOREGROUND_COLOR,
+            BACKGROUND_COLOR));
 
     var state = new MachineState(0, 0, new Memory(), new Dictionary(), new Stack(), new Stack());
     var machine = new Machine(state); // Bootstraps the components like memory and dictionary
