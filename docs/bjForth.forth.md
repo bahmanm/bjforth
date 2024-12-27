@@ -36,7 +36,14 @@ _Automatically generated from the source._
   * `FILE-OPEN ( s -- BufferedReader )`
   * `FILE-READ-LINE ( BufferedReader -- s )`
   * `FILE-PRINT ( BufferedReader -- )`
-  * `FILE-CLOSE ( BufferedReader -- )`---
+  * `FILE-CLOSE ( BufferedReader -- )`
+  * `MAX ( x y -- max )`
+  * `MIN ( x y -- mIN )`
+  * `SQRT ( x -- square-root )`
+  * `WITHIN ( c a b -- boolean )`
+  * `x CONSTANT name ( x -- )`
+  * `ALLOT ( n -- addr )`
+  * `dummy-value VARIABLE name ( x -- )`---
 
 #### `\n ( -- s )`
 
@@ -353,5 +360,77 @@ Prints the contents of a file to stdout.
 #### `FILE-CLOSE ( BufferedReader -- )`
 
 Closes the file handle.
+
+---
+
+#### `MAX ( x y -- max )`
+
+Pushes the larger number onto stack.
+
+```forth
+10 20 MAX .
+20
+```
+
+---
+
+#### `MIN ( x y -- mIN )`
+
+Pushes the larger number onto stack.
+
+```forth
+10 20 MIN .
+10
+```
+
+---
+
+#### `SQRT ( x -- square-root )`
+
+```forth
+10 SQRT .S
+java.lang.Double: 3.1622776601683795
+```
+
+---
+
+#### `WITHIN ( c a b -- boolean )`
+
+c a b WITHIN returns true if  and b > c and a <= c
+
+```forth
+20 30 10 WITHIN .
+1
+```
+
+---
+
+#### `x CONSTANT name ( x -- )`
+
+Creates a constant named `name` with the value at the top of stack.
+
+```forth
+10 CONSTANT FOO
+FOO .
+10
+```
+
+---
+
+#### `ALLOT ( n -- addr )`
+
+Allocates `n` memory cells (increments `HERE` by `n`).
+
+---
+
+#### `dummy-value VARIABLE name ( x -- )`
+
+Creates a variable accessible via `!` and `@` words.
+```forth
+-1 VARIABLE FOO
+10 FOO !
+FOO @ .
+10
+```
 
 
