@@ -77,13 +77,13 @@ class DOTSTACKTest {
 
     // THEN
     var expectedStr = new StringBuilder();
-    expectedStr.append(colorize("java.lang.String<hi>", FOREGROUND_COLOR, BACKGROUND_COLOR));
+    expectedStr.append(colorize("java.lang.String: hi", FOREGROUND_COLOR, BACKGROUND_COLOR));
     expectedStr.append("\n");
     expectedStr.append(colorize("null", FOREGROUND_COLOR, BACKGROUND_COLOR));
     expectedStr.append("\n");
-    expectedStr.append(colorize("java.lang.Integer<10>", FOREGROUND_COLOR, BACKGROUND_COLOR));
+    expectedStr.append(colorize("java.lang.Integer: 10", FOREGROUND_COLOR, BACKGROUND_COLOR));
     expectedStr.append("\n");
-    expectedStr.append(colorize("java.lang.Character<a>", FOREGROUND_COLOR, BACKGROUND_COLOR));
+    expectedStr.append(colorize("java.lang.Character: a", FOREGROUND_COLOR, BACKGROUND_COLOR));
     expectedStr.append("\n");
     assertThat(outputStream.toString()).isEqualTo(expectedStr.toString());
   }
