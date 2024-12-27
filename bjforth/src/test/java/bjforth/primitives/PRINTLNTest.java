@@ -18,11 +18,14 @@
  */
 package bjforth.primitives;
 
+import static bjforth.config.Constants.BACKGROUND_COLOR;
+import static bjforth.config.Constants.FOREGROUND_COLOR;
 import static bjforth.machine.InstructionPointerBuilder.anInstructionPointer;
 import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
+import static com.diogonunes.jcolor.Ansi.colorize;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import bjforth.machine.BootstrapUtils;
@@ -72,14 +75,14 @@ class PRINTLNTest {
             .withParameterStack(aParameterStack().with(n).build())
             .build();
     var machine = aMachine().withState(actualState).build();
-    var referenceState = aMachineState().copyFrom(actualState).build();
 
     // WHEN
     machine.step();
 
     // THEN
-    assertThat(actualState)
-        .hasParameterStackEqualTo(aParameterStack().with(referenceState).build());
-    assertThat(outputStream.toByteArray()).containsExactly("%d\n".formatted(n).getBytes());
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().build());
+    assertThat(outputStream.toByteArray())
+        .containsExactly(
+            (colorize("%d".formatted(n), FOREGROUND_COLOR, BACKGROUND_COLOR) + "\n").getBytes());
   }
 }

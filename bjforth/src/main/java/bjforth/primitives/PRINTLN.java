@@ -29,6 +29,6 @@ public class PRINTLN implements Primitive {
   @Override
   public void execute(Machine machine) {
     System.out.println(
-        colorize(machine.peekIntoParameterStack().toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
+        colorize(machine.popFromParameterStack().toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
   }
 }
