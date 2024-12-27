@@ -80,7 +80,9 @@ In the following table, which lists all the primitives
 | `RSP@`      | `        -`         | RSPFETCH       |                                                  |
 | `RSP!`      | `x       -`         | RSPSTORE       |                                                  |
 | `;`         | `        - q`       | SEMICOLON      |                                                  |
-| `!``        | `a p     -`         | STORE          |                                                  |
+| `!`         | `a p     -`         | STORE          |                                                  |
+| `!BASE`     | `x       -`         | STOREBASE      |                                                  |
+| `!HERE`     | `x       -`         | STOREHERE      |                                                  |
 | `-`         | `x y     - z`       | SUB            |                                                  |
 | `-!`        | `p x     -`         | SUBSTORE       |                                                  |
 | `SWAP`      | `a b     - b a`     |                |                                                  |
