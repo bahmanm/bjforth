@@ -45,7 +45,7 @@ public class DOTSTACK implements Primitive {
         if (obj == null) {
           str = "null";
         } else {
-          str = "%s<%s>".formatted(obj.getClass().getTypeName(), obj.toString());
+          str = "%s: %s".formatted(obj.getClass().getTypeName(), obj.toString());
         }
         machine.pushToParameterStack(str);
         PRINTLN().execute(machine);

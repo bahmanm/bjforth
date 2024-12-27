@@ -65,7 +65,7 @@ public class INTERPRET implements Primitive {
       } catch (MachineException __ex) { // Not a number. Exit with error.
         System.out.print(
             colorize(
-                "%s Pushing unknown word or invalid number onto stack: <%s>"
+                "%s Pushing unknown word or invalid number onto stack: %s"
                     .formatted(WARN_EMOJI, obj.toString()),
                 FOREGROUND_COLOR,
                 BACKGROUND_COLOR));
