@@ -1,5 +1,4 @@
-bjForth <https://github.com/bahmanm/bjforth>
-⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+👋 bjForth <https://github.com/bahmanm/bjforth>
 200
 100
 Hello, world
@@ -9,4 +8,4 @@ Hello, world
 Hello, world
 24
 Hello, world
-00000019 220 BYE
+00000019 220 👋 BYE
