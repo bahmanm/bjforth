@@ -71,6 +71,7 @@ In the following table, which lists all the primitives
 | `-ROT`      | `a b c   - c b a`   | NROT           |                                                  |
 | `NUMBER`    | `        - x`       |                |                                                  |
 | `NULL`      | `        - null`    |                |                                                  |
+| `OR`        | ` x y    - z`       |                |                                                  |
 | `OVER`      | `a b     - a b a`   |                |                                                  |
 | `PRINT`     | `a       - a`       |                |                                                  |
 | `PRINTLN`   | `a       - a`       |                |                                                  |

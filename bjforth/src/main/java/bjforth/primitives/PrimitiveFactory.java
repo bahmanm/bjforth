@@ -179,6 +179,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerNULL = new PrimitiveContainer(NULL::new);
 
+  private static PrimitiveContainer containerOR = new PrimitiveContainer(OR::new);
+
   private static PrimitiveContainer containerOVER = new PrimitiveContainer(OVER::new);
 
   private static PrimitiveContainer containerPRINT = new PrimitiveContainer(PRINT::new);
@@ -322,6 +324,7 @@ public class PrimitiveFactory {
           containerNROT,
           containerNUMBER,
           containerNULL,
+          containerOR,
           containerOVER,
           containerPRINT,
           containerPRINTLN,
