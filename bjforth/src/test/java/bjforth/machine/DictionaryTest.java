@@ -89,4 +89,24 @@ class DictionaryTest {
         .isPresent()
         .hasValueSatisfying(v -> List.of(dictItem2, dictItem1).equals(v));
   }
+
+  @DisplayName("#remove should remove the item both from `items` and `reverseLookup`.")
+  @Test
+  void remove() {
+    // GIVEN
+    var dict = new Dictionary();
+    var name = RandomStringUtils.insecure().next(20);
+    var dictItem1 = new DictionaryItem(name, 0, false, false);
+    dict.put(name, dictItem1);
+    var dictItem2 = new DictionaryItem(name, 1, false, false);
+    dict.put(name, dictItem2);
+
+    // WHEN
+    dict.remove(name);
+
+    // THEN
+    assertThat(dict.getAllForName(name))
+        .isPresent()
+        .hasValueSatisfying(v -> List.of(dictItem1).equals(v));
+  }
 }
