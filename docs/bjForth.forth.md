@@ -444,8 +444,8 @@ FOO @ .
     5 OF
       ." It's 5! ". PRINT
     ENDOF
-      10 OF
-        ." It's 10! ". PRINT
+    10 OF
+      ." It's 10! ". PRINT
     ENDOF
   ENDCASE
 ;
