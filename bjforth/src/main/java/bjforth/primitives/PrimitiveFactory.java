@@ -27,6 +27,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerADDSTORE = new PrimitiveContainer(ADDSTORE::new);
 
+  private static PrimitiveContainer containerAND = new PrimitiveContainer(AND::new);
+
   private static PrimitiveContainer containerATLANGLE = new PrimitiveContainer(ATLANGLE::new);
 
   private static PrimitiveContainer containerBASE = new PrimitiveContainer(BASE::new);
@@ -177,6 +179,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerNULL = new PrimitiveContainer(NULL::new);
 
+  private static PrimitiveContainer containerOR = new PrimitiveContainer(OR::new);
+
   private static PrimitiveContainer containerOVER = new PrimitiveContainer(OVER::new);
 
   private static PrimitiveContainer containerPRINT = new PrimitiveContainer(PRINT::new);
@@ -263,6 +267,7 @@ public class PrimitiveFactory {
       List.of(
           containerADD,
           containerADDSTORE,
+          containerAND,
           containerATLANGLE,
           containerBASE,
           containerBASESTORE,
@@ -319,6 +324,7 @@ public class PrimitiveFactory {
           containerNROT,
           containerNUMBER,
           containerNULL,
+          containerOR,
           containerOVER,
           containerPRINT,
           containerPRINTLN,
