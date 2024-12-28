@@ -121,6 +121,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerHIDE = new PrimitiveContainer(HIDE::new);
 
+  private static PrimitiveContainer containerIDDOT = new PrimitiveContainer(IDDOT::new);
+
   private static PrimitiveContainer containerIMMEDIATE = new PrimitiveContainer(IMMEDIATE::new);
 
   static Primitive IMMEDIATE() {
@@ -295,6 +297,7 @@ public class PrimitiveFactory {
           containerHERE,
           containerHIDDEN,
           containerHIDE,
+          containerIDDOT,
           containerIMMEDIATE,
           containerINTERPRET,
           containerINCR,

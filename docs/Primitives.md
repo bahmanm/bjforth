@@ -51,6 +51,7 @@ In the following table, which lists all the primitives
 | `HIDDEN`    | `        -`         |                |                                                  |
 | `HIDE`      | `        -`         |                |                                                  |
 | `IMMEDIATE` | `        -`         |                |                                                  |
+| `ID.`       | `x       -`         | IDDOT          |                                                  |
 | `4+`        | `x       - y`       | INCR4          |                                                  |
 | `1+`        | `x       - y`       | INCR           |                                                  |
 | `INTERPRET` | `a       - b`       |                |                                                  |
