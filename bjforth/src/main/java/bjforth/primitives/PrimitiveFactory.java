@@ -105,6 +105,8 @@ public class PrimitiveFactory {
     return containerFIND.get();
   }
 
+  private static PrimitiveContainer containerFORGET = new PrimitiveContainer(FORGET::new);
+
   private static PrimitiveContainer containerFROMR = new PrimitiveContainer(FROMR::new);
 
   private static PrimitiveContainer containerGE = new PrimitiveContainer(GE::new);
@@ -291,6 +293,7 @@ public class PrimitiveFactory {
           containerEXIT,
           containerFETCH,
           containerFIND,
+          containerFORGET,
           containerFROMR,
           containerGE,
           containerGT,

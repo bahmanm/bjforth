@@ -69,4 +69,15 @@ class Dictionary {
   public Optional<List<DictionaryItem>> getAllForName(String name) {
     return Optional.ofNullable(items.get(name.toUpperCase()));
   }
+
+  public void remove(String name) {
+    var item = items.get(name);
+    if (item != null) {
+      reverseLookup.remove(item.getFirst().getAddress());
+      item.removeFirst();
+      if (item.isEmpty()) {
+        items.remove(name);
+      }
+    }
+  }
 }

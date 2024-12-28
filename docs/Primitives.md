@@ -44,6 +44,7 @@ In the following table, which lists all the primitives
 | `EXIT`      | `a       -`         |                |                                                  |
 | `@`         | `p       - a`       |                |                                                  |
 | `FIND`      | `a       - p`       |                |                                                  |
+| `FORGTET`   | `        - `        |                |                                                  |
 | `R>`        | `R a     - P a`     | FROMR          |                                                  |
 | `>=`        | `a b     - x`       | GE             |                                                  |
 | `>`         | `a b     - x`       | GT             |                                                  |

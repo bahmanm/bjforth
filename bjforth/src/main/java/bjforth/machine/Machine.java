@@ -99,6 +99,10 @@ public class Machine {
     state.getDictionary().put(name, item);
   }
 
+  public void removeDictionaryItem(String name) {
+    state.getDictionary().remove(name);
+  }
+
   public Integer getInstrcutionPointer() {
     return state.getInstructionPointer();
   }
