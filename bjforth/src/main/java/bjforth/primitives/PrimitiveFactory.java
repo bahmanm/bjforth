@@ -27,6 +27,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerADDSTORE = new PrimitiveContainer(ADDSTORE::new);
 
+  private static PrimitiveContainer containerAND = new PrimitiveContainer(AND::new);
+
   private static PrimitiveContainer containerATLANGLE = new PrimitiveContainer(ATLANGLE::new);
 
   private static PrimitiveContainer containerBASE = new PrimitiveContainer(BASE::new);
@@ -263,6 +265,7 @@ public class PrimitiveFactory {
       List.of(
           containerADD,
           containerADDSTORE,
+          containerAND,
           containerATLANGLE,
           containerBASE,
           containerBASESTORE,
