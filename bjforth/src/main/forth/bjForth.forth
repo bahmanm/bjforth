@@ -256,7 +256,7 @@
   SWAP
   HERE SWAP - ,
   DUP
-  HERE SWAP -
+  HERE -
   SWAP !
 ;
 
@@ -669,3 +669,56 @@
   , 
   ' EXIT ,
 ;  
+
+###################################################################################################
+# CASE test1 OF ... ENDOF test2 OF ... ENDOF ENDCASE
+###################################################################################################
+
+: CASE IMMEDIATE
+  0
+;
+
+: OF IMMEDIATE
+  ' OVER ,
+  ' = ,
+  [COMPILE] IF
+  ' DROP ,
+;
+
+: ENDOF IMMEDIATE
+  [COMPILE] ELSE
+;
+
+: ENDCASE IMMEDIATE
+  ' DROP ,
+  BEGIN
+    ?DUP
+  WHILE
+    [COMPILE] THEN
+  REPEAT
+;
+
+###################################################################################################
+
+#: FOO
+#  10
+#  CASE
+#    5 = OF
+#      ." It's 5! ". PRINT
+#    ENDOF
+#    10 = OF
+#      ." It's 10! ". PRINT
+#    ENDOF
+#  ENDCASE
+#;
+
+: FOO
+  1
+  BEGIN
+    DUP 10 > 
+  WHILE
+    DUP .
+    1+
+  REPEAT
+;
+
