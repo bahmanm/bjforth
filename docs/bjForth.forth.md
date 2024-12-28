@@ -43,7 +43,8 @@ _Automatically generated from the source._
   * `WITHIN ( c a b -- boolean )`
   * `x CONSTANT name ( x -- )`
   * `ALLOT ( n -- addr )`
-  * `dummy-value VARIABLE name ( x -- )`---
+  * `dummy-value VARIABLE name ( x -- )`
+  * `CASE test1 OF ... ENDOF test2 OF ... ENDOF ENDCASE`---
 
 #### `\n ( -- s )`
 
@@ -431,6 +432,23 @@ Creates a variable accessible via `!` and `@` words.
 10 FOO !
 FOO @ .
 10
+```
+
+---
+
+#### `CASE test1 OF ... ENDOF test2 OF ... ENDOF ENDCASE`
+
+```forth
+: 5-OR-10
+  CASE
+    5 OF
+      ." It's 5! ". PRINT
+    ENDOF
+      10 OF
+        ." It's 10! ". PRINT
+    ENDOF
+  ENDCASE
+;
 ```
 
 
