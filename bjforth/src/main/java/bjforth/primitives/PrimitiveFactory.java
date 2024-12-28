@@ -83,6 +83,8 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerDSPSTORE = new PrimitiveContainer(DSPSTORE::new);
 
+  private static PrimitiveContainer containerDUMP = new PrimitiveContainer(DUMP::new);
+
   private static PrimitiveContainer containerDUP = new PrimitiveContainer(DUP::new);
 
   private static PrimitiveContainer containerEMIT = new PrimitiveContainer(EMIT::new);
@@ -286,6 +288,7 @@ public class PrimitiveFactory {
           containerDSPFETCH,
           containerDSPFETCHFETCH,
           containerDSPSTORE,
+          containerDUMP,
           containerDUP,
           containerEMIT,
           containerEQU,

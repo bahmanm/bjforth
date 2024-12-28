@@ -37,6 +37,7 @@ In the following table, which lists all the primitives
 | `DROP`      | `a       -`         | DROP           |                                                  |
 | `DSP@`      | `        - x`       | DSPFETCH       |                                                  |
 | `DSP!`      | `x       -`         | DSPSTORE       |                                                  |
+| `DUMP`      | `addr len - `       |                |                                                  |
 | `DUP`       | `a       - a a`     |                |                                                  |
 | `EMIT`      | `a       -`         |                |                                                  |
 | `=`         | `a b     - x`       | EQU            |                                                  |
@@ -75,7 +76,7 @@ In the following table, which lists all the primitives
 | `PRINTLN`   | `a       - a`       |                |                                                  |
 | `?DUP`      | `a       - a a`     | QDUP           |                                                  |
 | `?NULL`     | `a       - x        | QNULL          |                                                  |
-| `QUIT`      | `        -`         | QUIT           |                                                  |
+<| `QUIT`      | `        -`         | QUIT           |                                                  |
 | `]`         | `        -`         | RBRAC          |                                                  |
 | `RDROP`     | `R p     -`         |                |                                                  |
 | `ROT`       | `a b c   - b c a`   |                |                                                  |
