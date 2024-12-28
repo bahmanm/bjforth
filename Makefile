@@ -22,6 +22,9 @@ SHELL := /usr/bin/env bash
 ####################################################################################################
 
 export ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+export root.docs = $(ROOT)docs/
+export root.build = $(ROOT)bjforth/build/libs/
+export root.forth = $(ROOT)bjforth/src/main/forth/
 
 ####################################################################################################
 
@@ -61,7 +64,7 @@ test : gradle( check )
 e2e-test : bmakelib.error-if-blank( VERSION )
 e2e-test : package
 	@bjforth/src/test/e2e/e2e-test-runner.pl \
-	  bjforth/build/libs/bjForth-$(VERSION).jar \
+	  $(root.build)/bjForth-$(VERSION).jar \
 	  bjforth/src/test/e2e/e2e-expected-output.txt \
 	  bjforth/src/test/e2e/e2e-tests.forth \
 	  bjforth/src/main/forth/bjForth.forth
@@ -94,8 +97,10 @@ package : bmakelib.error-if-blank( VERSION )
 package : gradle( shadowJar )
 package : package-path := $(ROOT)bjforth/build/libs/bjForth-$(VERSION).tar.gz
 package :
-	cp $(ROOT)bjforth/src/main/forth/*.forth $(ROOT)bjforth/build/libs
-	cd $(ROOT)/bjforth/build/libs && tar -cf bjForth-$(VERSION).tar *
+	cp $(root.forth)*.forth $(root.build)
+	mkdir -p $(root.build)docs
+	cp $(root.docs)*.md $(root.build)docs
+	cd $(root.build) && tar -cf bjForth-$(VERSION).tar *
 
 ####################################################################################################
 
