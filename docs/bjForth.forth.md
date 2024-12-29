@@ -44,7 +44,9 @@ _Automatically generated from the source._
   * `x CONSTANT name ( x -- )`
   * `ALLOT ( n -- addr )`
   * `dummy-value VARIABLE name ( x -- )`
-  * `CASE test1 OF ... ENDOF test2 OF ... ENDOF ENDCASE`---
+  * `CASE test1 OF ... ENDOF test2 OF ... ENDOF ENDCASE`
+  * `:ANON ( -- xt )`
+  * `['] ( -- )`---
 
 #### `\n ( -- s )`
 
@@ -449,6 +451,32 @@ FOO @ .
     ENDOF
   ENDCASE
 ;
+```
+
+---
+
+#### `:ANON ( -- xt )`
+
+Creates an anonymous word and pushes its XT on stack (which can be run via `EXECUTE`.)
+
+```forth
+:ANON ." Hello, world ". PRINTLN ;
+EXECUTE
+Hello, world
+```
+
+---
+
+#### `['] ( -- )`
+
+Compiles the XT of the next word on the spot and places it in memory alongside `LIT`.
+
+```forth
+: FOO 10 20 * ;
+: BAR ['] FOO ;
+SEE BAR
+BAR at 00000516 (immediate: false, hidden: false)
+509
 ```
 
 
