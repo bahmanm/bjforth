@@ -33,6 +33,10 @@ public class SEMICOLON implements Primitive {
     machine.setMemoryAt(Variables.get("HERE").getAddress(), HEREvalue + 1);
     var LATESTvalue = (Integer) machine.getMemoryAt(Variables.get("LATEST").getAddress());
     machine.pushToParameterStack(LATESTvalue);
+
+    var dictItem = machine.getDictionaryItem(LATESTvalue);
+    dictItem.get().setLength(HEREvalue - LATESTvalue);
+
     HIDDEN().execute(machine);
     LBRAC().execute(machine);
     EXIT().execute(machine);

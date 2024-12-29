@@ -23,12 +23,12 @@ import static bjforth.machine.MachineAssertions.assertThat;
 import static bjforth.machine.MachineBuilder.aMachine;
 import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ReturnStackBuilder.aReturnStack;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import bjforth.machine.DictionaryItem;
 import bjforth.variables.Variables;
 import org.apache.commons.lang3.RandomUtils;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -59,6 +59,8 @@ class SEMICOLONTest {
 
     // THEN
     assertThat(actualState).hasReturnStackEqualTo(aReturnStack().with(NIP).build());
-    Assertions.assertThat(machine.getDictionaryItem("FOO").get().getIsHidden()).isFalse();
+    assertThat(machine.getDictionaryItem("FOO").get().getIsHidden()).isFalse();
+    assertThat(machine.getDictionaryItem("FOO").get().getLength())
+        .isEqualTo(HEREvalue - LATESTvalue);
   }
 }

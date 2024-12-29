@@ -23,6 +23,7 @@ public class DictionaryItem {
   private Integer address;
   private Boolean isImmediate;
   private Boolean isHidden;
+  private Integer length = 1;
 
   public DictionaryItem(String name, Integer address, Boolean isImmediate, Boolean isHidden) {
     this.name = name;
@@ -68,6 +69,14 @@ public class DictionaryItem {
 
   public void setIsHidden(Boolean isHidden) {
     this.isHidden = isHidden;
+  }
+
+  public Integer getLength() {
+    return length;
+  }
+
+  public void setLength(Integer length) {
+    this.length = length;
   }
 
   @Override

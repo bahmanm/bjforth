@@ -46,7 +46,7 @@ public class SEE implements Primitive {
 
     var addr = target.getAddress() + 1;
     content = machine.getMemoryAt(addr);
-    while (!"DOCOL".equals(content) && addr < HEREvalue) {
+    while (addr < target.getLength() + target.getAddress()) {
       if (content == null) {
         System.out.print(colorize("null", FOREGROUND_COLOR, BACKGROUND_COLOR));
         System.out.print(" ");
