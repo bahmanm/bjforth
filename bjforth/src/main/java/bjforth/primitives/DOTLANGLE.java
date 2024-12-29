@@ -45,6 +45,11 @@ public class DOTLANGLE implements Primitive {
     List<Class<?>> parameterTypes = new ArrayList<>();
     Integer arity = 0;
     Integer varargFromArgumentNo = -1;
+
+    @Override
+    public String toString() {
+      return "MethodDescriptor(%s)".formatted(name);
+    }
   }
 
   @Override

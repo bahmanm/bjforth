@@ -48,6 +48,11 @@ public class ATLANGLE implements Primitive {
     Class<?> clazz = null;
     Integer arity = 0;
     Integer varargFromArgumentNo = -1;
+
+    @Override
+    public String toString() {
+      return "MethodDescriptor(%s)".formatted(clazz.getSimpleName());
+    }
   }
 
   @Override
