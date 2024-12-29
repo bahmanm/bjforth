@@ -119,6 +119,10 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerHERE = new PrimitiveContainer(HERE::new);
 
+  static Primitive HERE() {
+    return containerHERE.get();
+  }
+
   private static PrimitiveContainer containerHIDDEN = new PrimitiveContainer(HIDDEN::new);
 
   static Primitive HIDDEN() {
@@ -218,6 +222,8 @@ public class PrimitiveFactory {
   private static PrimitiveContainer containerRSPFETCH = new PrimitiveContainer(RSPFETCH::new);
 
   private static PrimitiveContainer containerRSPSTORE = new PrimitiveContainer(RSPSTORE::new);
+
+  private static PrimitiveContainer containerSEE = new PrimitiveContainer(SEE::new);
 
   private static PrimitiveContainer containerSEMICOLON = new PrimitiveContainer(SEMICOLON::new);
 
@@ -342,6 +348,7 @@ public class PrimitiveFactory {
           containerROT,
           containerRSPFETCH,
           containerRSPSTORE,
+          containerSEE,
           containerSEMICOLON,
           containerSTORE,
           containerSTOREBASE,

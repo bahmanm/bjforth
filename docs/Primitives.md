@@ -78,12 +78,13 @@ In the following table, which lists all the primitives
 | `PRINTLN`   | `a       - a`       |                |                                                  |
 | `?DUP`      | `a       - a a`     | QDUP           |                                                  |
 | `?NULL`     | `a       - x        | QNULL          |                                                  |
-<| `QUIT`      | `        -`         | QUIT           |                                                  |
+| `QUIT`      | `        -`         | QUIT           |                                                  |
 | `]`         | `        -`         | RBRAC          |                                                  |
 | `RDROP`     | `R p     -`         |                |                                                  |
 | `ROT`       | `a b c   - b c a`   |                |                                                  |
 | `RSP@`      | `        -`         | RSPFETCH       |                                                  |
 | `RSP!`      | `x       -`         | RSPSTORE       |                                                  |
+| `SEE`       | `        -`         |                |                                                  |
 | `;`         | `        - q`       | SEMICOLON      |                                                  |
 | `!`         | `a p     -`         | STORE          |                                                  |
 | `!BASE`     | `x       -`         | STOREBASE      |                                                  |
