@@ -710,3 +710,40 @@
     [COMPILE] THEN
   REPEAT
 ;
+
+###################################################################################################
+# :ANON ( -- xt )
+#
+# Creates an anonymous word and pushes its XT on stack (which can be run via `EXECUTE`.)
+#
+# ```forth
+# :ANON ." Hello, world ". PRINTLN ;
+# EXECUTE
+# Hello, world
+# ```
+###################################################################################################
+
+: :ANON 
+  ." ". CREATE
+  HERE 
+  ." DOCOL ". ,
+  ]
+;
+
+###################################################################################################
+# ['] ( -- )
+#
+# Compiles the XT of the next word on the spot and places it in memory alongside `LIT`.
+#
+# ```forth
+# : FOO 10 20 * ;
+# : BAR ['] FOO ;
+# SEE BAR
+# BAR at 00000516 (immediate: false, hidden: false)
+# 509
+# ```
+###################################################################################################
+
+: ['] IMMEDIATE
+  ' LIT ,
+;
