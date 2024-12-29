@@ -50,6 +50,11 @@ public class COMMALANGLE implements Primitive {
     Class<?> target = null;
     Integer arity = 0;
     Integer varargFromArgumentNo = -1;
+
+    @Override
+    public String toString() {
+      return "MethodDescriptor(%s.%s)".formatted(target.getSimpleName(), name);
+    }
   }
 
   @Override
