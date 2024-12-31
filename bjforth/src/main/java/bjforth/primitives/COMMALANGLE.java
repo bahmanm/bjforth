@@ -130,7 +130,7 @@ public class COMMALANGLE implements Primitive {
               var paramType = rawParamType.replace("[]", "");
               result.parameterTypes.add(ClassCache.forNameArray(paramType));
             } else {
-              result.parameterTypes.add(ClassCache.forName(rawParamType));
+              result.parameterTypes.add(ClassCache.forNameVararg(rawParamType));
             }
             state = State.IN_VARARG;
           } else {
