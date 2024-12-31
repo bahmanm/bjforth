@@ -149,4 +149,67 @@ public class ClassCache {
       }
     }
   }
+
+  /**
+   * Tries to load the array class from cache if exists.
+   *
+   * <p>If the type name contains '.', tries to look for the array with type name verbatim.
+   *
+   * <p>Otherwise looks in 'java.lang', 'java.util' and 'java.io' in order.
+   *
+   * <p>Throws if the type cannot be found.
+   *
+   * @throws MachineException
+   */
+  public static Class<?> forNameArray(String elementTypeName) {
+    if (elementTypeName.contains(".")) {
+      var arrayTypeName = "[L%s;".formatted(elementTypeName);
+      try {
+        if (cache.containsKey(arrayTypeName)) {
+          return cache.get(arrayTypeName);
+        } else {
+          var clazz = Class.forName(arrayTypeName);
+          cache.put(arrayTypeName, clazz);
+          return clazz;
+        }
+      } catch (ClassNotFoundException e) {
+        throw new MachineException(e.getMessage());
+      }
+    } else {
+      try {
+        var arrayTypeName = "[Ljava.lang.%s;".formatted(elementTypeName);
+        if (cache.containsKey(arrayTypeName)) {
+          return cache.get(arrayTypeName);
+        } else {
+          var clazz = Class.forName(arrayTypeName);
+          cache.put(arrayTypeName, clazz);
+          return clazz;
+        }
+      } catch (ClassNotFoundException _e) {
+        try {
+          var arrayTypeName = "[Ljava.util.%s;".formatted(elementTypeName);
+          if (cache.containsKey(arrayTypeName)) {
+            return cache.get(arrayTypeName);
+          } else {
+            var clazz = Class.forName(arrayTypeName);
+            cache.put(arrayTypeName, clazz);
+            return clazz;
+          }
+        } catch (ClassNotFoundException _ex) {
+          try {
+            var arrayTypeName = "[Ljava.io.%s;".formatted(elementTypeName);
+            if (cache.containsKey(arrayTypeName)) {
+              return cache.get(arrayTypeName);
+            } else {
+              var clazz = Class.forName(arrayTypeName);
+              cache.put(arrayTypeName, clazz);
+              return clazz;
+            }
+          } catch (ClassNotFoundException e) {
+            throw new MachineException(e.getMessage());
+          }
+        }
+      }
+    }
+  }
 }

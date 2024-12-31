@@ -108,3 +108,11 @@ package :
 
 docs :
 	$(ROOT)docs/extract.pl $(ROOT)bjforth/src/main/forth/bjForth.forth $(ROOT)docs/bjForth.forth.md
+
+####################################################################################################
+
+.PHONY : run
+
+run : bmakelib.error-if-blank( VERSION )
+run : gradle( shadowJar )
+	cat $(root.forth)bjForth.forth - | java -jar $(root.build)bjForth-$(VERSION).jar

@@ -25,6 +25,7 @@ import static bjforth.machine.MachineStateBuilder.aMachineState;
 import static bjforth.machine.ParameterStackBuilder.aParameterStack;
 
 import bjforth.primitives.DOTLANGLE.MethodDescriptor;
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
@@ -111,5 +112,33 @@ class RANGLEDOTTest {
 
     // THEN
     assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with((Object) null).build());
+  }
+
+  @Test
+  void worksOkInnerClasses() {
+    // GIVEN
+    var DOTDOTaddr = getPrimitiveAddress(">.");
+    // var target = List.of(10, 20);
+    var target = new ArrayList<Integer>();
+    target.add(10);
+    target.add(20);
+    var methodDescriptor = new MethodDescriptor();
+    methodDescriptor.parameterTypes = List.of(Integer.class);
+    methodDescriptor.arity = 1;
+    methodDescriptor.name = "get";
+    methodDescriptor.varargFromArgumentNo = -1;
+    var actualState =
+        aMachineState()
+            .withInstrcutionPointer(DOTDOTaddr)
+            .withParameterStack(
+                aParameterStack().with(0).with(target).with(methodDescriptor).build())
+            .build();
+    var machine = aMachine().withState(actualState).build();
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(actualState).hasParameterStackEqualTo(aParameterStack().with(10).build());
   }
 }

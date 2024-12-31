@@ -101,4 +101,31 @@ class ATLANGLETest {
 
     assertThat(machine.getMemoryAt(Variables.get("HERE").getAddress())).isEqualTo(HEREvalue + 2);
   }
+
+  @Test
+  void worksOkArrayParameters() {
+    // GIVEN
+    var str = "String(File[], String[])/2 ";
+    var inputStream = new ByteArrayInputStream(str.getBytes());
+    System.setIn(inputStream);
+
+    var ATLANGLEaddr = getPrimitiveAddress("@<");
+    var actualState = aMachineState().withInstrcutionPointer(ATLANGLEaddr).build();
+    var machine = aMachine().withState(actualState).build();
+    var HEREvalue = (Integer) machine.getMemoryAt(Variables.get("HERE").getAddress());
+
+    // WHEN
+    machine.step();
+
+    // THEN
+    assertThat(machine.getMemoryAt(HEREvalue)).isEqualTo(getPrimitiveAddress("LIT"));
+
+    var actualResult = (MethodDescriptor) machine.getMemoryAt(HEREvalue + 1);
+    assertThat(actualResult.clazz).isEqualTo(String.class);
+    assertThat(actualResult.arity).isEqualTo(2);
+    assertThat(actualResult.parameterTypes).isEqualTo(List.of(File[].class, String[].class));
+    assertThat(actualResult.varargFromArgumentNo).isEqualTo(-1);
+
+    assertThat(machine.getMemoryAt(Variables.get("HERE").getAddress())).isEqualTo(HEREvalue + 2);
+  }
 }

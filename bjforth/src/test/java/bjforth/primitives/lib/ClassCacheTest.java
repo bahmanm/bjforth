@@ -52,4 +52,13 @@ class ClassCacheTest {
     // EXPECT
     assertThat(ClassCache.forNameVararg(className)).isEqualTo(Object[].class);
   }
+
+  @Test
+  void worksOkArray() {
+    // GIVEN
+    var className = "Object";
+
+    // EXPECT
+    assertThat(ClassCache.forNameArray(className)).isEqualTo(Object[].class);
+  }
 }
