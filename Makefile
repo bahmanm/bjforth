@@ -100,6 +100,7 @@ package :
 	cp $(root.forth)*.forth $(root.build)
 	mkdir -p $(root.build)docs
 	cp $(root.docs)*.md $(root.build)docs
+	cp $(ROOT)bjForth $(root.build)
 	cd $(root.build) && tar -cf bjForth-$(VERSION).tar *
 
 ####################################################################################################
@@ -115,4 +116,12 @@ docs :
 
 run : bmakelib.error-if-blank( VERSION )
 run : gradle( shadowJar )
-	cat $(root.forth)bjForth.forth - | java -jar $(root.build)bjForth-$(VERSION).jar
+	@cat $(root.forth)bjForth.forth - \
+	| java \
+	  --add-opens=java.base/java.lang=ALL-UNNAMED \
+	  --add-opens=java.base/java.lang.reflect=ALL-UNNAMED \
+	  --add-opens=java.base/java.io=ALL-UNNAMED \
+	  --add-opens=java.base/java.util=ALL-UNNAMED \
+	  --add-opens=java.base/java.util.stream=ALL-UNNAMED \
+	  -jar $(root.build)bjForth-$(VERSION).jar
+  

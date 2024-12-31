@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+jarFile=$(ls bjForth-*.jar 2>/dev/null)
+if [[ -z $jarFile ]]; then
+  echo "Cannot find bjForth JAR file. Make sure you are in the same directory."
+  exit 1;
+fi
+
+# Your source files should go here.
+# For instance, cat bjForth.forth my-source.forth - | ...
+cat bjForth.forth - \
+| java \
+  --add-opens=java.base/java.lang=ALL-UNNAMED \
+  --add-opens=java.base/java.lang.reflect=ALL-UNNAMED \
+  --add-opens=java.base/java.io=ALL-UNNAMED \
+  --add-opens=java.base/java.util=ALL-UNNAMED \
+  --add-opens=java.base/java.util.stream=ALL-UNNAMED \
+  -jar ${jarFile}
+  
