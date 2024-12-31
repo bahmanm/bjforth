@@ -79,14 +79,26 @@ public class DOTLANGLE implements Primitive {
           break;
         case State.IN_PARAM_TYPE:
           if (")".equals(s)) {
-            if (!parameterType.isEmpty()) {
-              result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
+            var rawParamType = parameterType.toString();
+            if (rawParamType.endsWith("[]")) {
+              var paramType = rawParamType.replace("[]", "");
+              result.parameterTypes.add(ClassCache.forNameArray(paramType));
+            } else if (rawParamType.isEmpty()) {
+              // Ignore
+            } else {
+              result.parameterTypes.add(ClassCache.forName(rawParamType));
             }
             state = State.IN_ARITY;
           } else if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
             // Ignore whitespace
           } else if (",".equals(s)) {
-            result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
+            var rawParamType = parameterType.toString();
+            if (rawParamType.endsWith("[]")) {
+              var paramType = rawParamType.replace("[]", "");
+              result.parameterTypes.add(ClassCache.forNameArray(paramType));
+            } else {
+              result.parameterTypes.add(ClassCache.forName(rawParamType));
+            }
             parameterType = new StringBuilder();
           } else if (".".equals(s)) {
             state = State.IN_MAYBE_VARARG;
