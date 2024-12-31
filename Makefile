@@ -100,6 +100,7 @@ package :
 	cp $(root.forth)*.forth $(root.build)
 	mkdir -p $(root.build)docs
 	cp $(root.docs)*.md $(root.build)docs
+	cp $(ROOT)bjForth $(root.build)
 	cd $(root.build) && tar -cf bjForth-$(VERSION).tar *
 
 ####################################################################################################
