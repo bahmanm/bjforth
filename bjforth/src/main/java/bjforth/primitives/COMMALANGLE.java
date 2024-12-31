@@ -98,12 +98,26 @@ public class COMMALANGLE implements Primitive {
           if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
             // Ignore whitespace
           } else if (",".equals(s)) {
-            result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
+            var rawParamType = parameterType.toString();
+            if (rawParamType.endsWith("[]")) {
+              var paramType = rawParamType.replace("[]", "");
+              result.parameterTypes.add(ClassCache.forNameArray(paramType));
+            } else {
+              result.parameterTypes.add(ClassCache.forName(rawParamType));
+            }
             parameterType = new StringBuilder();
           } else if (".".equals(s)) {
             state = State.IN_MAYBE_VARARG;
           } else if (")".equals(s)) {
-            result.parameterTypes.add(ClassCache.forName(parameterType.toString()));
+            var rawParamType = parameterType.toString();
+            if (rawParamType.endsWith("[]")) {
+              var paramType = rawParamType.replace("[]", "");
+              result.parameterTypes.add(ClassCache.forNameArray(paramType));
+            } else if (rawParamType.isEmpty()) {
+              // Ignore
+            } else {
+              result.parameterTypes.add(ClassCache.forName(rawParamType));
+            }
             state = State.IN_ARITY;
           } else {
             parameterType.append(s);
@@ -111,7 +125,13 @@ public class COMMALANGLE implements Primitive {
           break;
         case State.IN_MAYBE_VARARG:
           if (".".equals(s)) {
-            result.parameterTypes.add(ClassCache.forNameVararg(parameterType.toString()));
+            var rawParamType = parameterType.toString();
+            if (rawParamType.endsWith("[]")) {
+              var paramType = rawParamType.replace("[]", "");
+              result.parameterTypes.add(ClassCache.forNameArray(paramType));
+            } else {
+              result.parameterTypes.add(ClassCache.forName(rawParamType));
+            }
             state = State.IN_VARARG;
           } else {
             parameterType.append(".");
