@@ -39,13 +39,13 @@ dependencies {
 
   testLib sourceSets.testLib.output
   testLibImplementation 'org.apache.commons:commons-lang3:3.17.0'
-  testLibImplementation 'org.assertj:assertj-core:3.27.0'
+  testLibImplementation 'org.assertj:assertj-core:3.27.1'
 
   testImplementation sourceSets.testLib.runtimeClasspath
 
   testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
   testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
-  testImplementation 'org.assertj:assertj-core:3.27.0'
+  testImplementation 'org.assertj:assertj-core:3.27.1'
 
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
