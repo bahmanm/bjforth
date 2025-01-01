@@ -77,7 +77,8 @@ In the following table, which lists all the primitives
 | `PRINT`     | `a       - a`       |                |                                                  |
 | `PRINTLN`   | `a       - a`       |                |                                                  |
 | `?DUP`      | `a       - a a`     | QDUP           |                                                  |
-| `?NULL`     | `a       - x        | QNULL          |                                                  |
+| `?NULL`     | `a       - x`       | QNULL          |                                                  |
+| `?TRUE`     | `a       - n`       | QTRUE          |                                                  |
 | `QUIT`      | `        -`         | QUIT           |                                                  |
 | `]`         | `        -`         | RBRAC          |                                                  |
 | `RDROP`     | `R p     -`         |                |                                                  |
