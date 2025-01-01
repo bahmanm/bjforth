@@ -33,7 +33,7 @@ public class QTRUE implements Primitive {
       } else if (obj instanceof Integer n) {
         machine.pushToParameterStack(n != 0 ? 1 : 0);
       } else {
-        throw new MachineException("Not a boolen value: %s".formatted(obj));
+        throw new MachineException("Not a boolean value: %s".formatted(obj));
       }
     } catch (NoSuchElementException e) {
       throw new MachineException("ParameterStack error.");
