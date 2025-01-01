@@ -201,6 +201,10 @@ public class PrimitiveFactory {
 
   private static PrimitiveContainer containerQNULL = new PrimitiveContainer(QNULL::new);
 
+  private static PrimitiveContainer containerQFALSE = new PrimitiveContainer(QFALSE::new);
+
+  private static PrimitiveContainer containerQTRUE = new PrimitiveContainer(QTRUE::new);
+
   private static PrimitiveContainer containerQUIT = new PrimitiveContainer(QUIT::new);
 
   private static PrimitiveContainer containerRANGLEAT = new PrimitiveContainer(RANGLEAT::new);
@@ -339,6 +343,8 @@ public class PrimitiveFactory {
           containerPRINTLN,
           containerQDUP,
           containerQNULL,
+          containerQFALSE,
+          containerQTRUE,
           containerQUIT,
           containerRANGLEAT,
           containerRANGLECOMMA,
