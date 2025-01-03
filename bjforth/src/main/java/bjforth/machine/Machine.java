@@ -24,6 +24,7 @@ import static com.diogonunes.jcolor.Ansi.colorize;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 public class Machine {
@@ -101,6 +102,10 @@ public class Machine {
 
   public void removeDictionaryItem(String name) {
     state.getDictionary().remove(name);
+  }
+
+  public Set<String> getAllDictionaryItemNames() {
+    return state.getDictionary().getNames();
   }
 
   public Integer getInstrcutionPointer() {

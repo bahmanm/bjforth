@@ -109,4 +109,23 @@ class DictionaryTest {
         .isPresent()
         .hasValueSatisfying(v -> List.of(dictItem1).equals(v));
   }
+
+  @DisplayName("#getNames should return the names of all the entries.")
+  @Test
+  void getNames() {
+    // GIVEN
+    var dict = new Dictionary();
+    var name1 = RandomStringUtils.insecure().next(20);
+    var dictItem1 = new DictionaryItem(name1, 0, false, false);
+    dict.put(name1, dictItem1);
+    var name2 = RandomStringUtils.insecure().next(20);
+    var dictItem2 = new DictionaryItem(name2, 1, false, false);
+    dict.put(name2, dictItem2);
+
+    // WHEN
+    var names = dict.getNames();
+
+    // THEN
+    assertThat(names).hasSize(2).containsAll(List.of(name1, name2));
+  }
 }

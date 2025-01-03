@@ -80,4 +80,8 @@ class Dictionary {
       }
     }
   }
+
+  public Set<String> getNames() {
+    return items.keySet();
+  }
 }
