@@ -104,6 +104,7 @@ In the following table, which lists all the primitives
 | `2DUP`      | `a b     - a b a b` | TWODUP         |                                                  |
 | `2SWAP`     | `a b c d - c d a b` | TWOSWAP        |                                                  |
 | `WORD`      | `        - a`       | WORD           |                                                  |
+| `WORDS`     | `        - `        | WORDS          |                                                  |
 | `0BRANCH`   | `x       -`         | ZBRANCH        |                                                  |
 | `0=`        | `x       -`         | ZEQU           |                                                  |
 | `0>=`       | `x       -`         | ZGE            |                                                  |

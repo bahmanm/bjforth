@@ -261,6 +261,8 @@ public class PrimitiveFactory {
     return containerWORD.get();
   }
 
+  private static PrimitiveContainer containerWORDS = new PrimitiveContainer(WORDS::new);
+
   private static PrimitiveContainer containerZBRANCH = new PrimitiveContainer(ZBRANCH::new);
 
   private static PrimitiveContainer containerZEQU = new PrimitiveContainer(ZEQU::new);
@@ -369,6 +371,7 @@ public class PrimitiveFactory {
           containerTWODUP,
           containerTWOSWAP,
           containerWORD,
+          containerWORDS,
           containerZBRANCH,
           containerZEQU,
           containerZGE,
