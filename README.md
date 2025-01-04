@@ -28,7 +28,7 @@ As bjForth is written with Java, all you need is JDK 21 installed.
 Then to launch bjForth:
 
 ```
-$ java -jar bjForth-v0.0.2.jar
+$ ./bjForth
 
 bjForth <https://github.com/bahmanm/bjforth>
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
@@ -38,7 +38,7 @@ bjForth <https://github.com/bahmanm/bjforth>
 Or you could include your own library:
 
 ```
-$ cat my-lib.forth - | java -jar bjForth-v0.0.2.jar
+$ ./bjForth my-lib.forth
 
 bjForth <https://github.com/bahmanm/bjforth>
 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
