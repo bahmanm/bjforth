@@ -7,7 +7,7 @@ plugins {
   id 'application'
   id 'com.diffplug.spotless' version '6.25.0'
   id 'jacoco'
-  id 'com.gradleup.shadow' version '9.0.0-beta4'
+  id 'com.gradleup.shadow' version '9.0.0-beta10'
 }
 
 repositories {
@@ -39,13 +39,13 @@ dependencies {
 
   testLib sourceSets.testLib.output
   testLibImplementation 'org.apache.commons:commons-lang3:3.17.0'
-  testLibImplementation 'org.assertj:assertj-core:3.27.1'
+  testLibImplementation 'org.assertj:assertj-core:3.27.3'
 
   testImplementation sourceSets.testLib.runtimeClasspath
 
-  testImplementation 'org.junit.jupiter:junit-jupiter:5.11.4'
-  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.11.4'
-  testImplementation 'org.assertj:assertj-core:3.27.1'
+  testImplementation 'org.junit.jupiter:junit-jupiter:5.12.0'
+  testImplementation 'org.junit.jupiter:junit-jupiter-params:5.12.0'
+  testImplementation 'org.assertj:assertj-core:3.27.3'
 
   testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
