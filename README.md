@@ -1,6 +1,6 @@
 # bjForth
 
-[![CircleCI](https://dl.circleci.com/status-badge/img/circleci/UMKeFZ8ns9T9vi5aquTfVT/FnGnFZDJWi8uY7zNYvkuvb/tree/master.svg?style=shield&circle-token=69b804abc3b70a380cfb416d80ce8d36e5ad2334)](https://dl.circleci.com/status-badge/redirect/circleci/UMKeFZ8ns9T9vi5aquTfVT/FnGnFZDJWi8uY7zNYvkuvb/tree/master)
+[![CI](https://github.com/bahmanm/bjforth/actions/workflows/ci.yml/badge.svg)](https://github.com/bahmanm/bjforth/actions/workflows/ci.yml)
 [![codecov](https://codecov.io/gh/bahmanm/bjforth/graph/badge.svg?token=KPSFFI2H9G)](https://codecov.io/gh/bahmanm/bjforth)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/bahmanm/bjforth)
 ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/bahmanm/bjforth/total?color=0e80c1)

@@ -115,10 +115,10 @@ class DictionaryTest {
   void getNames() {
     // GIVEN
     var dict = new Dictionary();
-    var name1 = RandomStringUtils.insecure().next(20);
+    var name1 = RandomStringUtils.insecure().nextAlphabetic(20).toUpperCase();
     var dictItem1 = new DictionaryItem(name1, 0, false, false);
     dict.put(name1, dictItem1);
-    var name2 = RandomStringUtils.insecure().next(20);
+    var name2 = RandomStringUtils.insecure().nextAlphabetic(20).toUpperCase();
     var dictItem2 = new DictionaryItem(name2, 1, false, false);
     dict.put(name2, dictItem2);
 

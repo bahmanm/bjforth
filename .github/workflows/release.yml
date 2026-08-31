@@ -1,0 +1,63 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository with full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "21"
+          cache: "gradle"
+
+      - name: Set up GNU Make
+        run: |
+          pushd /tmp
+          curl -fsSL --retry 5 --retry-delay 2 --retry-all-errors 'https://ftpmirror.gnu.org/make/make-4.4.1.tar.gz' -o make-4.4.1.tar.gz
+          tar xzf make-4.4.1.tar.gz
+          cd make-4.4.1
+          ./configure --prefix=/usr/local
+          sudo make install
+          popd
+
+      - name: Set up bmakelib
+        run: |
+          curl -fsSL https://github.com/bahmanm/bmakelib/releases/download/v0.9.0/bmakelib-portable.tar.gz \
+            | sudo tar -xz -C /usr/local --strip-components=1
+
+      - name: Run E2E tests
+        run: make VERSION=${{ github.ref_name }} e2e-test
+
+      - name: Build packages
+        run: make VERSION=${{ github.ref_name }} package
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
+          draft: true
+          generate_release_notes: true
+          files: |
+            bjforth/build/libs/bjForth-${{ github.ref_name }}.jar
+            bjforth/build/libs/bjForth-${{ github.ref_name }}.tar
