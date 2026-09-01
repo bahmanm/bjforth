@@ -155,20 +155,19 @@ public class Machine {
   public void step() {
     var IP = state.getInstructionPointer();
     var content = getMemoryAt(IP);
-    if (content == null) {
-      throw new MachineException("Don't know how to execute *(%d)=null".formatted(IP));
-    } else if (content instanceof NativeSubroutine nativeSubroutine) {
-      nativeSubroutine.call(this);
-    } else if (content instanceof Integer address) {
-      jumpTo(address);
-      applyThreadedCode(IP);
-    } else if (content instanceof String s && "DOCOL".equals(s)) {
-      enterThreadedCode();
-      DOCOL(false);
-      jumpTo(getInstrcutionPointer() + 1);
-    } else {
-      //      throw new MachineException("don't know how to execute *(%d)".formatted(IP));
-      jumpTo(getInstrcutionPointer() + 1);
+    switch (content) {
+      case null -> throw new MachineException("Don't know how to execute *(%d)=null".formatted(IP));
+      case NativeSubroutine nativeSubroutine -> nativeSubroutine.call(this);
+      case Integer address -> {
+        jumpTo(address);
+        applyThreadedCode(IP);
+      }
+      case String s when "DOCOL".equals(s) -> {
+        enterThreadedCode();
+        DOCOL(false);
+        jumpTo(getInstrcutionPointer() + 1);
+      }
+      default -> jumpTo(getInstrcutionPointer() + 1);
     }
   }
 
@@ -180,7 +179,7 @@ public class Machine {
    * @param n N memory cells
    */
   public void step(int n) {
-    IntStream.range(0, n).forEach((_i) -> step());
+    IntStream.range(0, n).forEach(_ -> step());
   }
 
   /** Machine's "main loop". */
@@ -200,16 +199,16 @@ public class Machine {
               getPrimitiveContainers().stream()
                   .filter((p) -> "QUIT".equals(p.get().getName()))
                   .findFirst()
-                  .get();
+                  .orElseThrow();
           QUIT.get().execute(this);
         }
       }
-    } catch (GracefulShutdown _ex) {
+    } catch (GracefulShutdown _) {
       var BYE =
           getPrimitiveContainers().stream()
               .filter((p) -> "BYE".equals(p.get().getName()))
               .findFirst()
-              .get();
+              .orElseThrow();
       BYE.get().execute(this);
     }
   }

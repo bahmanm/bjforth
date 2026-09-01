@@ -22,17 +22,8 @@ import java.util.Set;
 
 public class Variables {
 
-  private static class DefaultVariableImpl implements Variable {
-
-    private final Integer address;
-    private final Integer initialValue;
-    private final String name;
-
-    DefaultVariableImpl(String name, Integer address, Integer initialValue) {
-      this.name = name;
-      this.address = address;
-      this.initialValue = initialValue;
-    }
+  static record DefaultVariableImpl(String name, Integer address, Integer initialValue)
+      implements Variable {
 
     @Override
     public Integer getAddress() {
@@ -60,7 +51,10 @@ public class Variables {
       new DefaultVariableImpl("LATEST", 3, 1); // TODO Dummy initial value
 
   public static Variable get(String name) {
-    return variables.stream().filter(variable -> variable.getName().equals(name)).findFirst().get();
+    return variables.stream()
+        .filter(variable -> variable.getName().equals(name))
+        .findFirst()
+        .orElseThrow();
   }
 
   public static Set<Variable> variables = Set.of(varHERE, varSTATE, varBASE, varLATEST);

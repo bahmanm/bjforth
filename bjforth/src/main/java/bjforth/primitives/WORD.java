@@ -40,32 +40,27 @@ class WORD implements Primitive {
       KEY().execute(machine);
       var s = (String) machine.popFromParameterStack();
       switch (state) {
-        case BEGIN:
+        case BEGIN -> {
           if ("#".equals(s)) {
             state = State.IN_COMMENT;
-          } else if (!" ".equals(s)
-              && !"\t".equals(s)
-              && !"\r".equals(s)
-              && !"\b".equals(s)
-              && !"\n".equals(s)) {
+          } else if (!s.isBlank() && !"\b".equals(s)) {
             result.append(s);
             state = State.IN_WORD;
           }
-          break;
-        case IN_COMMENT:
+        }
+        case IN_COMMENT -> {
           if ("\n".equals(s)) {
             state = State.BEGIN;
           }
-          break;
-        case IN_WORD:
-          if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
+        }
+        case IN_WORD -> {
+          if (s.isBlank()) {
             state = State.END;
           } else {
             result.append(s);
           }
-          break;
-        default:
-          break;
+        }
+        default -> {}
       }
     }
     machine.pushToParameterStack(result.toString());

@@ -36,8 +36,7 @@ public class RANGLECOMMA implements Primitive {
       arguments[i] = obj;
     }
 
-    var paramTypes = new Class<?>[methodDescriptor.parameterTypes.size()];
-    methodDescriptor.parameterTypes.toArray(paramTypes);
+    var paramTypes = methodDescriptor.parameterTypes.toArray(Class<?>[]::new);
     var method =
         MethodUtils.getMatchingAccessibleMethod(
             methodDescriptor.target, methodDescriptor.name, paramTypes);

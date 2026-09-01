@@ -36,8 +36,7 @@ public class RANGLEAT implements Primitive {
       arguments[i] = obj;
     }
 
-    var paramTypes = new Class<?>[methodDescriptor.parameterTypes.size()];
-    methodDescriptor.parameterTypes.toArray(paramTypes);
+    var paramTypes = methodDescriptor.parameterTypes.toArray(Class<?>[]::new);
     var ctor =
         ConstructorUtils.getMatchingAccessibleConstructor(methodDescriptor.clazz, paramTypes);
     if (ctor == null) {

@@ -38,14 +38,15 @@ public class INTERPRET implements Primitive {
     var obj = machine.peekIntoParameterStack();
     try {
       FIND().execute(machine);
-      var dictItem = machine.getDictionaryItem((Integer) machine.popFromParameterStack()).get();
+      var dictItem =
+          machine.getDictionaryItem((Integer) machine.popFromParameterStack()).orElseThrow();
       if (STATE == 0 || dictItem.getIsImmediate()) {
         machine.jumpTo(dictItem.getAddress());
       } else {
         machine.setMemoryAt(HEREvalue, dictItem.getAddress());
         machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 1);
       }
-    } catch (MachineException _ex) { // Not in dictionary. Check if it's a number.
+    } catch (MachineException _) { // Not in dictionary. Check if it's a number.
       machine.pushToParameterStack(obj);
       try {
         PrimitiveFactory.NUMBER().execute(machine);
@@ -56,13 +57,14 @@ public class INTERPRET implements Primitive {
         }
         var number = (Number) machine.popFromParameterStack();
         if (STATE == 1) { // Compiling mode
-          machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+          machine.setMemoryAt(
+              HEREvalue, machine.getDictionaryItem("LIT").orElseThrow().getAddress());
           machine.setMemoryAt(HEREvalue + 1, number);
           machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
         } else { // Immediate mode
           machine.pushToParameterStack(number);
         }
-      } catch (MachineException __ex) { // Not a number. Exit with error.
+      } catch (MachineException _) { // Not a number. Exit with error.
         System.out.print(
             colorize(
                 "%s Pushing unknown word or invalid number onto stack: %s"
@@ -70,7 +72,8 @@ public class INTERPRET implements Primitive {
                 FOREGROUND_COLOR,
                 BACKGROUND_COLOR));
         if (STATE == 1) { // Compiling mode
-          machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+          machine.setMemoryAt(
+              HEREvalue, machine.getDictionaryItem("LIT").orElseThrow().getAddress());
           machine.setMemoryAt(HEREvalue + 1, obj);
           machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
         } else { // Immediate mode

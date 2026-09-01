@@ -36,8 +36,7 @@ public class RANGLEDOT implements Primitive {
       arguments[i] = obj;
     }
 
-    var paramTypes = new Class<?>[methodDescriptor.parameterTypes.size()];
-    methodDescriptor.parameterTypes.toArray(paramTypes);
+    var paramTypes = methodDescriptor.parameterTypes.toArray(Class<?>[]::new);
     var method =
         MethodUtils.getMatchingAccessibleMethod(
             target.getClass(), methodDescriptor.name, paramTypes);

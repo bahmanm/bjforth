@@ -69,94 +69,84 @@ public class NumberUtils {
   }
 
   public static BigDecimal asBigDecimal(Number n) {
-    if (n instanceof BigDecimal bd) {
-      return bd;
-    } else if (n instanceof BigInteger bi) {
-      return new BigDecimal(bi);
-    } else if (n instanceof Double) {
-      return BigDecimal.valueOf((double) n);
-    } else if (n instanceof Float) {
-      return BigDecimal.valueOf(asDouble(n));
-    } else if (n instanceof Long
-        || n instanceof Integer
-        || n instanceof Short
-        || n instanceof Byte) {
-      return BigDecimal.valueOf((long) n);
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case BigDecimal bd -> bd;
+      case BigInteger bi -> new BigDecimal(bi);
+      case Double d -> BigDecimal.valueOf(d);
+      case Float f -> BigDecimal.valueOf(asDouble(f));
+      case Long l -> BigDecimal.valueOf(l);
+      case Integer i -> BigDecimal.valueOf(i.longValue());
+      case Short s -> BigDecimal.valueOf(s.longValue());
+      case Byte b -> BigDecimal.valueOf(b.longValue());
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 
   public static Double asDouble(Number n) {
-    if (n instanceof Double) {
-      return (double) n;
-    } else if (n instanceof Float) {
-      return Double.valueOf((float) n);
-    } else if (n instanceof Long
-        || n instanceof Integer
-        || n instanceof Short
-        || n instanceof Byte) {
-      return Double.valueOf((long) n);
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case Double d -> d;
+      case Float f -> (double) f;
+      case Long l -> (double) l;
+      case Integer i -> (double) i;
+      case Short s -> (double) s;
+      case Byte b -> (double) b;
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 
   public static Float asFloat(Number n) {
-    if (n instanceof Float) {
-      return (float) n;
-    } else if (n instanceof Long
-        || n instanceof Integer
-        || n instanceof Short
-        || n instanceof Byte) {
-      return Float.valueOf((long) n);
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case Float f -> f;
+      case Long l -> (float) l;
+      case Integer i -> (float) i;
+      case Short s -> (float) s;
+      case Byte b -> (float) b;
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 
   public static BigInteger asBigInteger(Number n) {
-    if (n instanceof BigInteger bi) {
-      return bi;
-    } else if (n instanceof Long
-        || n instanceof Integer
-        || n instanceof Short
-        || n instanceof Byte) {
-      return BigInteger.valueOf((long) n);
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case BigInteger bi -> bi;
+      case Long l -> BigInteger.valueOf(l);
+      case Integer i -> BigInteger.valueOf(i.longValue());
+      case Short s -> BigInteger.valueOf(s.longValue());
+      case Byte b -> BigInteger.valueOf(b.longValue());
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 
   public static Long asLong(Number n) {
-    if (n instanceof Long || n instanceof Integer || n instanceof Short || n instanceof Byte) {
-      return (long) n;
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case Long l -> l;
+      case Integer i -> i.longValue();
+      case Short s -> s.longValue();
+      case Byte b -> b.longValue();
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 
   public static Integer asInteger(Number n) {
-    if (n instanceof Integer || n instanceof Short || n instanceof Byte) {
-      return (int) n;
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case Integer i -> i;
+      case Short s -> s.intValue();
+      case Byte b -> b.intValue();
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 
   public static Short asShort(Number n) {
-    if (n instanceof Short || n instanceof Byte) {
-      return (short) n;
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case Short s -> s;
+      case Byte b -> (short) b.byteValue();
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 
   public static Byte asByte(Number n) {
-    if (n instanceof Byte) {
-      return (byte) n;
-    } else {
-      throw new MachineException("unsupported subtype of Number");
-    }
+    return switch (n) {
+      case Byte b -> b;
+      default -> throw new MachineException("unsupported subtype of Number");
+    };
   }
 }

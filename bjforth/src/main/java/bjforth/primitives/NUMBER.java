@@ -37,7 +37,7 @@ class NUMBER implements Primitive {
         Number number;
         try {
           number = StringToNumber.valueOf(s, base);
-        } catch (NumberFormatException ex) {
+        } catch (NumberFormatException _) {
           number = null;
         }
         var status = number == null ? -1 : 0;
@@ -46,7 +46,7 @@ class NUMBER implements Primitive {
       } else {
         throw new MachineException("Invalid argument");
       }
-    } catch (NoSuchElementException ex) {
+    } catch (NoSuchElementException _) {
       throw new MachineException("ParameterStack error.");
     }
   }
@@ -69,15 +69,15 @@ class NUMBER implements Primitive {
     private static Number toInteger(String s, int base) {
       try {
         return Integer.valueOf(s, base);
-      } catch (NumberFormatException ignore1) {
+      } catch (NumberFormatException _) {
       }
       try {
         return Long.valueOf(s, base);
-      } catch (NumberFormatException ignore2) {
+      } catch (NumberFormatException _) {
       }
       try {
         return new BigInteger(s, base);
-      } catch (NumberFormatException ignore3) {
+      } catch (NumberFormatException _) {
       }
       return null;
     }

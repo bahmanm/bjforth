@@ -35,9 +35,7 @@ public class DUMP implements Primitive {
       System.out.print("    ");
     }
     if (addr != 0 && addr % 8 != 0) {
-      for (var i = 0; i < addr % 8; i++) {
-        System.out.printf("%8s    ", "");
-      }
+      System.out.print("            ".repeat(addr % 8));
     }
     for (var i = addr; i < addr + len; i++) {
       var obj = machine.getMemoryAt(i);
@@ -46,21 +44,15 @@ public class DUMP implements Primitive {
         System.out.print(colorize("%08d".formatted(i), FOREGROUND_COLOR, BACKGROUND_COLOR));
         System.out.print("    ");
       }
-      if (obj instanceof Integer n) {
-        System.out.print(colorize("%08d".formatted(n), FOREGROUND_COLOR, BACKGROUND_COLOR));
-        System.out.print("    ");
-      } else if (obj instanceof Primitive primitive) {
-        System.out.print(
-            colorize("%-8s".formatted(primitive.getName()), FOREGROUND_COLOR, BACKGROUND_COLOR));
-        System.out.print("    ");
-      } else if (obj == null) {
-        System.out.print(colorize("%-8s".formatted("null"), FOREGROUND_COLOR, BACKGROUND_COLOR));
-        System.out.print("    ");
-      } else {
-        System.out.print(
-            colorize("%8s".formatted(obj.toString()), FOREGROUND_COLOR, BACKGROUND_COLOR));
-        System.out.print("    ");
-      }
+      var formatted =
+          switch (obj) {
+            case Integer n -> "%08d".formatted(n);
+            case Primitive primitive -> "%-8s".formatted(primitive.getName());
+            case null -> "%-8s".formatted("null");
+            default -> "%8s".formatted(obj.toString());
+          };
+      System.out.print(colorize(formatted, FOREGROUND_COLOR, BACKGROUND_COLOR));
+      System.out.print("    ");
     }
     System.out.println();
   }
