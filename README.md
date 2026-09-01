@@ -23,7 +23,7 @@ After that I knew what to do!
 
 # How to run
 
-As bjForth is written with Java, all you need is JDK 21 installed.
+As bjForth is written with Java, all you need is JDK 25 installed.
 
 Then to launch bjForth:
 

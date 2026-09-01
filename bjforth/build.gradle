@@ -52,7 +52,7 @@ dependencies {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
+    languageVersion = JavaLanguageVersion.of(25)
   }
 }
 
@@ -99,8 +99,8 @@ tasks.withType(Test).configureEach {
 tasks.withType(JavaCompile).configureEach {
   options.encoding = 'UTF-8'
   options.incremental = true
-  options.release.set(21)
-  options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked' << '-parameters' << '--enable-preview'
+  options.release.set(25)
+  options.compilerArgs << '-Xlint:deprecation' << '-Xlint:unchecked' << '-parameters'
   dependsOn 'spotlessApply'
 }
 
@@ -108,7 +108,7 @@ tasks.withType(JavaExec).configureEach {
 }
 
 jacoco {
-  toolVersion = '0.8.12'
+  toolVersion = '0.8.15'
 }
 
 test {
