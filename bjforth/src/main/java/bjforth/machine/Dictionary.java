@@ -31,26 +31,18 @@ class Dictionary {
     items.putAll(other.items);
     other.items.forEach(
         (name, items) -> {
-          reverseLookup.putIfAbsent(items.get(0).getAddress(), name);
+          reverseLookup.putIfAbsent(items.getFirst().getAddress(), name);
         });
   }
 
   public void put(String name, DictionaryItem item) {
-    List<DictionaryItem> currentValue;
     var nameUpper = name.toUpperCase();
-    if (items.containsKey(nameUpper)) {
-      currentValue = items.get(nameUpper);
-    } else {
-      currentValue = new ArrayList<>();
-    }
-    currentValue.addFirst(item);
-    items.put(nameUpper, currentValue);
+    items.computeIfAbsent(nameUpper, k -> new ArrayList<>()).addFirst(item);
     reverseLookup.putIfAbsent(item.getAddress(), item.getName());
   }
 
   public Optional<DictionaryItem> get(String name) {
-    return Optional.ofNullable(items.get(name.toUpperCase()))
-        .map(dictionaryItems -> dictionaryItems.get(dictionaryItems.size() - 1));
+    return Optional.ofNullable(items.get(name.toUpperCase())).map(List::getLast);
   }
 
   public Optional<DictionaryItem> get(Integer address) {

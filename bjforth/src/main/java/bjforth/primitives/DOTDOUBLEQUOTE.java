@@ -35,21 +35,20 @@ public class DOTDOUBLEQUOTE implements Primitive {
   @Override
   public void execute(Machine machine) {
     var result = new StringBuffer();
-    Boolean isEnd = false;
     State state = State.BEGIN;
     while (!state.equals(State.END)) {
       KEY().execute(machine);
       var s = (String) machine.popFromParameterStack();
       switch (state) {
-        case BEGIN:
+        case BEGIN -> {
           if ("\"".equals(s)) {
             state = State.MAYBE_END;
           } else {
             result.append(s);
             state = State.IN_STRING;
           }
-          break;
-        case MAYBE_END:
+        }
+        case MAYBE_END -> {
           if (".".equals(s)) {
             state = State.END;
             if (!result.isEmpty()) {
@@ -60,14 +59,15 @@ public class DOTDOUBLEQUOTE implements Primitive {
             result.append(s);
             state = State.IN_STRING;
           }
-          break;
-        case IN_STRING:
+        }
+        case IN_STRING -> {
           if ("\"".equals(s)) {
             state = State.MAYBE_END;
           } else {
             result.append(s);
           }
-          break;
+        }
+        default -> {}
       }
     }
     var STATEaddr = Variables.get("STATE").getAddress();
@@ -75,7 +75,7 @@ public class DOTDOUBLEQUOTE implements Primitive {
     if (STATEvalue == 1) {
       var HEREaddr = Variables.get("HERE").getAddress();
       var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
-      machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+      machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").orElseThrow().getAddress());
       machine.setMemoryAt(HEREvalue + 1, result.toString());
       machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
     } else {

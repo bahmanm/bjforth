@@ -69,7 +69,7 @@ spotless {
     endWithNewline()
     importOrder()
     removeUnusedImports()
-    googleJavaFormat()
+    googleJavaFormat('1.30.0')
     licenseHeader '''/*
  * Copyright $YEAR Bahman Movaqar
  *

@@ -25,27 +25,18 @@ import java.math.BigInteger;
 public abstract class AbstractUnaryNumberFunction<R> {
 
   public R apply(Object value) {
-    if (value == null) {
-      throw new MachineException("ParameterStack top is NULL.");
-    } else if (value instanceof BigDecimal bd) {
-      return apply(bd);
-    } else if (value instanceof BigInteger bi) {
-      return apply(bi);
-    } else if (value instanceof Byte b) {
-      return apply(b);
-    } else if (value instanceof Double d) {
-      return apply(d);
-    } else if (value instanceof Float f) {
-      return apply(f);
-    } else if (value instanceof Integer i) {
-      return apply(i);
-    } else if (value instanceof Long l) {
-      return apply(l);
-    } else if (value instanceof Short s) {
-      return apply(s);
-    } else {
-      throw new MachineException("ParameterStack top not a number.");
-    }
+    return switch (value) {
+      case null -> throw new MachineException("ParameterStack top is NULL.");
+      case BigDecimal bd -> apply(bd);
+      case BigInteger bi -> apply(bi);
+      case Byte b -> apply(b);
+      case Double d -> apply(d);
+      case Float f -> apply(f);
+      case Integer i -> apply(i);
+      case Long l -> apply(l);
+      case Short s -> apply(s);
+      default -> throw new MachineException("ParameterStack top not a number.");
+    };
   }
 
   protected abstract R apply(BigDecimal value);

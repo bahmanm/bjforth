@@ -47,7 +47,7 @@ class Stack {
   }
 
   public int getPointer() {
-    if (data.size() <= 0) {
+    if (data.isEmpty()) {
       throw new MachineException("Empty stack");
     }
     return data.size() - 1;
@@ -57,7 +57,9 @@ class Stack {
     if (pointer >= data.size() || pointer < 0) {
       throw new MachineException("Invalid stack pointer");
     }
-    for (int i = data.size() - 1; i > pointer; i--) data.remove(i);
+    while (data.size() - 1 > pointer) {
+      data.removeLast();
+    }
   }
 
   public Object getItem(int pointer) {

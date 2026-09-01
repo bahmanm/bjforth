@@ -32,59 +32,67 @@ public class SEE implements Primitive {
 
   @Override
   public void execute(Machine machine) {
-    var LITaddr = machine.getDictionaryItem("LIT").get().getAddress();
-    var ZBRANCHaddr = machine.getDictionaryItem("0BRANCH").get().getAddress();
-    var BRANCHaddr = machine.getDictionaryItem("BRANCH").get().getAddress();
+    var LITaddr = machine.getDictionaryItem("LIT").orElseThrow().getAddress();
+    var ZBRANCHaddr = machine.getDictionaryItem("0BRANCH").orElseThrow().getAddress();
+    var BRANCHaddr = machine.getDictionaryItem("BRANCH").orElseThrow().getAddress();
     var HEREvalue = getHEREvalue(machine);
     var target = getTargetDictionaryItem(machine);
 
     printHeader(machine, target);
     var content = machine.getMemoryAt(target.getAddress());
-    if (content instanceof Primitive primitive) {
+    if (content instanceof Primitive) {
       return;
     }
 
     var addr = target.getAddress() + 1;
     content = machine.getMemoryAt(addr);
     while (addr < target.getLength() + target.getAddress()) {
-      if (content == null) {
-        System.out.print(colorize("null", FOREGROUND_COLOR, BACKGROUND_COLOR));
-        System.out.print(" ");
-        addr += 1;
-      } else if (content == LITaddr) {
-        addr += 1;
-        content = machine.getMemoryAt(addr);
-        if (content instanceof String s) {
-          System.out.print(
-              colorize("\"%s\"".formatted(content), FOREGROUND_COLOR, BACKGROUND_COLOR));
+      switch (content) {
+        case null -> {
+          System.out.print(colorize("null", FOREGROUND_COLOR, BACKGROUND_COLOR));
           System.out.print(" ");
-        } else {
-          System.out.print(colorize("%s".formatted(content), FOREGROUND_COLOR, BACKGROUND_COLOR));
+          addr += 1;
+        }
+        case Integer wordAddr when wordAddr.equals(LITaddr) -> {
+          addr += 1;
+          content = machine.getMemoryAt(addr);
+          if (content instanceof String) {
+            System.out.print(
+                colorize("\"%s\"".formatted(content), FOREGROUND_COLOR, BACKGROUND_COLOR));
+            System.out.print(" ");
+          } else {
+            System.out.print(colorize("%s".formatted(content), FOREGROUND_COLOR, BACKGROUND_COLOR));
+            System.out.print(" ");
+          }
+        }
+        case Integer wordAddr when wordAddr.equals(ZBRANCHaddr) -> {
+          addr += 1;
+          content = (Integer) machine.getMemoryAt(addr);
+          System.out.print(
+              colorize("%s(%d)".formatted("0BRANCH", content), FOREGROUND_COLOR, BACKGROUND_COLOR));
           System.out.print(" ");
         }
-      } else if (content instanceof Integer wordAddr && ZBRANCHaddr.equals(wordAddr)) {
-        addr += 1;
-        content = (Integer) machine.getMemoryAt(addr);
-        System.out.print(
-            colorize("%s(%d)".formatted("0BRANCH", content), FOREGROUND_COLOR, BACKGROUND_COLOR));
-        System.out.print(" ");
-      } else if (content instanceof Integer wordAddr && BRANCHaddr.equals(wordAddr)) {
-        addr += 1;
-        content = (Integer) machine.getMemoryAt(addr);
-        System.out.print(
-            colorize("%s(%d)".formatted("BRANCH", content), FOREGROUND_COLOR, BACKGROUND_COLOR));
-        System.out.print(" ");
-      } else if (content instanceof Integer wordAddr) {
-        var maybeItem = machine.getDictionaryItem(wordAddr);
-        if (maybeItem.isEmpty()) {
-          throw new MachineException("Not sure how to display value at %d08".formatted(wordAddr));
-        } else {
-          var item = maybeItem.get();
+        case Integer wordAddr when wordAddr.equals(BRANCHaddr) -> {
+          addr += 1;
+          content = (Integer) machine.getMemoryAt(addr);
+          System.out.print(
+              colorize("%s(%d)".formatted("BRANCH", content), FOREGROUND_COLOR, BACKGROUND_COLOR));
+          System.out.print(" ");
+        }
+        case Integer wordAddr -> {
+          var item =
+              machine
+                  .getDictionaryItem(wordAddr)
+                  .orElseThrow(
+                      () ->
+                          new MachineException(
+                              "Not sure how to display value at %08d".formatted(wordAddr)));
           System.out.print(colorize(item.getName(), FOREGROUND_COLOR, BACKGROUND_COLOR));
           System.out.print(" ");
         }
-      } else {
-        System.out.print(colorize(content.toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
+        default -> {
+          System.out.print(colorize(content.toString(), FOREGROUND_COLOR, BACKGROUND_COLOR));
+        }
       }
       addr += 1;
       content = machine.getMemoryAt(addr);
@@ -94,12 +102,9 @@ public class SEE implements Primitive {
   private DictionaryItem getTargetDictionaryItem(Machine machine) {
     WORD().execute(machine);
     var word = (String) machine.popFromParameterStack();
-    var maybeDictItem = machine.getDictionaryItem(word);
-    if (maybeDictItem.isEmpty()) {
-      throw new MachineException("No such entry.");
-    } else {
-      return maybeDictItem.get();
-    }
+    return machine
+        .getDictionaryItem(word)
+        .orElseThrow(() -> new MachineException("No such entry."));
   }
 
   private Integer getHEREvalue(Machine machine) {

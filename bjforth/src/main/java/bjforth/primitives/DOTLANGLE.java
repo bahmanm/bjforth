@@ -63,33 +63,22 @@ public class DOTLANGLE implements Primitive {
       KEY().execute(machine);
       var s = (String) machine.popFromParameterStack();
       switch (state) {
-        case State.BEGIN:
-          if (!" ".equals(s) && !"\t".equals(s)) {
+        case BEGIN -> {
+          if (!s.isBlank()) {
             state = State.IN_METHOD_NAME;
             name.append(s);
           }
-          break;
-        case State.IN_METHOD_NAME:
+        }
+        case IN_METHOD_NAME -> {
           if ("(".equals(s)) {
             state = State.IN_PARAM_TYPE;
-          } else if (!" ".equals(s) && !"\t".equals(s)) {
-            name.append(s);
             result.name = name.toString();
+          } else if (!s.isBlank()) {
+            name.append(s);
           }
-          break;
-        case State.IN_PARAM_TYPE:
-          if (")".equals(s)) {
-            var rawParamType = parameterType.toString();
-            if (rawParamType.endsWith("[]")) {
-              var paramType = rawParamType.replace("[]", "");
-              result.parameterTypes.add(ClassCache.forNameArray(paramType));
-            } else if (rawParamType.isEmpty()) {
-              // Ignore
-            } else {
-              result.parameterTypes.add(ClassCache.forName(rawParamType));
-            }
-            state = State.IN_ARITY;
-          } else if (" ".equals(s) || "\t".equals(s) || "\n".equals(s)) {
+        }
+        case IN_PARAM_TYPE -> {
+          if (s.isBlank()) {
             // Ignore whitespace
           } else if (",".equals(s)) {
             var rawParamType = parameterType.toString();
@@ -102,51 +91,67 @@ public class DOTLANGLE implements Primitive {
             parameterType = new StringBuilder();
           } else if (".".equals(s)) {
             state = State.IN_MAYBE_VARARG;
+          } else if (")".equals(s)) {
+            var rawParamType = parameterType.toString();
+            if (rawParamType.endsWith("[]")) {
+              var paramType = rawParamType.replace("[]", "");
+              result.parameterTypes.add(ClassCache.forNameArray(paramType));
+            } else if (rawParamType.isEmpty()) {
+              // Ignore
+            } else {
+              result.parameterTypes.add(ClassCache.forName(rawParamType));
+            }
+            state = State.IN_ARITY;
           } else {
             parameterType.append(s);
           }
-          break;
-        case State.IN_MAYBE_VARARG:
+        }
+        case IN_MAYBE_VARARG -> {
           if (".".equals(s)) {
-            result.parameterTypes.add(ClassCache.forNameVararg(parameterType.toString()));
+            var rawParamType = parameterType.toString();
+            if (rawParamType.endsWith("[]")) {
+              var paramType = rawParamType.replace("[]", "");
+              result.parameterTypes.add(ClassCache.forNameArray(paramType));
+            } else {
+              result.parameterTypes.add(ClassCache.forNameVararg(rawParamType));
+            }
             state = State.IN_VARARG;
           } else {
             parameterType.append(".");
             parameterType.append(s);
             state = State.IN_PARAM_TYPE;
           }
-          break;
-        case State.IN_VARARG:
+        }
+        case IN_VARARG -> {
           result.varargFromArgumentNo =
               result.parameterTypes.isEmpty() ? 0 : result.parameterTypes.size() - 1;
           if (")".equals(s)) {
             state = State.IN_ARITY;
           } else if (".".equals(s)) {
-            // Ingore
+            // Ignore
           }
-          break;
-        case State.IN_ARITY:
+        }
+        case IN_ARITY -> {
           if ("/".equals(s)) {
             // Ignore
-          } else if ("\t".equals(s) || " ".equals(s) || "\n".equals(s)) {
+          } else if (s.isBlank()) {
             try {
               result.arity = Integer.valueOf(arity.toString());
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException _) {
               throw new MachineException("Invalid method arity: '%s'".formatted(arity.toString()));
             }
             state = State.END;
           } else {
             arity.append(s);
           }
-          break;
-        default:
-          break;
+        }
+        default -> {}
       }
     }
 
     var HEREaddr = Variables.get("HERE").getAddress();
     var HEREvalue = (Integer) machine.getMemoryAt(HEREaddr);
-    machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").get().getAddress());
+    machine.setMemoryAt(HEREvalue, machine.getDictionaryItem("LIT").orElseThrow().getAddress());
     machine.setMemoryAt(HEREvalue + 1, result);
     machine.setMemoryAt(HEREaddr, (Integer) machine.getMemoryAt(HEREaddr) + 2);
   }

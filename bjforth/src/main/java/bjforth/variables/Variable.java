@@ -18,7 +18,7 @@
  */
 package bjforth.variables;
 
-public interface Variable {
+public sealed interface Variable permits Variables.DefaultVariableImpl {
 
   String getName();
 
