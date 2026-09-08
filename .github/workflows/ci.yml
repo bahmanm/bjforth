@@ -50,11 +50,6 @@ jobs:
           sudo make install
           popd
 
-      - name: Set up bmakelib
-        run: |
-          curl -fsSL https://github.com/bahmanm/bmakelib/releases/download/v0.9.0/bmakelib-portable.tar.gz \
-            | sudo tar -xz -C /usr/local --strip-components=1
-
       - name: Compile and test
         run: make test
 
