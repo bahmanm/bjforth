@@ -28,8 +28,14 @@ export root.forth = $(ROOT)bjforth/src/main/forth/
 
 ####################################################################################################
 
-.PHONY : bmakelib/bmakelib.mk
-include  bmakelib/bmakelib.mk
+###################### bmakelib: download, install and include.
+BMAKELIB_VERSION ?= v0.9.1
+-include $(or $(BMAKELIB_DIR),$(PWD)/.bmakelib)/bmakelib.mk
+$(or $(BMAKELIB_DIR),$(PWD)/.bmakelib)/bmakelib.mk:
+	@mkdir -p $(@D)
+	@curl -fsSL https://github.com/bahmanm/bmakelib/releases/$(if $(BMAKELIB_VERSION),download/$(BMAKELIB_VERSION),latest/download)/bmakelib-portable.tar.gz \
+		| tar -xz -C $(@D) --strip-components=3
+###################### bmakelib: done
 
 ####################################################################################################
 
