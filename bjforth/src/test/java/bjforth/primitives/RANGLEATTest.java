@@ -31,7 +31,8 @@ import org.apache.commons.lang3.RandomUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class RANGLEATTest {
+// It's public because otherwise 'getMatchingAccessibleConstructor' will not be able to see 'VariadicCtor'.
+public class RANGLEATTest {
 
   @DisplayName("Should push the new object onto ParameterStack")
   @Test
