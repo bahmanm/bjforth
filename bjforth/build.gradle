@@ -5,7 +5,7 @@ import org.gradle.api.tasks.testing.Test
 
 plugins {
   id 'application'
-  id 'com.diffplug.spotless' version '8.10.4'
+  id 'com.diffplug.spotless' version '8.11.0'
   id 'jacoco'
   id 'com.gradleup.shadow' version '9.6.1'
 }
@@ -35,7 +35,7 @@ configurations {
 
 dependencies {
   implementation 'org.apache.commons:commons-lang3:3.21.0'
-  implementation 'com.diogonunes:JColor:6.0.1'
+  implementation 'com.diogonunes:JColor:6.0.2'
 
   testLib sourceSets.testLib.output
   testLibImplementation 'org.apache.commons:commons-lang3:3.21.0'
